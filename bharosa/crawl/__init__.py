@@ -25,6 +25,14 @@ __all__ = [
     "is_near_duplicate",
     "jaccard_similarity",
     "tokenize_text",
+    "AdaptiveScheduler",
+    "BaseScheduler",
+    "DEFAULT_GROWTH_FACTOR",
+    "DEFAULT_INTERVAL_SECONDS",
+    "DEFAULT_MAX_INTERVAL_SECONDS",
+    "DEFAULT_MIN_INTERVAL_SECONDS",
+    "DEFAULT_SHRINK_FACTOR",
+    "FixedIntervalScheduler",
 ]
 
 from bharosa.crawl.db import (
@@ -48,6 +56,16 @@ from bharosa.crawl.fetcher import (
     RobotsDisallowedError,
 )
 from bharosa.crawl.frontier import CrawlFrontier, CrawlTask
+from bharosa.crawl.scheduler import (
+    DEFAULT_GROWTH_FACTOR,
+    DEFAULT_INTERVAL_SECONDS,
+    DEFAULT_MAX_INTERVAL_SECONDS,
+    DEFAULT_MIN_INTERVAL_SECONDS,
+    DEFAULT_SHRINK_FACTOR,
+    AdaptiveScheduler,
+    BaseScheduler,
+    FixedIntervalScheduler,
+)
 from bharosa.crawl.shingles import (
     DEFAULT_SHINGLE_SIZE,
     DEFAULT_SIMILARITY_THRESHOLD,
