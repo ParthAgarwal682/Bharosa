@@ -1,8 +1,3 @@
 __pycache__/
-<<<<<<< HEAD
-*.pyc
-.pytest_cache/
-=======
 *.py[cod]
 .pytest_cache/
->>>>>>> c219f934559e3def66764b6c3f4289977759d98c
