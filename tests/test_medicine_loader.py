@@ -97,13 +97,13 @@ def test_parse_active_ingredients() -> None:
     assert len(ingredients) == 2
     assert ingredients[0] == ActiveIngredient(
         name="Amoxycillin",
-        strength="500mg",
-        full_description="Amoxycillin (500mg)",
+        strength_value=500.0,
+        strength_unit="mg",
     )
     assert ingredients[1] == ActiveIngredient(
         name="Clavulanic Acid",
-        strength="125mg",
-        full_description="Clavulanic Acid (125mg)",
+        strength_value=125.0,
+        strength_unit="mg",
     )
 
     # Empty or malformed inputs return empty list
@@ -149,10 +149,18 @@ def test_load_single_ingredient_valid(tmp_path: Path) -> None:
     assert rec.generic_price is None  # Not provided in source; never fabricated
     assert rec.manufacturer == "GlaxoSmithKline"
     assert rec.is_combination is False
+    assert rec.pack_size == 15.0
+    assert rec.pack_unit == "strip"
+    assert len(rec.ingredients) == 1
+    assert rec.ingredients[0] == ActiveIngredient(
+        name="Paracetamol",
+        strength_value=650.0,
+        strength_unit="mg",
+    )
 
 
 def test_load_combination_ingredient_valid(tmp_path: Path) -> None:
-    """Test valid combination medicine: sorted joined salts, no false scalar strength."""
+    """Test valid combination medicine: sorted joined salts, individual strengths preserved, no false scalar strength."""
     row = [
         "102",
         "Augmentin 625 Duo Tablet",
@@ -189,6 +197,12 @@ def test_load_combination_ingredient_valid(tmp_path: Path) -> None:
     assert rec.strength_unit is None
     assert rec.mrp == 223.42
     assert rec.generic_price is None
+    assert rec.pack_size == 10.0
+    assert rec.pack_unit == "strip"
+    assert len(rec.ingredients) == 2
+    ing_map = {ing.name: (ing.strength_value, ing.strength_unit) for ing in rec.ingredients}
+    assert ing_map["Amoxycillin"] == (500.0, "mg")
+    assert ing_map["Clavulanic Acid"] == (125.0, "mg")
 
 
 def test_discontinued_medicine_dropped(tmp_path: Path) -> None:
@@ -344,3 +358,80 @@ def test_file_not_found_raises(tmp_path: Path) -> None:
     missing = tmp_path / "non_existent.csv"
     with pytest.raises(FileNotFoundError):
         load_medicines(missing)
+
+
+def test_release_is_not_inferred(tmp_path: Path) -> None:
+    """Release profile (IR/SR/ER/CR) is not available in source and must not be inferred."""
+    row = [
+        "104",
+        "Pantocid DSR Capsule",
+        "Sun Pharma",
+        "150.0",
+        "False",
+        "capsule",
+        "10.0",
+        "strip",
+        "1",
+        "Pantoprazole",
+        "40mg",
+        "[{'name': 'Pantoprazole', 'strength': '40mg'}]",
+        "gastro",
+        "strip of 10",
+        "Sun Pharma",
+    ]
+    csv_file = create_synthetic_csv(tmp_path, [row])
+    records, stats = load_medicines(csv_file)
+    assert len(records) == 1
+    rec = records[0]
+    # Verify that release profile is not fabricated or exposed as an inferred attribute
+    assert not hasattr(rec, "release_type")
+    assert not hasattr(rec, "release_profile")
+
+
+def test_loader_api_requires_filepath() -> None:
+    """Loader contract strictly requires file_path argument and cannot be called without it."""
+    with pytest.raises(TypeError):
+        load_medicines()  # type: ignore[call-arg]
+
+
+def test_unparseable_individual_ingredient_strength_preserved_as_none(tmp_path: Path) -> None:
+    """An unparseable individual ingredient strength is preserved as None and is NOT evidence of strength equivalence."""
+    row = [
+        "105",
+        "Combo Tonic",
+        "Apex Pharma",
+        "85.0",
+        "False",
+        "syrup",
+        "100.0",
+        "bottle",
+        "2",
+        "Herb A",
+        "",
+        "[{'name': 'Herb A', 'strength': 'unparseable_xyz'}, {'name': 'Vitamin B', 'strength': '10mg'}]",
+        "tonic",
+        "bottle of 100ml",
+        "Apex Pharma",
+    ]
+    csv_file = create_synthetic_csv(tmp_path, [row])
+    records, stats = load_medicines(csv_file)
+    assert stats.accepted_rows == 1
+    assert len(records) == 1
+    rec = records[0]
+    assert rec.is_combination is True
+    assert len(rec.ingredients) == 2
+
+    herb = next(ing for ing in rec.ingredients if ing.name == "Herb A")
+    vit = next(ing for ing in rec.ingredients if ing.name == "Vitamin B")
+
+    # Strength is preserved as None, not invented, not zero
+    assert herb.strength_value is None
+    assert herb.strength_unit is None
+    assert vit.strength_value == 10.0
+    assert vit.strength_unit == "mg"
+
+    # Explicit check: None strength must NOT be treated as equal or equivalent to zero or other strengths
+    assert herb.strength_value is not 0.0
+    assert herb.strength_value is not 10.0
+    assert (herb.strength_value == 0.0) is False
+    assert (herb.strength_value == vit.strength_value) is False

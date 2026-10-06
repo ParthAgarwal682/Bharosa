@@ -71,11 +71,17 @@ REQUIRED_COLUMNS: frozenset[str] = frozenset(
 
 @dataclass(frozen=True)
 class ActiveIngredient:
-    """Individual chemical component for auditability."""
+    """Individual chemical component and its parsed potency.
+
+    If an individual ingredient's strength is missing or unparseable in the source data,
+    strength_value and strength_unit are preserved as None.
+    Downstream modules (e.g. search, ranking, parametric filtering) must NOT treat None
+    as zero or as evidence of strength equivalence.
+    """
 
     name: str
-    strength: str = ""
-    full_description: str = ""
+    strength_value: float | None = None
+    strength_unit: str | None = None
 
 
 @dataclass(frozen=True)
@@ -92,6 +98,11 @@ class MedicineRecord:
     - generic_price: None (not provided in source data; never fabricated)
     - manufacturer: pharmaceutical company name
     - is_combination: True if product contains >1 active ingredient
+    - ingredients: tuple of ActiveIngredient components (unparseable individual strengths
+      are preserved with strength_value=None, strength_unit=None and must NOT be treated
+      downstream as evidence of strength equivalence)
+    - pack_size: source pack count or volume
+    - pack_unit: source pack unit (e.g. strip, bottle)
     """
 
     brand: str
@@ -103,6 +114,9 @@ class MedicineRecord:
     generic_price: float | None
     manufacturer: str
     is_combination: bool
+    ingredients: tuple[ActiveIngredient, ...] = ()
+    pack_size: float | None = None
+    pack_unit: str | None = None
 
 
 @dataclass
@@ -169,8 +183,11 @@ def normalize_dosage_form(form_str: str) -> str:
     return _DOSAGE_FORM_MAPPINGS.get(cleaned, cleaned)
 
 
+_PAREN_REGEX = re.compile(r"\(([^)]+)\)")
+
+
 def parse_active_ingredients(raw_ingredients: str) -> list[ActiveIngredient]:
-    """Parse raw active_ingredients representation into structured objects."""
+    """Parse raw active_ingredients representation into structured ActiveIngredient objects."""
     if not raw_ingredients or not isinstance(raw_ingredients, str):
         return []
 
@@ -196,16 +213,28 @@ def parse_active_ingredients(raw_ingredients: str) -> list[ActiveIngredient]:
     for item in parsed_list:
         if isinstance(item, dict):
             name = str(item.get("name", "")).strip()
-            strength = str(item.get("strength", "")).strip()
-            desc = str(item.get("full_description", "")).strip()
-            if name:
-                ingredients.append(
-                    ActiveIngredient(
-                        name=name,
-                        strength=strength,
-                        full_description=desc,
-                    )
+            if not name:
+                continue
+
+            strength_raw = str(item.get("strength") or "").strip()
+            parsed_str = parse_strength(strength_raw)
+            if parsed_str is None:
+                # Fallback to extract from full_description, e.g. "Amoxycillin (500mg)"
+                desc = str(item.get("full_description") or "").strip()
+                match = _PAREN_REGEX.search(desc)
+                if match:
+                    parsed_str = parse_strength(match.group(1).strip())
+
+            s_val: float | None = parsed_str[0] if parsed_str else None
+            s_unit: str | None = parsed_str[1] if parsed_str else None
+
+            ingredients.append(
+                ActiveIngredient(
+                    name=name,
+                    strength_value=s_val,
+                    strength_unit=s_unit,
                 )
+            )
     return ingredients
 
 
@@ -339,14 +368,25 @@ def load_medicines(file_path: Path | str) -> tuple[list[MedicineRecord], LoadSta
                 salt_clean = " ".join(primary_ing.split())
 
                 primary_str = str(row.get("primary_strength", "")).strip()
-                if not primary_str and parsed_ingredients:
-                    primary_str = parsed_ingredients[0].strength.strip()
-
                 parsed_str = parse_strength(primary_str)
+                if parsed_str is None and parsed_ingredients and parsed_ingredients[0].strength_value is not None:
+                    parsed_str = (parsed_ingredients[0].strength_value, parsed_ingredients[0].strength_unit or "")
+
                 if parsed_str is None:
                     stats.record_drop("unparseable_strength")
                     continue
                 strength_val, strength_unit = parsed_str
+
+            if is_combination:
+                ingredients_tuple = tuple(parsed_ingredients)
+            else:
+                ingredients_tuple = (
+                    ActiveIngredient(
+                        name=salt_clean,
+                        strength_value=strength_val,
+                        strength_unit=strength_unit,
+                    ),
+                )
 
             # 7. Deduplicate records
             dup_key = (
@@ -363,6 +403,16 @@ def load_medicines(file_path: Path | str) -> tuple[list[MedicineRecord], LoadSta
                 continue
             seen_keys.add(dup_key)
 
+            pack_size_val: float | None = None
+            pack_size_raw = str(row.get("pack_size", "")).strip()
+            if pack_size_raw:
+                try:
+                    pack_size_val = float(pack_size_raw)
+                except (ValueError, TypeError):
+                    pack_size_val = None
+
+            pack_unit_val: str | None = str(row.get("pack_unit", "")).strip() or None
+
             record = MedicineRecord(
                 brand=brand_clean,
                 salt=salt_clean,
@@ -373,6 +423,9 @@ def load_medicines(file_path: Path | str) -> tuple[list[MedicineRecord], LoadSta
                 generic_price=None,
                 manufacturer=mfg_clean,
                 is_combination=is_combination,
+                ingredients=ingredients_tuple,
+                pack_size=pack_size_val,
+                pack_unit=pack_unit_val,
             )
 
             accepted_records.append(record)
