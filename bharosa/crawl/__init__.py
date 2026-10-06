@@ -19,6 +19,12 @@ __all__ = [
     "PageRecord",
     "VersionRecord",
     "ChangeRecord",
+    "DEFAULT_SHINGLE_SIZE",
+    "DEFAULT_SIMILARITY_THRESHOLD",
+    "get_word_shingles",
+    "is_near_duplicate",
+    "jaccard_similarity",
+    "tokenize_text",
 ]
 
 from bharosa.crawl.db import (
@@ -42,3 +48,11 @@ from bharosa.crawl.fetcher import (
     RobotsDisallowedError,
 )
 from bharosa.crawl.frontier import CrawlFrontier, CrawlTask
+from bharosa.crawl.shingles import (
+    DEFAULT_SHINGLE_SIZE,
+    DEFAULT_SIMILARITY_THRESHOLD,
+    get_word_shingles,
+    is_near_duplicate,
+    jaccard_similarity,
+    tokenize_text,
+)
