@@ -341,6 +341,77 @@ def test_deduplication_handling(tmp_path: Path) -> None:
     assert records[0].brand == "Dolo 650 Tablet"
 
 
+def test_distinct_pack_size_or_pack_unit_not_duplicate(tmp_path: Path) -> None:
+    """Medicines with identical identity but different pack_size or pack_unit are NOT duplicates."""
+    base_row = [
+        "301",
+        "Dolo 650 Tablet",
+        "Micro Labs",
+        "30.0",
+        "False",
+        "tablet",
+        "10.0",
+        "strip",
+        "1",
+        "Paracetamol",
+        "650mg",
+        "[{'name': 'Paracetamol', 'strength': '650mg'}]",
+        "analgesic",
+        "strip of 10",
+        "Micro Labs",
+    ]
+    # Same medicine identity, but different pack_size (15.0 vs 10.0)
+    diff_pack_size_row = [
+        "302",
+        "Dolo 650 Tablet",
+        "Micro Labs",
+        "45.0",
+        "False",
+        "tablet",
+        "15.0",
+        "strip",
+        "1",
+        "Paracetamol",
+        "650mg",
+        "[{'name': 'Paracetamol', 'strength': '650mg'}]",
+        "analgesic",
+        "strip of 15",
+        "Micro Labs",
+    ]
+    # Same medicine identity and pack_size, but different pack_unit ("bottle" vs "strip")
+    diff_pack_unit_row = [
+        "303",
+        "Dolo 650 Tablet",
+        "Micro Labs",
+        "30.0",
+        "False",
+        "tablet",
+        "10.0",
+        "bottle",
+        "1",
+        "Paracetamol",
+        "650mg",
+        "[{'name': 'Paracetamol', 'strength': '650mg'}]",
+        "analgesic",
+        "bottle of 10",
+        "Micro Labs",
+    ]
+    csv_file = create_synthetic_csv(
+        tmp_path, [base_row, diff_pack_size_row, diff_pack_unit_row]
+    )
+
+    records, stats = load_medicines(csv_file)
+
+    assert stats.total_rows == 3
+    assert stats.accepted_rows == 3
+    assert stats.dropped_rows == 0
+    assert stats.duplicate_counts == 0
+    assert len(records) == 3
+
+    pack_configs = {(r.pack_size, r.pack_unit) for r in records}
+    assert pack_configs == {(10.0, "strip"), (15.0, "strip"), (10.0, "bottle")}
+
+
 def test_schema_mismatch_raises_error(tmp_path: Path) -> None:
     """Missing expected columns in CSV must raise ValueError instead of guessing."""
     bad_csv = tmp_path / "bad_columns.csv"
