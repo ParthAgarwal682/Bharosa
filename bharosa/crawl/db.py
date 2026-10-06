@@ -2,6 +2,14 @@
 
 Manages persistent storage for crawled pages, historical version snapshots,
 and detected content change logs using SQLite.
+
+Contract Semantics:
+- fetched_at: Timestamp when the page was latest fetched.
+- last_changed_at: Timestamp when the page content last actually changed.
+  Set equal to fetched_at on the first crawl, and updated ONLY when content_hash changes.
+- versions.text_path: Persistent file path to the stored raw HTML artifact in data/raw/.
+- Crawler Output Boundary: The crawler stores raw HTML and SQLite metadata; output is
+  consumed downstream by a separate IR/ZoneDoc adapter (text/zones.py).
 """
 
 from __future__ import annotations
@@ -14,7 +22,19 @@ import sqlite3
 
 @dataclass(frozen=True)
 class PageRecord:
-    """Database record for a crawled page identity and state."""
+    """Database record for a crawled page identity and state.
+
+    Attributes:
+        url: Canonical URL string.
+        domain: Extracted host domain.
+        g_score: Static domain importance weight.
+        fetched_at: Timestamp of latest fetch.
+        last_changed_at: Timestamp when content was first seen or last changed.
+        content_hash: SHA-256 digest of raw page content.
+        etag: HTTP ETag header value if present.
+        last_modified: HTTP Last-Modified header value if present.
+        status_code: HTTP response status code.
+    """
 
     url: str
     domain: str
@@ -133,8 +153,13 @@ class CrawlDB:
     ) -> tuple[PageRecord, bool]:
         """Insert or update a page record, record version snapshot, and log change if hash changed.
 
+        Semantics:
+        - First crawl: fetched_at = last_changed_at = now.
+        - Unchanged recrawl: fetched_at = now, last_changed_at is preserved (NOT updated). No change log entry.
+        - Changed recrawl: fetched_at = now, last_changed_at = now. A change log entry is recorded.
+
         Returns:
-            Tuple of (PageRecord, changed: bool).
+            Tuple of (PageRecord, changed: bool) where changed is True ONLY if content_hash changed from previous version.
         """
         existing = self.get_page(url)
         now_iso = fetched_at or datetime.now(timezone.utc).isoformat()
@@ -143,14 +168,16 @@ class CrawlDB:
         old_hash: str | None = None
 
         if existing is None:
-            changed = True
+            # First crawl: initialize last_changed_at to now_iso
             last_changed_at = now_iso
         else:
             old_hash = existing.content_hash
             if old_hash != content_hash:
+                # Content changed: update last_changed_at to now_iso
                 changed = True
                 last_changed_at = now_iso
             else:
+                # Unchanged recrawl: preserve previous last_changed_at
                 last_changed_at = existing.last_changed_at
 
         page = PageRecord(
@@ -210,13 +237,9 @@ class CrawlDB:
                 ),
             )
 
-            # Log change event if hash changed or initial fetch
-            if changed:
-                diff = (
-                    "Initial page crawl"
-                    if old_hash is None
-                    else f"Hash updated: {old_hash[:8]} -> {content_hash[:8]}"
-                )
+            # Log change event ONLY when a content change is detected from a previous version
+            if changed and old_hash is not None:
+                diff = f"Hash updated: {old_hash[:8]} -> {content_hash[:8]}"
                 self._conn.execute(
                     """
                     INSERT INTO changes (url, detected_at, old_hash, new_hash, diff_summary)

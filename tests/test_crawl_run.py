@@ -1,7 +1,7 @@
 """Unit tests for the Bharosa live crawl runner module.
 
 Tests missing seed configuration detection, zero-seed safety, and runner integration
-with mocked network fetches.
+with mocked network fetches and persistent raw HTML verification.
 """
 
 from __future__ import annotations
@@ -12,6 +12,7 @@ from unittest.mock import MagicMock
 import pytest
 import yaml
 
+from bharosa.crawl.dedup import compute_content_hash
 from bharosa.crawl.fetcher import FetchResult, FetchStatus
 from bharosa.crawl.run import CrawlRunner, load_seeds
 
@@ -80,8 +81,8 @@ def test_runner_zero_seed_safety(tmp_path: pathlib.Path) -> None:
     runner.close()
 
 
-def test_runner_integration_mocked(tmp_path: pathlib.Path) -> None:
-    """Test runner pipeline integration with mocked HTTP fetcher."""
+def test_runner_integration_mocked_and_text_path_persistence(tmp_path: pathlib.Path) -> None:
+    """Test runner pipeline integration with mocked HTTP fetcher and persistent text_path verification."""
     db_file = tmp_path / "test_run.db"
     raw_dir = tmp_path / "raw"
 
@@ -93,6 +94,9 @@ def test_runner_integration_mocked(tmp_path: pathlib.Path) -> None:
         verbose=False,
     )
 
+    html_bytes = b"<html><body>Mock Scheme Content 2026</body></html>"
+    expected_hash = compute_content_hash(html_bytes)
+
     # Mock fetcher
     mock_fetch_result = FetchResult(
         url="http://test.org/scheme1",
@@ -100,8 +104,8 @@ def test_runner_integration_mocked(tmp_path: pathlib.Path) -> None:
         status_code=200,
         is_success=True,
         is_modified=True,
-        content=b"<html><body>Mock Scheme Content</body></html>",
-        text="<html><body>Mock Scheme Content</body></html>",
+        content=html_bytes,
+        text=html_bytes.decode("utf-8"),
         headers={"ETag": '"v1"'},
         etag='"v1"',
         last_modified="Mon, 05 Oct 2026 10:00:00 GMT",
@@ -123,11 +127,24 @@ def test_runner_integration_mocked(tmp_path: pathlib.Path) -> None:
     assert summary["pages_failed"] == 0
     assert summary["crawl_type"] == "LIVE"
 
-    # Verify persisted in DB
+    # 1. Verify page persisted in DB pages table
     page = runner.db.get_page("http://test.org/scheme1")
     assert page is not None
     assert page.domain == "test.org"
     assert page.g_score == 1.5
     assert page.etag == '"v1"'
+    assert page.content_hash == expected_hash
+
+    # 2. Verify version snapshot and stored text_path
+    versions = runner.db.get_versions("http://test.org/scheme1")
+    assert len(versions) == 1
+    stored_text_path = versions[0].text_path
+    assert stored_text_path is not None
+
+    # 3. Verify referenced raw HTML file exists and matches fetched content
+    path_obj = pathlib.Path(stored_text_path)
+    assert path_obj.exists()
+    assert path_obj.is_file()
+    assert path_obj.read_bytes() == html_bytes
 
     runner.close()
