@@ -196,6 +196,13 @@ class CrawlRunner:
             # 3. Handle response
             if result.status == FetchStatus.NOT_MODIFIED:
                 self.log(f"Page content not modified (HTTP 304): {url}")
+                self.db.update_fetched_at(
+                    url=url,
+                    fetched_at=result.fetched_at,
+                    etag=result.etag,
+                    last_modified=result.last_modified,
+                    status_code=result.status_code,
+                )
                 self.scheduler.update_interval(url, changed=False)
                 pages_crawled += 1
                 continue

@@ -250,6 +250,34 @@ class CrawlDB:
 
         return page, changed
 
+    def update_fetched_at(
+        self,
+        url: str,
+        fetched_at: str,
+        etag: str | None = None,
+        last_modified: str | None = None,
+        status_code: int = 304,
+    ) -> PageRecord | None:
+        """Update fetched_at timestamp for an existing page without altering content_hash, last_changed_at, versions, or change logs."""
+        existing = self.get_page(url)
+        if existing is None:
+            return None
+
+        updated_etag = etag or existing.etag
+        updated_last_mod = last_modified or existing.last_modified
+
+        with self._conn:
+            self._conn.execute(
+                """
+                UPDATE pages
+                SET fetched_at = ?, etag = ?, last_modified = ?, status_code = ?
+                WHERE url = ?;
+                """,
+                (fetched_at, updated_etag, updated_last_mod, status_code, url),
+            )
+
+        return self.get_page(url)
+
     def get_page(self, url: str) -> PageRecord | None:
         """Retrieve a page record by URL."""
         cursor = self._conn.execute("SELECT * FROM pages WHERE url = ?", (url,))
