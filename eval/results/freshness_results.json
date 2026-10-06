@@ -1,0 +1,30 @@
+{
+  "experiment_type": "SIMULATED",
+  "labelling_disclaimer": "PROMINENTLY LABELED AS SIMULATED: No real historical page snapshots were found in data/snapshots/. This evaluation represents a controlled synthetic simulation comparing scheduling algorithms under equal request budgets. Do not represent these numbers as live crawl evidence.",
+  "parameters": {
+    "num_urls": 10,
+    "duration_hours": 168.0,
+    "request_budget_per_scheduler": 500,
+    "seed": 42
+  },
+  "results": {
+    "FixedIntervalScheduler": {
+      "requests_used": 410,
+      "request_budget": 500,
+      "changes_caught": 76,
+      "total_changes_occurred": 101,
+      "catch_rate": 0.7525,
+      "total_staleness_hours": 17.45,
+      "mean_staleness_per_url_hours": 17.45
+    },
+    "AdaptiveScheduler": {
+      "requests_used": 218,
+      "request_budget": 500,
+      "changes_caught": 65,
+      "total_changes_occurred": 101,
+      "catch_rate": 0.6436,
+      "total_staleness_hours": 34.8,
+      "mean_staleness_per_url_hours": 34.8
+    }
+  }
+}
