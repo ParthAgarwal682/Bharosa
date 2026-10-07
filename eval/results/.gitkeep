@@ -1,0 +1,2 @@
+# Owned eval outputs (rag*, claims*). Fixture-mode files are labelled MOCK_FIXTURE
+# in their JSON and must not be cited as live crawl / final report metrics.
