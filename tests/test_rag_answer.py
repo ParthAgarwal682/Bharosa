@@ -17,9 +17,9 @@ from bharosa.rag.config import get_config
 from bharosa.rag.types import CitedSentence
 
 try:
-    from tests.test_rag_fixtures import FakeLLM, mock_scheme_hits, weak_hits
+    from tests.test_rag_fixtures import FakeLLM, mock_scheme_hits, scheme_hit, weak_hits
 except ImportError:
-    from test_rag_fixtures import FakeLLM, mock_scheme_hits, weak_hits
+    from test_rag_fixtures import FakeLLM, mock_scheme_hits, scheme_hit, weak_hits
 
 
 def test_refuse_empty_hits_does_not_call_llm() -> None:
@@ -34,33 +34,96 @@ def test_refuse_empty_hits_does_not_call_llm() -> None:
 
 def test_refuse_low_score_does_not_call_llm() -> None:
     llm = FakeLLM(response="hallucination")
-    result = answer("UP heart yojana?", weak_hits(), llm=llm, allow_mock=True)
+    hits = weak_hits()
+    assert hits[0].net is not None
+    assert hits[0].net < get_config().refusal_score_threshold
+    assert hits[0].cosine >= get_config().refusal_score_threshold
+    assert hits[0].bm25_score is None
+    result = answer("UP heart yojana?", hits, llm=llm, allow_mock=True)
     assert result.refused is True
     assert result.refusal_reason == "low_retrieval_score"
     assert llm.call_count == 0
-    assert max(h.score for h in weak_hits()) < get_config().refusal_score_threshold
 
 
-def test_refuse_missing_state_filter() -> None:
-    hits = mock_scheme_hits()
-    assert should_refuse(hits, required_state="Kerala", allow_mock=True) == "no_matching_filter"
-    llm = FakeLLM(response='{"claims": []}')
-    result = answer("yojana?", hits, llm=llm, required_state="Kerala", allow_mock=True)
+def test_strong_net_reaches_llm_even_when_cosine_is_low() -> None:
+    hit = scheme_hit(
+        doc_id="net-strong",
+        text="Families with annual income below two lakh rupees may be eligible.",
+        zone="eligibility",
+        url="https://example.invalid/eligible",
+        net=0.9,
+        cosine=0.01,
+        bm25_score=None,
+        last_changed_at="2026-01-01T00:00:00+00:00",
+        rank=1,
+    )
+    llm = FakeLLM(
+        response=json.dumps(
+            {"claims": [{"text": "Income below two lakh may be eligible.", "cite_ids": ["Z1"]}]}
+        )
+    )
+    result = answer("eligible?", [hit], llm=llm)
+    assert result.refused is False
+    assert llm.call_count == 1
+    assert result.sentences[0].cite_ids == ["Z1"]
+
+
+def test_bm25_without_net_refuses_before_llm() -> None:
+    hit = scheme_hit(
+        doc_id="bm25-only",
+        text="There is no registration fee to activate the card.",
+        net=None,
+        bm25_score=0.99,
+        cosine=0.99,
+        rank=1,
+    )
+    llm = FakeLLM(response="should not run")
+    result = answer("fee?", [hit], llm=llm)
     assert result.refused is True
+    assert result.refusal_reason == "unsupported_bm25_evidence"
     assert llm.call_count == 0
 
 
-def test_state_filter_matching_with_and_without_aliases() -> None:
-    hits = mock_scheme_hits()
-    assert all(h.state == "UP" for h in hits)
-    # Without aliases: exact casefold only -> "Uttar Pradesh" != "UP" -> refuses
-    assert should_refuse(hits, required_state="Uttar Pradesh", allow_mock=True) == "no_matching_filter"
+def test_missing_net_does_not_become_zero(monkeypatch: pytest.MonkeyPatch) -> None:
+    """A BM25 score of 0 must not pass a zero NetScore threshold as net=0."""
+    monkeypatch.setenv("RAG_REFUSAL_THRESHOLD", "0")
+    hit = scheme_hit(
+        doc_id="bm25-zero",
+        text="There is no registration fee to activate the card.",
+        net=None,
+        bm25_score=0.0,
+        cosine=0.0,
+        rank=1,
+    )
+    llm = FakeLLM(response="should not run")
+    result = answer("fee?", [hit], llm=llm)
+    assert result.refused is True
+    assert result.refusal_reason == "unsupported_bm25_evidence"
+    assert llm.call_count == 0
 
-    # With aliases: maps "uttar pradesh" to "up" -> allows
-    aliases = {"up": {"uttar pradesh"}}
-    assert should_refuse(hits, required_state="Uttar Pradesh", allow_mock=True, state_aliases=aliases) is None
-    assert should_refuse(hits, required_state="UP", allow_mock=True, state_aliases=aliases) is None
-    assert should_refuse(hits, required_state="Maharashtra", allow_mock=True, state_aliases=aliases) == "no_matching_filter"
+
+def test_high_bm25_does_not_rescue_weak_net() -> None:
+    weak = scheme_hit(
+        doc_id="net-weak",
+        text="Families with annual income below two lakh rupees may be eligible.",
+        net=0.02,
+        bm25_score=None,
+        cosine=0.1,
+        rank=1,
+    )
+    baseline = scheme_hit(
+        doc_id="bm25-strong",
+        text="Families with annual income below two lakh rupees may be eligible.",
+        net=None,
+        bm25_score=0.99,
+        cosine=0.99,
+        rank=2,
+    )
+    llm = FakeLLM(response="should not run")
+    result = answer("eligible?", [weak, baseline], llm=llm)
+    assert result.refused is True
+    assert result.refusal_reason == "low_retrieval_score"
+    assert llm.call_count == 0
 
 
 
@@ -69,6 +132,15 @@ def test_build_prompt_labels_zones() -> None:
     prompt = build_prompt("papa ke heart operation ke liye yojana UP", hits)
     assert "[Z1]" in prompt
     assert "[Z2]" in prompt
+    assert "doc_id=fixture-ayushman-eligibility" in prompt
+    assert "zone=eligibility" in prompt
+    assert "url=https://example.invalid/ayushman/eligibility" in prompt
+    assert "last_changed_at=2026-01-01T00:00:00+00:00" in prompt
+    assert "title=" not in prompt
+    assert "state=" not in prompt
+    assert "conditions=" not in prompt
+    assert "g_score=" not in prompt
+    assert "crawled_at=" not in prompt
     assert "no registration fee" in prompt.casefold() or "five lakh" in prompt.casefold()
     assert "Question:" in prompt
     assert all(h.source == "mock_fixture" for h in hits)
@@ -213,6 +285,16 @@ def test_answer_llm_unavailable_refusal_reason() -> None:
     result_to = answer("UP yojana?", hits, llm=TimeoutLLM(), allow_mock=True)
     assert result_to.refused is True
     assert result_to.refusal_reason == "llm_unavailable"
+
+
+def test_parse_accepts_doc_id_cite() -> None:
+    hits = mock_scheme_hits()
+    labels = {f"Z{i}": f"{hit.doc_id}::{hit.zone}" for i, hit in enumerate(hits, start=1)}
+    raw = json.dumps(
+        {"claims": [{"text": "Income below two lakh may be eligible.", "cite_ids": [hits[0].doc_id]}]}
+    )
+    sentences = parse_llm_answer(raw, labels)
+    assert sentences[0].cite_ids == ["Z1"]
 
 
 def test_answer_default_refuses_mock_evidence() -> None:

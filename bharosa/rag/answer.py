@@ -2,7 +2,8 @@
 
 IR concept: generation only after retrieval. The LLM sees labelled
 top-K zones and must return JSON containing claims with valid zone IDs.
-If retrieval confidence is low, refuse without calling the LLM.
+If the best ZoneHit.net is below the threshold, refuse without calling
+the LLM. BM25 baseline hits (net is None) are not scored on that scale.
 Never used for medicine / drug facts.
 """
 
@@ -18,21 +19,48 @@ from bharosa.rag.llm import (
     LLMProviderError,
     get_llm,
 )
-from bharosa.rag.types import Answer, CitedSentence, RefusalReason, ZoneHit
+from bharosa.rag.types import (
+    Answer,
+    CitedSentence,
+    RefusalReason,
+    ZoneEvidence,
+    canonical_cite,
+    evidence_net,
+    hits_with_net,
+    label_index,
+    missing_net_reason,
+)
 
 REFUSAL_USER_MESSAGE = "I couldn't find this in official sources"
 INVALID_GENERATION_MESSAGE = "I couldn't produce a verified answer. Please try again."
+BM25_REFUSAL_MESSAGE = (
+    "I couldn't find this in official sources "
+    "(BM25 evidence has no NetScore; RAG will not treat bm25_score as net)"
+)
+MISSING_NET_MESSAGE = (
+    "I couldn't find this in official sources "
+    "(retrieved evidence has no NetScore; RAG will not invent one)"
+)
 
 
 class LLMOutputValidationError(ValueError):
     """Raised when LLM output is malformed, lacks valid schema, or cites unknown IDs."""
 
 
-def label_hits(hits: Sequence[ZoneHit]) -> dict[str, str]:
-    """Map ``Z1``…``Zk`` to a stable hit key (``doc_id`` + zone).
+def _refusal_message(reason: RefusalReason) -> str:
+    if reason == "unsupported_bm25_evidence":
+        return BM25_REFUSAL_MESSAGE
+    if reason == "missing_net_score":
+        return MISSING_NET_MESSAGE
+    return REFUSAL_USER_MESSAGE
 
-    IR concept: citation inventory. Labels are positional in the
-    ranked hit list Paridhi already returned — RAG does not re-rank.
+
+def label_hits(hits: Sequence[ZoneEvidence]) -> dict[str, str]:
+    """Map ``Z1``…``Zk`` to ``doc_id::zone``.
+
+    IR concept: citation inventory. Labels are positional in the hit list
+    passed in — RAG does not re-rank. The value is the evidence identity
+    Paridhi's ZoneHit actually exposes.
     """
     labels: dict[str, str] = {}
     for index, hit in enumerate(hits, start=1):
@@ -40,69 +68,61 @@ def label_hits(hits: Sequence[ZoneHit]) -> dict[str, str]:
     return labels
 
 
+def _evidence_header(label: str, hit: ZoneEvidence) -> str:
+    """Source metadata ZoneHit actually carries. No title, state, or filters."""
+    parts = [
+        f"[{label}]",
+        f"doc_id={hit.doc_id}",
+        f"zone={hit.zone}",
+        f"url={hit.url}",
+    ]
+    if hit.last_changed_at:
+        parts.append(f"last_changed_at={hit.last_changed_at}")
+    return " ".join(parts)
+
+
 def should_refuse(
-    hits: Sequence[ZoneHit],
+    hits: Sequence[ZoneEvidence],
     *,
-    required_state: str | None = None,
-    required_conditions: Sequence[str] | None = None,
     score_threshold: float | None = None,
     allow_mock: bool = False,
-    state_aliases: dict[str, set[str]] | None = None,
 ) -> RefusalReason | None:
     """Return a refusal reason, or None if generation may proceed.
 
-    IR concept: confidence gate before generation. Empty evidence or a
-    top score below threshold means the index did not support an answer.
+    IR concept: confidence gate before generation. The retrieval score is
+    ``ZoneHit.net``. Empty evidence or a top net below threshold means the
+    index did not support an answer. BM25-only hits are refused as
+    unsupported evidence rather than compared to the NetScore threshold.
     """
     if not hits:
         return "empty_hits"
     if not allow_mock and any(getattr(hit, "source", None) == "mock_fixture" for hit in hits):
         return "mock_evidence"
-    if all(not (hit.text or "").strip() for hit in hits):
+    unscored = missing_net_reason(hits)
+    if unscored is not None:
+        return unscored
+    net_hits = hits_with_net(hits)
+    if all(not (hit.text or "").strip() for hit in net_hits):
         return "empty_evidence"
-    top_score = max(hit.score for hit in hits)
     if score_threshold is None:
         score_threshold = get_config().refusal_score_threshold
+    scores: list[float] = []
+    for hit in net_hits:
+        score = evidence_net(hit)
+        if score is not None:
+            scores.append(score)
+    top_score = max(scores)
     if top_score < score_threshold:
         return "low_retrieval_score"
-    if required_state:
-        state_norm = required_state.strip().casefold()
-        valid_states = {state_norm}
-        if state_aliases:
-            for k, aliases in state_aliases.items():
-                norm_k = k.strip().casefold()
-                norm_aliases = {a.strip().casefold() for a in aliases}
-                if state_norm == norm_k:
-                    valid_states.update(norm_aliases)
-                elif state_norm in norm_aliases:
-                    valid_states.add(norm_k)
-                    valid_states.update(norm_aliases)
-        if not any(
-            (hit.state or "").strip().casefold() in valid_states for hit in hits
-        ):
-            return "no_matching_filter"
-    if required_conditions:
-        needed = {c.strip().casefold() for c in required_conditions if c.strip()}
-        if needed:
-            ok = False
-            for hit in hits:
-                have = {c.strip().casefold() for c in hit.conditions}
-                if needed.issubset(have) or (needed & have):
-                    ok = True
-                    break
-            if not ok:
-                return "no_matching_filter"
     return None
 
 
-def build_prompt(query: str, hits: Sequence[ZoneHit]) -> str:
+def build_prompt(query: str, hits: Sequence[ZoneEvidence]) -> str:
     """Build the constrained RAG prompt from labelled zones only."""
     labels = label_hits(hits)
     blocks: list[str] = []
     for label, hit in zip(labels, hits, strict=True):
-        blocks.append(
-            f"[{label}] zone={hit.zone} title={hit.title}\n{hit.text.strip()}"
-        )
+        blocks.append(f"{_evidence_header(label, hit)}\n{hit.text.strip()}")
     evidence = "\n\n".join(blocks)
     return (
         "You answer using ONLY the official evidence zones below.\n"
@@ -127,8 +147,10 @@ def parse_llm_answer(raw: str, hit_labels: dict[str, str]) -> list[CitedSentence
     """Parse JSON LLM output into cited sentences, validating schema and rejecting unknown IDs.
 
     IR concept: structured generation output. Validates {"claims": [{"text": "...", "cite_ids": [...]}]}.
-    Raises LLMOutputValidationError if JSON is malformed, schema is violated, cite_ids is empty,
-    or any unknown cite ID is encountered. Never emits raw LLM text as an answer sentence.
+    A cite is valid when it is a structured label (``Z1``) or the ``doc_id`` /
+    ``doc_id::zone`` of exactly one label. Unknown IDs raise
+    ``LLMOutputValidationError``. Stored cite ids stay structured labels.
+    Never emits raw LLM text as an answer sentence.
     """
     if not raw or not raw.strip():
         return []
@@ -150,7 +172,7 @@ def parse_llm_answer(raw: str, hit_labels: dict[str, str]) -> list[CitedSentence
     if not isinstance(data, dict) or "claims" not in data or not isinstance(data["claims"], list):
         raise LLMOutputValidationError("Invalid schema: 'claims' list is required in output JSON")
 
-    valid_labels = {k.upper() for k in hit_labels}
+    known = sorted(label_index(hit_labels))
     sentences: list[CitedSentence] = []
 
     for item in data["claims"]:
@@ -166,12 +188,12 @@ def parse_llm_answer(raw: str, hit_labels: dict[str, str]) -> list[CitedSentence
 
         normalized_cites: list[str] = []
         for c in raw_cites:
-            c_norm = str(c).strip().upper()
-            if c_norm not in valid_labels:
+            canon = canonical_cite(str(c), hit_labels)
+            if canon is None:
                 raise LLMOutputValidationError(
-                    f"Unknown cite_id '{c}' not in evidence labels: {sorted(valid_labels)}"
+                    f"Unknown cite_id '{c}' not in evidence labels: {known}"
                 )
-            normalized_cites.append(c_norm)
+            normalized_cites.append(canon)
 
         sentences.append(CitedSentence(text=text, cite_ids=normalized_cites))
 
@@ -180,20 +202,17 @@ def parse_llm_answer(raw: str, hit_labels: dict[str, str]) -> list[CitedSentence
 
 def answer(
     query: str,
-    hits: list[ZoneHit],
+    hits: Sequence[ZoneEvidence],
     *,
     llm: LLMClient | None = None,
-    required_state: str | None = None,
-    required_conditions: Sequence[str] | None = None,
     score_threshold: float | None = None,
     allow_mock: bool = False,
-    state_aliases: dict[str, set[str]] | None = None,
 ) -> Answer:
     """Produce a cited answer from retrieved zones, or refuse.
 
     IR concept: RAG over ranked evidence. Does not retrieve; consumes
-    Paridhi's ``ZoneHit`` list. Refuses without an LLM call when the
-    confidence gate fails.
+    Paridhi's ``ZoneHit`` list. The retrieval score is ``ZoneHit.net``.
+    Refuses without an LLM call when the confidence gate fails.
     """
     if score_threshold is None:
         score_threshold = get_config().refusal_score_threshold
@@ -202,13 +221,11 @@ def answer(
 
     reason = should_refuse(
         hits,
-        required_state=required_state,
-        required_conditions=required_conditions,
         score_threshold=score_threshold,
         allow_mock=allow_mock,
-        state_aliases=state_aliases,
     )
-    labels = label_hits(hits)
+    prompt_hits: Sequence[ZoneEvidence] = hits_with_net(hits) if reason is None else hits
+    labels = label_hits(prompt_hits)
     if reason is not None:
         return Answer(
             query=query,
@@ -218,11 +235,11 @@ def answer(
             hit_labels=labels,
             model=None,
             raw_llm=None,
-            refusal_message=REFUSAL_USER_MESSAGE,
+            refusal_message=_refusal_message(reason),
         )
 
     client = llm if llm is not None else get_llm()
-    prompt = build_prompt(query, hits)
+    prompt = build_prompt(query, prompt_hits)
     try:
         raw = client.complete(prompt)
     except LLMNotConfiguredError:

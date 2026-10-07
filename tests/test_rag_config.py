@@ -17,25 +17,25 @@ from bharosa.rag.config import (
     RAGConfig,
     get_config,
 )
-from bharosa.rag.types import Answer, CitedSentence, ZoneHit
+from bharosa.rag.types import Answer, CitedSentence
+
+try:
+    from tests.test_rag_fixtures import SchemeHit, scheme_hit
+except ImportError:
+    from test_rag_fixtures import SchemeHit, scheme_hit
 
 
-def _local_hit(score: float, text: str = "Sample scheme text") -> ZoneHit:
-    """Local test hit fixture defined purely within tests/."""
-    return ZoneHit(
+def _local_hit(net: float, text: str = "Sample scheme text") -> SchemeHit:
+    """Local test hit shaped like Paridhi's ZoneHit."""
+    return scheme_hit(
         doc_id="test-doc-1",
         url="https://example.invalid/scheme",
-        domain="example.invalid",
-        title="Test Scheme",
         zone="benefits",
         text=text,
-        state=None,
-        conditions=[],
-        g_score=1.0,
-        crawled_at="2026-01-01T00:00:00Z",
         last_changed_at="2026-01-01T00:00:00Z",
-        content_hash="testhash123",
-        score=score,
+        cosine=0.2,
+        net=net,
+        bm25_score=None,
         rank=1,
         source="test_local",
     )
@@ -61,7 +61,7 @@ def test_rag_config_from_env(monkeypatch: pytest.MonkeyPatch) -> None:
 
 def test_config_evaluated_at_call_time(monkeypatch: pytest.MonkeyPatch) -> None:
     """Threshold changes in env must take effect immediately on next call."""
-    hits = [_local_hit(score=0.20)]
+    hits = [_local_hit(net=0.20)]
 
     # With default threshold 0.15, score 0.20 should not refuse
     monkeypatch.delenv("RAG_REFUSAL_THRESHOLD", raising=False)
@@ -74,7 +74,7 @@ def test_config_evaluated_at_call_time(monkeypatch: pytest.MonkeyPatch) -> None:
 
 def test_citation_threshold_at_call_time(monkeypatch: pytest.MonkeyPatch) -> None:
     """Citation threshold from env must take effect dynamically at call time."""
-    hits = [_local_hit(score=0.9, text="Ayushman covers secondary and tertiary hospitalization.")]
+    hits = [_local_hit(net=0.9, text="Ayushman covers secondary and tertiary hospitalization.")]
     ans = Answer(
         query="what is covered?",
         refused=False,

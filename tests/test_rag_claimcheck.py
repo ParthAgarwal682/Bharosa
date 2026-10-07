@@ -6,12 +6,11 @@ import pytest
 
 from bharosa.rag.claimcheck import check_claim, extract_claim_spans
 from bharosa.rag.config import get_config
-from bharosa.rag.types import ZoneHit
 
 try:
-    from tests.test_rag_fixtures import FakeLLM, mock_scheme_hits
+    from tests.test_rag_fixtures import FakeLLM, mock_scheme_hits, scheme_hit
 except ImportError:
-    from test_rag_fixtures import FakeLLM, mock_scheme_hits
+    from test_rag_fixtures import FakeLLM, mock_scheme_hits, scheme_hit
 
 
 def test_extract_rupee_fee_claim() -> None:
@@ -103,42 +102,32 @@ def test_conflicting_zones_return_insufficient_with_both_evidence() -> None:
     Both zones must be above the minimum retrieval score.
     """
     min_score = get_config().min_retrieval_score
-    zone_free = ZoneHit(
+    zone_free = scheme_hit(
         doc_id="doc-free",
         url="https://example.invalid/free",
-        domain="example.invalid",
-        title="Scheme Free Tier",
         zone="benefits",
         text="There is no registration fee to activate the card.",
-        state=None,
-        conditions=[],
-        g_score=1.0,
-        crawled_at="2026-01-01T00:00:00Z",
         last_changed_at="2026-01-01T00:00:00Z",
-        content_hash="h1",
-        score=0.80,
+        cosine=0.4,
+        net=0.80,
+        bm25_score=None,
         rank=1,
         source="test_local",
     )
-    zone_fee = ZoneHit(
+    zone_fee = scheme_hit(
         doc_id="doc-fee",
         url="https://example.invalid/fee",
-        domain="example.invalid",
-        title="Scheme Fee Tier",
         zone="benefits",
         text="A registration fee of Rs 500 is required to activate.",
-        state=None,
-        conditions=[],
-        g_score=1.0,
-        crawled_at="2026-01-01T00:00:00Z",
         last_changed_at="2026-01-01T00:00:00Z",
-        content_hash="h2",
-        score=0.75,
+        cosine=0.4,
+        net=0.75,
+        bm25_score=None,
         rank=2,
         source="test_local",
     )
-    assert zone_free.score >= min_score
-    assert zone_fee.score >= min_score
+    assert zone_free.net is not None and zone_free.net >= min_score
+    assert zone_fee.net is not None and zone_fee.net >= min_score
 
     # Message claims Rs 500 fee: zone_fee supports Rs 500, zone_free contradicts it (no fee)
     verdict = check_claim(
@@ -156,7 +145,7 @@ def test_conflicting_zones_return_insufficient_with_both_evidence() -> None:
 def test_item_5a_min_retrieval_score_ignored_low_scores() -> None:
     from dataclasses import replace
     hits = mock_scheme_hits()
-    low_zone = replace(hits[1], text="Free sanitary napkins are distributed in schools.", score=0.001)
+    low_zone = replace(hits[1], text="Free sanitary napkins are distributed in schools.", net=0.001)
     verdict = check_claim(
         "Pay Rs 500 to activate health card",
         retrieve=lambda q: [low_zone],
@@ -188,6 +177,76 @@ def test_item_5d_date_parsing_phrasings() -> None:
     ]:
         verdict = check_claim(msg, retrieve=lambda q: [date_zone], allow_mock=True)
         assert verdict.label == "SUPPORTED", f"Failed for phrasing: {msg}"
+
+
+def test_claim_checker_uses_net() -> None:
+    zone = scheme_hit(
+        doc_id="net-fee",
+        text="There is no registration fee to activate the card.",
+        net=0.42,
+        cosine=0.99,
+        bm25_score=None,
+        rank=1,
+    )
+    verdict = check_claim(
+        "pay Rs 500 to activate the card",
+        retrieve=lambda q: [zone],
+    )
+    assert verdict.label == "CONTRADICTED"
+    assert verdict.retrieval_score == pytest.approx(0.42)
+
+
+def test_bm25_missing_net_does_not_become_zero(monkeypatch: pytest.MonkeyPatch) -> None:
+    """High or zero BM25 must not pass the NetScore gate, even at threshold 0."""
+    monkeypatch.setenv("RAG_MIN_RETRIEVAL_SCORE", "0")
+    zone = scheme_hit(
+        doc_id="bm25-fee",
+        text="There is no registration fee to activate the card.",
+        net=None,
+        bm25_score=0.0,
+        cosine=0.99,
+        rank=1,
+    )
+    verdict = check_claim(
+        "pay Rs 500 to activate the card",
+        retrieve=lambda q: [zone],
+    )
+    assert verdict.label == "INSUFFICIENT_EVIDENCE"
+    assert verdict.retrieval_score is None
+    assert verdict.refusal_reason == "unsupported_bm25_evidence"
+
+    strong_bm25 = scheme_hit(
+        doc_id="bm25-fee-high",
+        text="There is no registration fee to activate the card.",
+        net=None,
+        bm25_score=0.99,
+        cosine=0.99,
+        rank=1,
+    )
+    high = check_claim(
+        "pay Rs 500 to activate the card",
+        retrieve=lambda q: [strong_bm25],
+    )
+    assert high.label == "INSUFFICIENT_EVIDENCE"
+    assert high.retrieval_score is None
+    assert high.refusal_reason == "unsupported_bm25_evidence"
+
+
+def test_missing_net_without_bm25_is_not_invented() -> None:
+    zone = scheme_hit(
+        doc_id="no-score",
+        text="There is no registration fee to activate the card.",
+        net=None,
+        bm25_score=None,
+        rank=1,
+    )
+    verdict = check_claim(
+        "pay Rs 500 to activate the card",
+        retrieve=lambda q: [zone],
+    )
+    assert verdict.label == "INSUFFICIENT_EVIDENCE"
+    assert verdict.retrieval_score is None
+    assert verdict.refusal_reason == "missing_net_score"
 
 
 def test_check_claim_default_refuses_mock_evidence() -> None:

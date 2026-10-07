@@ -24,6 +24,7 @@ import csv
 import json
 import sys
 from collections import Counter
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -36,7 +37,29 @@ from bharosa.rag.answer import answer
 from bharosa.rag.citations import check_citations
 from bharosa.rag.claimcheck import check_claim
 from bharosa.rag.config import get_config
-from bharosa.rag.types import ZoneHit
+
+
+@dataclass(frozen=True)
+class _SchemeHit:
+    """Eval fixture shaped like ``bharosa.index.zones.ZoneHit``.
+
+    ``source`` is eval-only. Paridhi's ZoneHit does not carry it.
+    """
+
+    doc_id: str
+    text: str
+    url: str
+    zone: str
+    last_changed_at: str | None
+    cosine: float
+    g_component: float
+    freshness: float
+    zone_weight: float
+    net: float | None
+    bm25_score: float | None
+    rank: int
+    source: str | None = None
+
 
 RESULTS = _ROOT / "eval" / "results"
 CLAIMS_CSV = _ROOT / "eval" / "claims.csv"
@@ -56,93 +79,85 @@ class _EvalFakeLLM:
         return self.response
 
 
-def _eval_mock_zones() -> list[ZoneHit]:
+def _eval_mock_zones() -> list[_SchemeHit]:
     """Local mock fixture zones used only for --fixtures dry-run evaluation."""
     return [
-        ZoneHit(
+        _SchemeHit(
             doc_id="fixture-ayushman-eligibility",
             url="https://example.invalid/ayushman/eligibility",
-            domain="example.invalid",
-            title="Ayushman Bharat eligibility (fixture)",
             zone="eligibility",
             text=(
                 "Families with annual income below two lakh rupees in "
                 "Uttar Pradesh may be eligible for Ayushman Bharat cover "
                 "subject to the official beneficiary list."
             ),
-            state="UP",
-            conditions=["heart", "hospitalization"],
-            g_score=0.9,
-            crawled_at="2026-01-01T00:00:00+00:00",
             last_changed_at="2026-01-01T00:00:00+00:00",
-            content_hash="fixture-hash-elig",
-            score=0.82,
+            cosine=0.33,
+            g_component=0.0,
+            freshness=0.0,
+            zone_weight=1.0,
+            net=0.82,
+            bm25_score=None,
             rank=1,
             source="mock_fixture",
         ),
-        ZoneHit(
+        _SchemeHit(
             doc_id="fixture-ayushman-benefits",
             url="https://example.invalid/ayushman/benefits",
-            domain="example.invalid",
-            title="Ayushman Bharat benefits (fixture)",
             zone="benefits",
             text=(
                 "The scheme provides health cover up to five lakh rupees "
                 "per family per year for listed secondary and tertiary care. "
                 "There is no registration fee to activate the card."
             ),
-            state="UP",
-            conditions=["hospitalization"],
-            g_score=0.9,
-            crawled_at="2026-01-01T00:00:00+00:00",
             last_changed_at="2026-01-01T00:00:00+00:00",
-            content_hash="fixture-hash-ben",
-            score=0.71,
+            cosine=0.41,
+            g_component=0.0,
+            freshness=0.0,
+            zone_weight=1.0,
+            net=0.71,
+            bm25_score=None,
             rank=2,
             source="mock_fixture",
         ),
-        ZoneHit(
+        _SchemeHit(
             doc_id="fixture-ayushman-documents",
             url="https://example.invalid/ayushman/documents",
-            domain="example.invalid",
-            title="Ayushman Bharat documents (fixture)",
             zone="documents",
             text=(
                 "Carry a government photo identity proof and the beneficiary "
                 "card at the empanelled hospital. Do not share Aadhaar OTP "
                 "with unknown callers."
             ),
-            state="UP",
-            conditions=[],
-            g_score=0.85,
-            crawled_at="2026-01-01T00:00:00+00:00",
             last_changed_at="2026-01-01T00:00:00+00:00",
-            content_hash="fixture-hash-docs",
-            score=0.55,
+            cosine=0.22,
+            g_component=0.0,
+            freshness=0.0,
+            zone_weight=1.0,
+            net=0.55,
+            bm25_score=None,
             rank=3,
             source="mock_fixture",
         ),
     ]
 
 
-def _eval_weak_zones() -> list[ZoneHit]:
+def _eval_weak_zones() -> list[_SchemeHit]:
     """Local weak mock fixture zones for out-of-scope refusal check."""
     base = _eval_mock_zones()[0]
     return [
-        ZoneHit(
+        _SchemeHit(
             doc_id="fixture-weak",
             url=base.url,
-            domain=base.domain,
-            title=base.title,
             zone=base.zone,
             text=base.text,
-            state=base.state,
-            conditions=list(base.conditions),
-            g_score=base.g_score,
-            crawled_at=base.crawled_at,
             last_changed_at=base.last_changed_at,
-            content_hash=base.content_hash,
-            score=0.02,
+            cosine=0.99,
+            g_component=base.g_component,
+            freshness=base.freshness,
+            zone_weight=base.zone_weight,
+            net=0.02,
+            bm25_score=None,
             rank=1,
             source="mock_fixture",
         )

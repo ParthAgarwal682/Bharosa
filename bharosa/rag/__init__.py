@@ -51,8 +51,7 @@ from bharosa.rag.types import (
     RefusalReason,
     SentenceCheck,
     Verdict,
-    ZoneHit,
-    ZoneName,
+    ZoneEvidence,
 )
 
 __all__ = [
@@ -72,8 +71,7 @@ __all__ = [
     "RefusalReason",
     "SentenceCheck",
     "Verdict",
-    "ZoneHit",
-    "ZoneName",
+    "ZoneEvidence",
     "answer",
     "answer_checked",
     "build_prompt",

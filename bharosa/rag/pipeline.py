@@ -9,7 +9,7 @@ from bharosa.rag.answer import answer
 from bharosa.rag.citations import check_citations
 from bharosa.rag.config import get_config
 from bharosa.rag.llm import LLMClient
-from bharosa.rag.types import Answer, SentenceCheck, ZoneHit
+from bharosa.rag.types import Answer, SentenceCheck, ZoneEvidence
 
 
 class CheckedResult(tuple):
@@ -61,17 +61,21 @@ class CheckedResult(tuple):
 
 def answer_checked(
     query: str,
-    hits: list[ZoneHit],
+    hits: Sequence[ZoneEvidence],
     *,
     llm: LLMClient | None = None,
-    required_state: str | None = None,
-    required_conditions: Sequence[str] | None = None,
     score_threshold: float | None = None,
     citation_threshold: float | None = None,
     policy: str | None = None,
     **kwargs: Any,
 ) -> CheckedResult:
-    """Generate cited answer and validate citations with configured policy."""
+    """Generate a cited answer and validate citations.
+
+    ``hits`` are Paridhi ``ZoneHit`` objects. Refusal still happens inside
+    ``answer`` before any LLM call when ``net`` is missing or too low.
+    ``policy`` is ``flag`` (return the answer plus citation flags) or
+    ``withhold`` (refuse when a citation is unsupported).
+    """
     cfg = get_config()
     pol = (policy or cfg.citation_policy).strip().lower()
     if pol not in {"flag", "withhold"}:
@@ -81,8 +85,6 @@ def answer_checked(
         query,
         hits,
         llm=llm,
-        required_state=required_state,
-        required_conditions=required_conditions,
         score_threshold=score_threshold,
         **kwargs,
     )

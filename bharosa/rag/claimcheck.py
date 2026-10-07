@@ -8,6 +8,8 @@ polish an explanation after the verdict; never invent the verdict from the model
 
 RAG does not implement a retriever. The caller supplies a retrieve callable
 (e.g., Paridhi's search_schemes) which returns a sequence of ZoneHit objects.
+The normal retrieval score is ZoneHit.net. A missing net is not treated as 0,
+and bm25_score is not used in its place.
 """
 
 from __future__ import annotations
@@ -17,8 +19,14 @@ from collections.abc import Callable, Sequence
 
 from bharosa.rag.config import get_config
 from bharosa.rag.llm import LLMClient
-from bharosa.rag.similarity import lexical_overlap_score, text_cosine
-from bharosa.rag.types import ClaimLabel, Verdict, ZoneHit
+from bharosa.rag.similarity import lexical_overlap_score
+from bharosa.rag.types import (
+    ClaimLabel,
+    Verdict,
+    ZoneEvidence,
+    evidence_net,
+    missing_net_reason,
+)
 
 _AMOUNT = re.compile(
     r"(?:rs\.?|inr|₹)\s*([0-9][0-9,]*(?:\.[0-9]+)?)",
@@ -115,15 +123,16 @@ def extract_claim_spans(message: str) -> tuple[list[str], list[float], bool, lis
 
 
 def nearest_zone(
-    message: str, zones: Sequence[ZoneHit]
-) -> tuple[ZoneHit | None, float, str | None]:
-    """Return the zone with highest cosine to ``message``.
+    message: str, zones: Sequence[ZoneEvidence]
+) -> tuple[ZoneEvidence | None, float, str | None]:
+    """Return the zone with the highest lexical-overlap heuristic to ``message``.
 
-    IR concept: ad-hoc similarity lookup over a provided evidence list.
+    The returned float is a lexical heuristic, not ``ZoneHit.net`` and not
+    logical entailment. Retrieval confidence stays on ``net``.
     """
     if not zones:
         return None, 0.0, None
-    best: ZoneHit | None = None
+    best: ZoneEvidence | None = None
     best_score = -1.0
     best_label: str | None = None
     for index, zone in enumerate(zones, start=1):
@@ -219,9 +228,22 @@ def _template_explanation(
     return f"This claim is consistent with the official line: {snippet}"
 
 
+def _unscored_explanation(reason: str) -> str:
+    if reason == "unsupported_bm25_evidence":
+        return (
+            "INSUFFICIENT INFORMATION — DO NOT GUESS. "
+            "Retrieved evidence has a BM25 score but no NetScore. "
+            "RAG does not treat bm25_score as net and does not substitute 0."
+        )
+    return (
+        "INSUFFICIENT INFORMATION — DO NOT GUESS. "
+        "Retrieved evidence has no NetScore. RAG will not invent a retrieval score."
+    )
+
+
 def check_claim(
     message: str,
-    retrieve: Callable[[str], Sequence[ZoneHit]],
+    retrieve: Callable[[str], Sequence[ZoneEvidence]],
     *,
     llm: LLMClient | None = None,
     min_retrieval_score: float | None = None,
@@ -270,7 +292,25 @@ def check_claim(
             refusal_reason="mock_evidence",
         )
 
-    zones = [z for z in raw_zones if getattr(z, "score", 0.0) >= min_retrieval_score]
+    unscored = missing_net_reason(raw_zones)
+    if raw_zones and unscored is not None:
+        return Verdict(
+            message=message,
+            claim_spans=spans,
+            label="INSUFFICIENT_EVIDENCE",
+            evidence_cite=None,
+            evidence_text=None,
+            explanation=_unscored_explanation(unscored),
+            retrieval_score=None,
+            claim_amounts=amounts,
+            refusal_reason=unscored,
+        )
+
+    zones: list[ZoneEvidence] = []
+    for zone in raw_zones:
+        net = evidence_net(zone)
+        if net is not None and net >= min_retrieval_score:
+            zones.append(zone)
     if not zones:
         return Verdict(
             message=message,
@@ -280,19 +320,21 @@ def check_claim(
             evidence_text=None,
             explanation=(
                 "INSUFFICIENT INFORMATION — DO NOT GUESS. "
-                "No official zones returned by retriever above minimum confidence score."
+                "No official zones returned by retriever above minimum NetScore."
             ),
             retrieval_score=None,
             claim_amounts=amounts,
         )
 
     # Check against all hits returned by retrieve
-    contradiction: tuple[ZoneHit, str, float] | None = None
-    support: tuple[ZoneHit, str, float] | None = None
+    contradiction: tuple[ZoneEvidence, str, float] | None = None
+    support: tuple[ZoneEvidence, str, float] | None = None
 
     for index, zone in enumerate(zones, start=1):
         cite = f"Z{index}"
-        score = getattr(zone, "score", 0.0)
+        score = evidence_net(zone)
+        if score is None:
+            continue
         zone_label = compare_claim(
             amounts=amounts,
             claims_free=claims_free,
@@ -340,10 +382,10 @@ def check_claim(
         chosen_label = "SUPPORTED"
         evidence_text = chosen_zone.text
     else:
-        nearest_z, near_score, near_cite = nearest_zone(message, zones)
+        nearest_z, _overlap, near_cite = nearest_zone(message, zones)
         chosen_zone = nearest_z or zones[0]
         chosen_cite = near_cite or "Z1"
-        chosen_score = near_score if nearest_z else getattr(zones[0], "score", 0.0)
+        chosen_score = evidence_net(chosen_zone) if chosen_zone is not None else None
         chosen_label = "INSUFFICIENT_EVIDENCE"
         evidence_text = chosen_zone.text if chosen_zone else None
 

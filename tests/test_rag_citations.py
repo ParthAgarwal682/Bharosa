@@ -9,9 +9,9 @@ from bharosa.rag.similarity import text_cosine
 from bharosa.rag.types import Answer, CitedSentence
 
 try:
-    from tests.test_rag_fixtures import mock_scheme_hits
+    from tests.test_rag_fixtures import FakeLLM, mock_scheme_hits, scheme_hit
 except ImportError:
-    from test_rag_fixtures import mock_scheme_hits
+    from test_rag_fixtures import FakeLLM, mock_scheme_hits, scheme_hit
 
 
 def test_supported_sentence_near_cited_zone() -> None:
@@ -56,6 +56,83 @@ def test_unsupported_sentence_low_overlap() -> None:
     assert checks[0].supported is False
     assert checks[0].flag == "unsupported"
     assert checks[0].max_cosine < get_config().citation_threshold
+
+
+def test_doc_id_cite_is_supported_and_unknown_doc_is_rejected() -> None:
+    hits = mock_scheme_hits()
+    ans = Answer(
+        query="eligibility?",
+        refused=False,
+        refusal_reason=None,
+        sentences=[
+            CitedSentence(
+                text=(
+                    "Families with annual income below two lakh rupees in "
+                    "Uttar Pradesh may be eligible for Ayushman Bharat cover"
+                ),
+                cite_ids=[hits[0].doc_id],
+            ),
+            CitedSentence(text="Not in the corpus.", cite_ids=["not-a-real-doc"]),
+        ],
+        hit_labels=label_hits(hits),
+    )
+    checks = check_citations(ans, hits)
+    assert checks[0].flag is None
+    assert checks[0].supported is True
+    assert checks[1].flag == "unknown_cite_id"
+    assert checks[1].supported is False
+
+
+def test_mixed_list_citation_binds_label_to_doc_id() -> None:
+    """Z1 is the net hit even when a BM25 hit sits first in the original list."""
+    import json
+
+    from bharosa.rag.answer import answer
+
+    baseline = scheme_hit(
+        doc_id="bm25-doc",
+        text="Mars colony residents get free spaceship insurance forever.",
+        net=None,
+        bm25_score=0.99,
+        cosine=0.99,
+        rank=1,
+    )
+    official = scheme_hit(
+        doc_id="net-doc",
+        zone="eligibility",
+        url="https://example.invalid/eligible",
+        text=(
+            "Families with annual income below two lakh rupees in "
+            "Uttar Pradesh may be eligible for Ayushman Bharat cover."
+        ),
+        net=0.8,
+        cosine=0.2,
+        bm25_score=None,
+        rank=2,
+    )
+    llm = FakeLLM(
+        response=json.dumps(
+            {
+                "claims": [
+                    {
+                        "text": (
+                            "Families with annual income below two lakh rupees "
+                            "may be eligible."
+                        ),
+                        "cite_ids": ["Z1"],
+                    }
+                ]
+            }
+        )
+    )
+    result = answer("eligible?", [baseline, official], llm=llm)
+    assert result.refused is False
+    assert result.hit_labels["Z1"] == "net-doc::eligibility"
+    assert llm.prompts is not None
+    assert "bm25-doc" not in llm.prompts[0]
+    checks = check_citations(result, [baseline, official])
+    assert checks[0].supported is True
+    assert checks[0].flag is None
 
 
 def test_missing_and_unknown_cite_flags() -> None:

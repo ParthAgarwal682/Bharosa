@@ -2,7 +2,7 @@
 
 import pytest
 from bharosa.rag.pipeline import answer_checked
-from tests.test_rag_fixtures import FakeLLM, mock_scheme_hits
+from tests.test_rag_fixtures import FakeLLM, mock_scheme_hits, weak_hits
 
 
 def test_answer_checked_flag_policy_allows_unsupported() -> None:
@@ -40,6 +40,16 @@ def test_answer_checked_reads_policy_from_env(monkeypatch: pytest.MonkeyPatch) -
     ans = answer_checked("q", hits, llm=fake, allow_mock=True)
     assert ans.refused is True
     assert ans.refusal_reason == "citation_validation_failed"
+
+
+def test_answer_checked_weak_net_refuses_before_llm() -> None:
+    hits = weak_hits()
+    fake = FakeLLM(response="should not run")
+    ans = answer_checked("q", hits, llm=fake, allow_mock=True)
+    assert ans.refused is True
+    assert ans.refusal_reason == "low_retrieval_score"
+    assert ans.sentences == []
+    assert fake.call_count == 0
 
 
 def test_answer_checked_default_blocks_mock_hits() -> None:
