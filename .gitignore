@@ -3,3 +3,7 @@ __pycache__/
 .pytest_cache/
 data/bharosa.db
 data/raw/
+
+.env
+.env.*
+!.env.example

@@ -15,6 +15,8 @@ from dataclasses import dataclass, field
 from typing import Protocol
 
 REQUEST_TIMEOUT: float = 30.0
+_OPENAI_CHAT_COMPLETIONS_URL = "https://api.openai.com/v1/chat/completions"
+_OPENROUTER_CHAT_COMPLETIONS_URL = "https://openrouter.ai/api/v1/chat/completions"
 
 
 class LLMNotConfiguredError(RuntimeError):
@@ -67,6 +69,7 @@ class EnvLLM:
     Supported providers:
     - ``openai``: HTTP chat completions API
     - ``anthropic``: HTTP messages API
+    - ``openrouter``: OpenAI-compatible chat completions API
 
     No fallback model is provided. Unsupported or unconfigured values
     raise ``LLMNotConfiguredError``.
@@ -80,10 +83,10 @@ class EnvLLM:
                 "LLM_API_KEY in .env (see README)."
             )
         provider = self._config.provider.lower()
-        if provider not in {"openai", "anthropic"}:
+        if provider not in {"openai", "anthropic", "openrouter"}:
             raise LLMNotConfiguredError(
                 f"Unsupported LLM_PROVIDER={self._config.provider!r}. "
-                "Only 'openai' and 'anthropic' are supported."
+                "Only 'openai', 'anthropic', and 'openrouter' are supported."
             )
         if not self._config.model:
             raise LLMNotConfiguredError("LLM_MODEL cannot be empty.")
@@ -100,15 +103,52 @@ class EnvLLM:
         provider = self._config.provider.lower()
         if provider == "openai":
             return self._complete_openai(prompt)
+        if provider == "openrouter":
+            return self._complete_openai(
+                prompt,
+                endpoint=_OPENROUTER_CHAT_COMPLETIONS_URL,
+            )
         return self._complete_anthropic(prompt)
 
     def _sanitize_error(self, exc: Exception) -> str:
+        key = self._config.api_key if self._config else ""
+        if key:
+            self._redact_exception(exc, key)
         msg = f"{type(exc).__name__}: {exc}"
-        if self._config and self._config.api_key:
-            msg = msg.replace(self._config.api_key, "[REDACTED]")
+        if key:
+            msg = msg.replace(key, "[REDACTED]")
         return msg
 
-    def _complete_openai(self, prompt: str) -> str:
+    def _redact_exception(self, exc: BaseException, key: str) -> None:
+        """Strip the API key from fields exception printers display."""
+        try:
+            reason = getattr(exc, "reason", None)
+            if isinstance(reason, str):
+                exc.reason = reason.replace(key, "[REDACTED]")
+            elif isinstance(reason, BaseException) and reason is not exc:
+                self._redact_exception(reason, key)
+            detail = getattr(exc, "msg", None)
+            if isinstance(detail, str):
+                exc.msg = detail.replace(key, "[REDACTED]")
+            filename = getattr(exc, "filename", None)
+            if isinstance(filename, str):
+                exc.filename = filename.replace(key, "[REDACTED]")
+            document = getattr(exc, "doc", None)
+            if isinstance(document, str):
+                exc.doc = document.replace(key, "[REDACTED]")
+            if exc.args:
+                exc.args = tuple(
+                    item.replace(key, "[REDACTED]") if isinstance(item, str) else item
+                    for item in exc.args
+                )
+        except (AttributeError, TypeError, ValueError):
+            return
+
+    def _complete_openai(
+        self,
+        prompt: str,
+        endpoint: str = _OPENAI_CHAT_COMPLETIONS_URL,
+    ) -> str:
         assert self._config is not None
         import json
         import urllib.error
@@ -122,7 +162,7 @@ class EnvLLM:
             }
         ).encode("utf-8")
         req = urllib.request.Request(
-            "https://api.openai.com/v1/chat/completions",
+            endpoint,
             data=body,
             headers={
                 "Content-Type": "application/json",
