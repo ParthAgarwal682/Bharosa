@@ -1,0 +1,9 @@
+method,available,relevance,rank_basis,list_policy,n_queries_scored,top1_accuracy,P@5,P@10,recall@5,recall@10,set_precision,set_recall,reason
+exact,true,gold_brand,unranked_corpus_order,full_unranked_list,15,0.533333,0.106667,0.053333,0.533333,0.533333,0.533333,0.533333,Macro average over scored queries. Rank basis: unranked_corpus_order. List: full_unranked_list.
+exact,true,gold_identity,unranked_corpus_order,full_unranked_list,15,0.533333,0.106667,0.053333,0.001354,0.001354,0.533333,0.001354,Macro average over scored queries. Rank basis: unranked_corpus_order. List: full_unranked_list.
+soundex,true,gold_brand,unranked_corpus_order,full_unranked_list,15,0.866667,0.200000,0.100000,1.000000,1.000000,0.010813,1.000000,Macro average over scored queries. Rank basis: unranked_corpus_order. List: full_unranked_list.
+soundex,true,gold_identity,unranked_corpus_order,full_unranked_list,15,0.866667,0.240000,0.126667,0.036775,0.037010,0.056373,0.044680,Macro average over scored queries. Rank basis: unranked_corpus_order. List: full_unranked_list.
+ours_ngram_parametric,true,gold_brand,char_2gram_3gram_cosine,top_10_by_cosine,15,0.266667,0.080000,0.040000,0.400000,0.400000,0.040000,0.400000,Macro average over scored queries. Rank basis: char_2gram_3gram_cosine. List: top_10_by_cosine.
+ours_ngram_parametric,true,gold_identity,char_2gram_3gram_cosine,top_10_by_cosine,15,0.400000,0.400000,0.400000,0.012890,0.025780,0.400000,0.025780,Macro average over scored queries. Rank basis: char_2gram_3gram_cosine. List: top_10_by_cosine.
+brand_token_tfidf,false,N/A,,,0,N/A,N/A,N/A,N/A,N/A,N/A,N/A,bharosa.medicine.baselines has no brand-token tf-idf matcher. P@k and recall are undefined for that system.
+brand_bm25,false,N/A,,,0,N/A,N/A,N/A,N/A,N/A,N/A,N/A,bharosa.medicine.baselines has no brand BM25 matcher. P@k and recall are undefined for that system.

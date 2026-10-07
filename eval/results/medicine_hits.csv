@@ -1,0 +1,405 @@
+row_id,query,label_status,used_in_scored_metrics,method,rank_basis,rank,brand,salt,strength,form,score,brand_relevant,identity_relevant
+1,Dolo 650 Tablet,VERIFIED_FROM_DATASET,true,exact,unranked_corpus_order,1,Dolo 650 Tablet,Paracetamol,650 mg,tablet,,1,1
+1,Dolo 650 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,1,Dolo 650 Tablet,Paracetamol,650 mg,tablet,,1,1
+1,Dolo 650 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,2,Dolo 500 Tablet,Paracetamol,500 mg,tablet,,0,0
+1,Dolo 650 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,3,Dolo 250 Oral Suspension,Paracetamol,250 mg/5ml,suspension,,0,0
+1,Dolo 650 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,4,Dilo BM Expectorant,Ambroxol + Guaifenesin,,other,,0,0
+1,Dolo 650 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,5,Dolo Drops,Paracetamol,100 mg/ml,suspension,,0,0
+1,Dolo 650 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,6,Dilo-DX Syrup,Chlorpheniramine Maleate + Dextromethorphan Hydrobromide,,syrup,,0,0
+1,Dolo 650 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,7,Dilo-Nac Tablet,Acebrophylline + Acetylcysteine,,tablet,,0,0
+1,Dolo 650 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,8,Dilo-LS Syrup,Ambroxol + Levosalbutamol,,other,,0,0
+1,Dolo 650 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,9,Dolo-MF Oral Suspension,Mefenamic Acid + Paracetamol,,suspension,,0,0
+1,Dolo 650 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,10,Dolo 120 Suspension,Paracetamol,120 mg/5ml,suspension,,0,0
+1,Dolo 650 Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,,,,,,,N/A,N/A
+2,Calpol 500mg Tablet,VERIFIED_FROM_DATASET,true,exact,unranked_corpus_order,1,Calpol 500mg Tablet,Paracetamol,500 mg,tablet,,1,1
+2,Calpol 500mg Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,1,Calpol 500mg Tablet,Paracetamol,500 mg,tablet,,1,1
+2,Calpol 500mg Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,2,Calpol 650mg Tablet,Paracetamol,650 mg,tablet,,0,0
+2,Calpol 500mg Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,3,Calpol T Tablet,Paracetamol/Acetaminophen + Tramadol,,tablet,,0,0
+2,Calpol 500mg Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,4,Calpol 250mg Paediatric Oral Suspension Strawberry,Paracetamol,250 mg/5ml,suspension,,0,0
+2,Calpol 500mg Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,5,Clopilet Tablet,Clopidogrel,75 mg,tablet,,0,0
+2,Calpol 500mg Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,6,Calpol Paediatric Drops Peppermint,Paracetamol,100 mg/ml,suspension,,0,0
+2,Calpol 500mg Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,7,Clopilet A 75 Capsule,Aspirin + Clopidogrel,,capsule,,0,0
+2,Calpol 500mg Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,8,Clavilip 10 Capsule,Atorvastatin + Clopidogrel,,capsule,,0,0
+2,Calpol 500mg Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,9,Calpol 120mg Suspension Strawberry,Paracetamol,120 mg/5ml,suspension,,0,0
+2,Calpol 500mg Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,10,Clopilet A 150 Capsule,Aspirin + Clopidogrel,,capsule,,0,0
+2,Calpol 500mg Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,1,calpol 500mg tablet,paracetamol,500 mg,tablet,0.538816,1,1
+2,Calpol 500mg Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,2,tolpol 500mg tablet,paracetamol,500 mg,tablet,0.318949,0,1
+2,Calpol 500mg Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,3,calpra 500mg tablet,paracetamol,500 mg,tablet,0.299342,0,1
+2,Calpol 500mg Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,4,chillpol 500mg tablet,paracetamol,500 mg,tablet,0.281718,0,1
+2,Calpol 500mg Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,5,polymol analgesic tablet,paracetamol,500 mg,tablet,0.224747,0,1
+2,Calpol 500mg Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,6,rajpol 500 tablet,paracetamol,500 mg,tablet,0.192450,0,1
+2,Calpol 500mg Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,7,anapol 500mg tablet,paracetamol,500 mg,tablet,0.179605,0,1
+2,Calpol 500mg Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,8,parpol 500mg tablet,paracetamol,500 mg,tablet,0.179605,0,1
+2,Calpol 500mg Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,9,verpol 500mg tablet,paracetamol,500 mg,tablet,0.179605,0,1
+2,Calpol 500mg Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,10,taurpol 500mg tablet,paracetamol,500 mg,tablet,0.174894,0,1
+3,Azithral 500 Tablet,VERIFIED_FROM_DATASET,true,exact,unranked_corpus_order,1,Azithral 500 Tablet,Azithromycin,500 mg,tablet,,1,1
+3,Azithral 500 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,1,Azithral 500 Tablet,Azithromycin,500 mg,tablet,,1,1
+3,Azithral 500 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,2,Azithral 200 Liquid,Azithromycin,200 mg/5ml,suspension,,0,0
+3,Azithral 500 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,3,Aztor 10 Tablet,Atorvastatin,10 mg,tablet,,0,0
+3,Azithral 500 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,4,Acitrom 2 Tablet,Acenocoumarol,2 mg,tablet,,0,0
+3,Azithral 500 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,5,Acitrom 1 Tablet,Acenocoumarol,1 mg,tablet,,0,0
+3,Azithral 500 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,6,Azithral XL 200 Liquid,Azithromycin,200 mg/5ml,suspension,,0,0
+3,Azithral 500 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,7,Aztor 40 Tablet,Atorvastatin,40 mg,tablet,,0,0
+3,Azithral 500 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,8,Actrapid HM 100IU/ml Penfill,Human insulin,100 iu,injection,,0,0
+3,Azithral 500 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,9,Azithral 100 Liquid,Azithromycin,20 mg/ml,suspension,,0,0
+3,Azithral 500 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,10,Aztor 20 Tablet,Atorvastatin,20 mg,tablet,,0,0
+3,Azithral 500 Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,1,azithral 5d tablet,azithromycin,500 mg,tablet,0.669534,0,1
+3,Azithral 500 Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,2,azithral 500 tablet,azithromycin,500 mg,tablet,0.647576,1,1
+3,Azithral 500 Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,3,azithral pulse tablet,azithromycin,500 mg,tablet,0.612143,0,1
+3,Azithral 500 Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,4,azithral pulse tablet,azithromycin,500 mg,tablet,0.612143,0,1
+3,Azithral 500 Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,5,azithral pulse 500mg tablet,azithromycin,500 mg,tablet,0.537484,0,1
+3,Azithral 500 Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,6,zithral 500mg tablet,azithromycin,500 mg,tablet,0.531085,0,1
+3,Azithral 500 Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,7,zithran 500 tablet,azithromycin,500 mg,tablet,0.463524,0,1
+3,Azithral 500 Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,8,grazithro 500mg tablet,azithromycin,500 mg,tablet,0.455961,0,1
+3,Azithral 500 Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,9,azithrocure tablet,azithromycin,500 mg,tablet,0.450561,0,1
+3,Azithral 500 Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,10,azithrov 500 tablet,azithromycin,500 mg,tablet,0.448322,0,1
+4,Aciloc 150 Tablet,VERIFIED_FROM_DATASET,true,exact,unranked_corpus_order,1,Aciloc 150 Tablet,Ranitidine,150 mg,tablet,,1,1
+4,Aciloc 150 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,1,Aciloc 150 Tablet,Ranitidine,150 mg,tablet,,1,1
+4,Aciloc 150 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,2,Aciloc RD 20 Tablet,Domperidone + Omeprazole,,tablet,,0,0
+4,Aciloc 150 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,3,Aciloc 300 Tablet,Ranitidine,300 mg,tablet,,0,0
+4,Aciloc 150 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,4,Azulix 2 MF Tablet PR,Glimepiride + Metformin,,tablet,,0,0
+4,Aciloc 150 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,5,Azulix 1 MF Tablet PR,Glimepiride + Metformin,,tablet,,0,0
+4,Aciloc 150 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,6,Aciloc Injection,Ranitidine,25 mg,injection,,0,0
+4,Aciloc 150 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,7,Akilos-P Tablet,Aceclofenac + Paracetamol,,tablet,,0,0
+4,Aciloc 150 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,8,Azulix 2 MF Forte Tablet PR,Glimepiride + Metformin,,tablet,,0,0
+4,Aciloc 150 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,9,Akilos-SP Tablet,Aceclofenac + Paracetamol,,tablet,,0,0
+4,Aciloc 150 Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,10,Azulix 1 Tablet,Glimepiride,1 mg,tablet,,0,0
+4,Aciloc 150 Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,1,aciloc 150 tablet,ranitidine,150 mg,tablet,0.577350,1,1
+4,Aciloc 150 Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,2,acibloc 150mg tablet,ranitidine,150 mg,tablet,0.349788,0,1
+4,Aciloc 150 Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,3,glocid 150mg tablet,ranitidine,150 mg,tablet,0.239474,0,1
+4,Aciloc 150 Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,4,asloc tablet,ranitidine,150 mg,tablet,0.229416,0,1
+4,Aciloc 150 Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,5,r loc 150 tablet,ranitidine,150 mg,tablet,0.208514,0,1
+4,Aciloc 150 Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,6,h2loc 150mg tablet,ranitidine,150 mg,tablet,0.185695,0,1
+4,Aciloc 150 Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,7,peloc 150mg tablet,ranitidine,150 mg,tablet,0.185695,0,1
+4,Aciloc 150 Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,8,proloc 150mg tablet,ranitidine,150 mg,tablet,0.179605,0,1
+4,Aciloc 150 Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,9,ranloc 150mg tablet,ranitidine,150 mg,tablet,0.179605,0,1
+4,Aciloc 150 Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,10,zenloc 150mg tablet,ranitidine,150 mg,tablet,0.179605,0,1
+5,Doloo 650,NEEDS_HUMAN_REVIEW,false,exact,unranked_corpus_order,,,,,,,N/A,N/A
+5,Doloo 650,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,1,Dolo 650 Tablet,Paracetamol,650 mg,tablet,,N/A,N/A
+5,Doloo 650,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,2,Dolo 500 Tablet,Paracetamol,500 mg,tablet,,N/A,N/A
+5,Doloo 650,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,3,Dolo 250 Oral Suspension,Paracetamol,250 mg/5ml,suspension,,N/A,N/A
+5,Doloo 650,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,4,Dilo BM Expectorant,Ambroxol + Guaifenesin,,other,,N/A,N/A
+5,Doloo 650,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,5,Dolo Drops,Paracetamol,100 mg/ml,suspension,,N/A,N/A
+5,Doloo 650,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,6,Dilo-DX Syrup,Chlorpheniramine Maleate + Dextromethorphan Hydrobromide,,syrup,,N/A,N/A
+5,Doloo 650,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,7,Dilo-Nac Tablet,Acebrophylline + Acetylcysteine,,tablet,,N/A,N/A
+5,Doloo 650,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,8,Dilo-LS Syrup,Ambroxol + Levosalbutamol,,other,,N/A,N/A
+5,Doloo 650,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,9,Dolo-MF Oral Suspension,Mefenamic Acid + Paracetamol,,suspension,,N/A,N/A
+5,Doloo 650,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,10,Dolo 120 Suspension,Paracetamol,120 mg/5ml,suspension,,N/A,N/A
+5,Doloo 650,NEEDS_HUMAN_REVIEW,false,ours_ngram_parametric,char_2gram_3gram_cosine,,,,,,,N/A,N/A
+6,Kalpol 650,NEEDS_HUMAN_REVIEW,false,exact,unranked_corpus_order,,,,,,,N/A,N/A
+6,Kalpol 650,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,,,,,,,N/A,N/A
+6,Kalpol 650,NEEDS_HUMAN_REVIEW,false,ours_ngram_parametric,char_2gram_3gram_cosine,,,,,,,N/A,N/A
+7,Azithrol 500,NEEDS_HUMAN_REVIEW,false,exact,unranked_corpus_order,,,,,,,N/A,N/A
+7,Azithrol 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,1,Azithral 500 Tablet,Azithromycin,500 mg,tablet,,N/A,N/A
+7,Azithrol 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,2,Azithral 200 Liquid,Azithromycin,200 mg/5ml,suspension,,N/A,N/A
+7,Azithrol 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,3,Aztor 10 Tablet,Atorvastatin,10 mg,tablet,,N/A,N/A
+7,Azithrol 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,4,Acitrom 2 Tablet,Acenocoumarol,2 mg,tablet,,N/A,N/A
+7,Azithrol 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,5,Acitrom 1 Tablet,Acenocoumarol,1 mg,tablet,,N/A,N/A
+7,Azithrol 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,6,Azithral XL 200 Liquid,Azithromycin,200 mg/5ml,suspension,,N/A,N/A
+7,Azithrol 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,7,Aztor 40 Tablet,Atorvastatin,40 mg,tablet,,N/A,N/A
+7,Azithrol 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,8,Actrapid HM 100IU/ml Penfill,Human insulin,100 iu,injection,,N/A,N/A
+7,Azithrol 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,9,Azithral 100 Liquid,Azithromycin,20 mg/ml,suspension,,N/A,N/A
+7,Azithrol 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,10,Aztor 20 Tablet,Atorvastatin,20 mg,tablet,,N/A,N/A
+7,Azithrol 500,NEEDS_HUMAN_REVIEW,false,ours_ngram_parametric,char_2gram_3gram_cosine,1,azithrocure tablet,azithromycin,500 mg,tablet,0.550685,N/A,N/A
+7,Azithrol 500,NEEDS_HUMAN_REVIEW,false,ours_ngram_parametric,char_2gram_3gram_cosine,2,azithrov 500 tablet,azithromycin,500 mg,tablet,0.547949,N/A,N/A
+7,Azithrol 500,NEEDS_HUMAN_REVIEW,false,ours_ngram_parametric,char_2gram_3gram_cosine,3,zithrolect 500 tablet,azithromycin,500 mg,tablet,0.517967,N/A,N/A
+7,Azithrol 500,NEEDS_HUMAN_REVIEW,false,ours_ngram_parametric,char_2gram_3gram_cosine,4,azithron 500mg tablet,azithromycin,500 mg,tablet,0.515688,N/A,N/A
+7,Azithrol 500,NEEDS_HUMAN_REVIEW,false,ours_ngram_parametric,char_2gram_3gram_cosine,5,azithromat 500 tablet,azithromycin,500 mg,tablet,0.515688,N/A,N/A
+7,Azithrol 500,NEEDS_HUMAN_REVIEW,false,ours_ngram_parametric,char_2gram_3gram_cosine,6,azithrot 500mg tablet,azithromycin,500 mg,tablet,0.515688,N/A,N/A
+7,Azithrol 500,NEEDS_HUMAN_REVIEW,false,ours_ngram_parametric,char_2gram_3gram_cosine,7,azithropen 500 tablet,azithromycin,500 mg,tablet,0.515688,N/A,N/A
+7,Azithrol 500,NEEDS_HUMAN_REVIEW,false,ours_ngram_parametric,char_2gram_3gram_cosine,8,cazithro 500mg tablet,azithromycin,500 mg,tablet,0.515688,N/A,N/A
+7,Azithrol 500,NEEDS_HUMAN_REVIEW,false,ours_ngram_parametric,char_2gram_3gram_cosine,9,kazithro 500mg tablet,azithromycin,500 mg,tablet,0.515688,N/A,N/A
+7,Azithrol 500,NEEDS_HUMAN_REVIEW,false,ours_ngram_parametric,char_2gram_3gram_cosine,10,k azithro 500mg tablet,azithromycin,500 mg,tablet,0.515688,N/A,N/A
+8,Pantoside 20,NEEDS_HUMAN_REVIEW,false,exact,unranked_corpus_order,,,,,,,N/A,N/A
+8,Pantoside 20,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,1,Pantocid DSR Capsule,Domperidone + Pantoprazole,,capsule,,N/A,N/A
+8,Pantoside 20,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,2,Pantocid Tablet,Pantoprazole,40 mg,tablet,,N/A,N/A
+8,Pantoside 20,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,3,Pantosec D SR Capsule,Domperidone + Pantoprazole,,capsule,,N/A,N/A
+8,Pantoside 20,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,4,Pantosec Tablet,Pantoprazole,40 mg,tablet,,N/A,N/A
+8,Pantoside 20,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,5,Pantakind-DSR Capsule,Domperidone + Pantoprazole,,capsule,,N/A,N/A
+8,Pantoside 20,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,6,Pantocid L Capsule SR,Levosulpiride + Pantoprazole,,capsule,,N/A,N/A
+8,Pantoside 20,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,7,Pantosec-D Tablet,Domperidone + Pantoprazole,,tablet,,N/A,N/A
+8,Pantoside 20,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,8,Pantakind Tablet,Pantoprazole,40 mg,tablet,,N/A,N/A
+8,Pantoside 20,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,9,Pantocid IT Capsule SR,Itopride + Pantoprazole,,capsule,,N/A,N/A
+8,Pantoside 20,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,10,Pantocid HP Combipack,Amoxycillin + Pantoprazole,,tablet,,N/A,N/A
+8,Pantoside 20,NEEDS_HUMAN_REVIEW,false,ours_ngram_parametric,char_2gram_3gram_cosine,,,,,,,N/A,N/A
+9,Dolo 650,VERIFIED_FROM_DATASET,true,exact,unranked_corpus_order,,,,,,,N/A,N/A
+9,Dolo 650,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,1,Dolo 650 Tablet,Paracetamol,650 mg,tablet,,1,1
+9,Dolo 650,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,2,Dolo 500 Tablet,Paracetamol,500 mg,tablet,,0,0
+9,Dolo 650,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,3,Dolo 250 Oral Suspension,Paracetamol,250 mg/5ml,suspension,,0,0
+9,Dolo 650,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,4,Dilo BM Expectorant,Ambroxol + Guaifenesin,,other,,0,0
+9,Dolo 650,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,5,Dolo Drops,Paracetamol,100 mg/ml,suspension,,0,0
+9,Dolo 650,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,6,Dilo-DX Syrup,Chlorpheniramine Maleate + Dextromethorphan Hydrobromide,,syrup,,0,0
+9,Dolo 650,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,7,Dilo-Nac Tablet,Acebrophylline + Acetylcysteine,,tablet,,0,0
+9,Dolo 650,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,8,Dilo-LS Syrup,Ambroxol + Levosalbutamol,,other,,0,0
+9,Dolo 650,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,9,Dolo-MF Oral Suspension,Mefenamic Acid + Paracetamol,,suspension,,0,0
+9,Dolo 650,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,10,Dolo 120 Suspension,Paracetamol,120 mg/5ml,suspension,,0,0
+9,Dolo 650,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,,,,,,,N/A,N/A
+10,Azithral 500,VERIFIED_FROM_DATASET,true,exact,unranked_corpus_order,,,,,,,N/A,N/A
+10,Azithral 500,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,1,Azithral 500 Tablet,Azithromycin,500 mg,tablet,,1,1
+10,Azithral 500,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,2,Azithral 200 Liquid,Azithromycin,200 mg/5ml,suspension,,0,0
+10,Azithral 500,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,3,Aztor 10 Tablet,Atorvastatin,10 mg,tablet,,0,0
+10,Azithral 500,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,4,Acitrom 2 Tablet,Acenocoumarol,2 mg,tablet,,0,0
+10,Azithral 500,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,5,Acitrom 1 Tablet,Acenocoumarol,1 mg,tablet,,0,0
+10,Azithral 500,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,6,Azithral XL 200 Liquid,Azithromycin,200 mg/5ml,suspension,,0,0
+10,Azithral 500,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,7,Aztor 40 Tablet,Atorvastatin,40 mg,tablet,,0,0
+10,Azithral 500,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,8,Actrapid HM 100IU/ml Penfill,Human insulin,100 iu,injection,,0,0
+10,Azithral 500,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,9,Azithral 100 Liquid,Azithromycin,20 mg/ml,suspension,,0,0
+10,Azithral 500,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,10,Aztor 20 Tablet,Atorvastatin,20 mg,tablet,,0,0
+10,Azithral 500,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,1,azithral 5d tablet,azithromycin,500 mg,tablet,0.669534,0,1
+10,Azithral 500,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,2,azithral 500 tablet,azithromycin,500 mg,tablet,0.647576,1,1
+10,Azithral 500,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,3,azithral pulse tablet,azithromycin,500 mg,tablet,0.612143,0,1
+10,Azithral 500,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,4,azithral pulse tablet,azithromycin,500 mg,tablet,0.612143,0,1
+10,Azithral 500,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,5,azithral pulse 500mg tablet,azithromycin,500 mg,tablet,0.537484,0,1
+10,Azithral 500,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,6,zithral 500mg tablet,azithromycin,500 mg,tablet,0.531085,0,1
+10,Azithral 500,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,7,zithran 500 tablet,azithromycin,500 mg,tablet,0.463524,0,1
+10,Azithral 500,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,8,grazithro 500mg tablet,azithromycin,500 mg,tablet,0.455961,0,1
+10,Azithral 500,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,9,azithrocure tablet,azithromycin,500 mg,tablet,0.450561,0,1
+10,Azithral 500,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,10,azithrov 500 tablet,azithromycin,500 mg,tablet,0.448322,0,1
+11,Allegra 120,VERIFIED_FROM_DATASET,true,exact,unranked_corpus_order,,,,,,,N/A,N/A
+11,Allegra 120,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,1,Allegra 120mg Tablet,Fexofenadine,120 mg,tablet,,1,1
+11,Allegra 120,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,2,Allegra-M Tablet,Fexofenadine + Montelukast,,tablet,,0,0
+11,Allegra 120,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,3,Allegra 180mg Tablet,Fexofenadine,180 mg,tablet,,0,0
+11,Allegra 120,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,4,Allegra Suspension Raspberry & Vanilla,Fexofenadine,30 mg/5ml,suspension,,0,0
+11,Allegra 120,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,5,Allegra Nasal Spray,Fluticasone Furoate,27.5 mcg,spray,,0,0
+11,Allegra 120,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,6,Alcros 100 Capsule,Itraconazole,100 mg,capsule,,0,0
+11,Allegra 120,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,7,Alzero M Tablet,Levocetirizine + Montelukast,,tablet,,0,0
+11,Allegra 120,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,8,Alcros 200 Capsule,Itraconazole,200 mg,capsule,,0,0
+11,Allegra 120,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,9,Alkarate Liquid,Disodium Hydrogen Citrate,1.37 gm/5ml,other,,0,0
+11,Allegra 120,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,10,Alcros SB 50 Capsule,Itraconazole,50 mg,capsule,,0,0
+11,Allegra 120,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,1,allegra 120mg tablet,fexofenadine,120 mg,tablet,0.595932,1,1
+11,Allegra 120,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,2,fallegra 120mg tablet,fexofenadine,120 mg,tablet,0.578499,0,1
+11,Allegra 120,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,3,allegratune 120 tablet,fexofenadine,120 mg,tablet,0.562512,0,1
+11,Allegra 120,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,4,allegix 120mg tablet,fexofenadine,120 mg,tablet,0.385002,0,1
+11,Allegra 120,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,5,celegra 120mg tablet,fexofenadine,120 mg,tablet,0.385002,0,1
+11,Allegra 120,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,6,cegra 120 tablet,fexofenadine,120 mg,tablet,0.361814,0,1
+11,Allegra 120,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,7,fegra 120 tablet,fexofenadine,120 mg,tablet,0.361814,0,1
+11,Allegra 120,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,8,galfegra 120mg tablet,fexofenadine,120 mg,tablet,0.356753,0,1
+11,Allegra 120,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,9,oregra 120 tablet,fexofenadine,120 mg,tablet,0.348155,0,1
+11,Allegra 120,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,10,leegra 120mg tablet,fexofenadine,120 mg,tablet,0.342924,0,1
+12,Avil 25,VERIFIED_FROM_DATASET,true,exact,unranked_corpus_order,,,,,,,N/A,N/A
+12,Avil 25,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,1,Avil 25 Tablet,Pheniramine,25 mg,tablet,,1,1
+12,Avil 25,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,2,Avil Injection,Pheniramine,22.75 mg,injection,,0,0
+12,Avil 25,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,3,Avil Injection,Pheniramine,22.75 mg,injection,,0,0
+12,Avil 25,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,4,Avil 50mg Tablet,Pheniramine,50 mg,tablet,,0,0
+12,Avil 25,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,5,Abel 40 Tablet,Azilsartan medoxomil,40 mg,tablet,,0,0
+12,Avil 25,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,6,Apale Tablet,Ferrous Ascorbate + Folic Acid,,tablet,,0,0
+12,Avil 25,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,7,Abel 80 Tablet,Azilsartan medoxomil,80 mg,tablet,,0,0
+12,Avil 25,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,8,Avil NU 10mg Tablet,Cetirizine,10 mg,tablet,,0,0
+12,Avil 25,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,9,Abel-CT 40mg/12.5mg Tablet,Azilsartan medoxomil + Chlorthalidone,,tablet,,0,0
+12,Avil 25,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,10,Ablu 50mg Tablet,Bicalutamide,50 mg,tablet,,0,0
+12,Avil 25,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,,,,,,,N/A,N/A
+13,Aciloc 300,VERIFIED_FROM_DATASET,true,exact,unranked_corpus_order,,,,,,,N/A,N/A
+13,Aciloc 300,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,1,Aciloc 150 Tablet,Ranitidine,150 mg,tablet,,0,0
+13,Aciloc 300,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,2,Aciloc RD 20 Tablet,Domperidone + Omeprazole,,tablet,,0,0
+13,Aciloc 300,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,3,Aciloc 300 Tablet,Ranitidine,300 mg,tablet,,1,1
+13,Aciloc 300,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,4,Azulix 2 MF Tablet PR,Glimepiride + Metformin,,tablet,,0,0
+13,Aciloc 300,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,5,Azulix 1 MF Tablet PR,Glimepiride + Metformin,,tablet,,0,0
+13,Aciloc 300,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,6,Aciloc Injection,Ranitidine,25 mg,injection,,0,0
+13,Aciloc 300,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,7,Akilos-P Tablet,Aceclofenac + Paracetamol,,tablet,,0,0
+13,Aciloc 300,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,8,Azulix 2 MF Forte Tablet PR,Glimepiride + Metformin,,tablet,,0,0
+13,Aciloc 300,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,9,Akilos-SP Tablet,Aceclofenac + Paracetamol,,tablet,,0,0
+13,Aciloc 300,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,10,Azulix 1 Tablet,Glimepiride,1 mg,tablet,,0,0
+13,Aciloc 300,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,1,aciloc 300 tablet,ranitidine,300 mg,tablet,0.577350,1,1
+13,Aciloc 300,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,2,acibloc 300mg tablet,ranitidine,300 mg,tablet,0.349788,0,1
+13,Aciloc 300,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,3,afdiloc 300mg tablet,ranitidine,300 mg,tablet,0.290129,0,1
+13,Aciloc 300,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,4,glocid 300mg tablet,ranitidine,300 mg,tablet,0.239474,0,1
+13,Aciloc 300,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,5,h2loc 300mg tablet,ranitidine,300 mg,tablet,0.185695,0,1
+13,Aciloc 300,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,6,peploc 300mg tablet,ranitidine,300 mg,tablet,0.179605,0,1
+13,Aciloc 300,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,7,zenloc 300mg tablet,ranitidine,300 mg,tablet,0.179605,0,1
+13,Aciloc 300,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,8,r loc forte 300mg tablet,ranitidine,300 mg,tablet,0.164399,0,1
+13,Aciloc 300,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,9,jeetac 300 tablet,ranitidine,300 mg,tablet,0.064893,0,1
+13,Aciloc 300,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,10,histac 300 tablet,ranitidine,300 mg,tablet,0.064518,0,1
+14,Zifi 200,VERIFIED_FROM_DATASET,true,exact,unranked_corpus_order,,,,,,,N/A,N/A
+14,Zifi 200,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,1,Zifi 200 Tablet,Cefixime,200 mg,tablet,,1,1
+14,Zifi 200,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,2,Zifi CV 200 Tablet,Cefixime + Clavulanic Acid,,tablet,,0,0
+14,Zifi 200,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,3,Zifi-O Tablet,Cefixime + Ofloxacin,,tablet,,0,0
+14,Zifi 200,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,4,Zifi 100 Dry Syrup,Cefixime,100 mg/5ml,suspension,,0,0
+14,Zifi 200,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,5,Zifi 100 DT Tablet,Cefixime,100 mg,tablet,,0,0
+14,Zifi 200,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,6,Zifi 50 Dry Syrup,Cefixime,50 mg/5ml,suspension,,0,0
+14,Zifi 200,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,7,Zefu 500 Tablet,Cefuroxime,500 mg,tablet,,0,0
+14,Zifi 200,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,8,Zifi Lbx Neo Tablet,Cefixime + Cloxacillin,,tablet,,0,0
+14,Zifi 200,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,9,Zefu 250 Tablet,Cefuroxime,250 mg,tablet,,0,0
+14,Zifi 200,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,10,Zifi-AZ Tablet,Azithromycin + Cefixime,,tablet,,0,0
+14,Zifi 200,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,,,,,,,N/A,N/A
+15,dolo 650 sasta alternative,NEEDS_HUMAN_REVIEW,false,exact,unranked_corpus_order,,,,,,,N/A,N/A
+15,dolo 650 sasta alternative,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,1,Dolo 650 Tablet,Paracetamol,650 mg,tablet,,N/A,N/A
+15,dolo 650 sasta alternative,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,2,Dolo 500 Tablet,Paracetamol,500 mg,tablet,,N/A,N/A
+15,dolo 650 sasta alternative,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,3,Dolo 250 Oral Suspension,Paracetamol,250 mg/5ml,suspension,,N/A,N/A
+15,dolo 650 sasta alternative,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,4,Dilo BM Expectorant,Ambroxol + Guaifenesin,,other,,N/A,N/A
+15,dolo 650 sasta alternative,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,5,Dolo Drops,Paracetamol,100 mg/ml,suspension,,N/A,N/A
+15,dolo 650 sasta alternative,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,6,Dilo-DX Syrup,Chlorpheniramine Maleate + Dextromethorphan Hydrobromide,,syrup,,N/A,N/A
+15,dolo 650 sasta alternative,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,7,Dilo-Nac Tablet,Acebrophylline + Acetylcysteine,,tablet,,N/A,N/A
+15,dolo 650 sasta alternative,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,8,Dilo-LS Syrup,Ambroxol + Levosalbutamol,,other,,N/A,N/A
+15,dolo 650 sasta alternative,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,9,Dolo-MF Oral Suspension,Mefenamic Acid + Paracetamol,,suspension,,N/A,N/A
+15,dolo 650 sasta alternative,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,10,Dolo 120 Suspension,Paracetamol,120 mg/5ml,suspension,,N/A,N/A
+15,dolo 650 sasta alternative,NEEDS_HUMAN_REVIEW,false,ours_ngram_parametric,char_2gram_3gram_cosine,,,,,,,N/A,N/A
+16,calpol 500 sasta option kya milega,NEEDS_HUMAN_REVIEW,false,exact,unranked_corpus_order,,,,,,,N/A,N/A
+16,calpol 500 sasta option kya milega,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,1,Calpol 500mg Tablet,Paracetamol,500 mg,tablet,,N/A,N/A
+16,calpol 500 sasta option kya milega,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,2,Calpol 650mg Tablet,Paracetamol,650 mg,tablet,,N/A,N/A
+16,calpol 500 sasta option kya milega,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,3,Calpol T Tablet,Paracetamol/Acetaminophen + Tramadol,,tablet,,N/A,N/A
+16,calpol 500 sasta option kya milega,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,4,Calpol 250mg Paediatric Oral Suspension Strawberry,Paracetamol,250 mg/5ml,suspension,,N/A,N/A
+16,calpol 500 sasta option kya milega,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,5,Clopilet Tablet,Clopidogrel,75 mg,tablet,,N/A,N/A
+16,calpol 500 sasta option kya milega,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,6,Calpol Paediatric Drops Peppermint,Paracetamol,100 mg/ml,suspension,,N/A,N/A
+16,calpol 500 sasta option kya milega,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,7,Clopilet A 75 Capsule,Aspirin + Clopidogrel,,capsule,,N/A,N/A
+16,calpol 500 sasta option kya milega,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,8,Clavilip 10 Capsule,Atorvastatin + Clopidogrel,,capsule,,N/A,N/A
+16,calpol 500 sasta option kya milega,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,9,Calpol 120mg Suspension Strawberry,Paracetamol,120 mg/5ml,suspension,,N/A,N/A
+16,calpol 500 sasta option kya milega,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,10,Clopilet A 150 Capsule,Aspirin + Clopidogrel,,capsule,,N/A,N/A
+16,calpol 500 sasta option kya milega,NEEDS_HUMAN_REVIEW,false,ours_ngram_parametric,char_2gram_3gram_cosine,,,,,,,N/A,N/A
+17,azithral 500 ki generic dawai,NEEDS_HUMAN_REVIEW,false,exact,unranked_corpus_order,,,,,,,N/A,N/A
+17,azithral 500 ki generic dawai,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,1,Azithral 500 Tablet,Azithromycin,500 mg,tablet,,N/A,N/A
+17,azithral 500 ki generic dawai,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,2,Azithral 200 Liquid,Azithromycin,200 mg/5ml,suspension,,N/A,N/A
+17,azithral 500 ki generic dawai,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,3,Aztor 10 Tablet,Atorvastatin,10 mg,tablet,,N/A,N/A
+17,azithral 500 ki generic dawai,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,4,Acitrom 2 Tablet,Acenocoumarol,2 mg,tablet,,N/A,N/A
+17,azithral 500 ki generic dawai,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,5,Acitrom 1 Tablet,Acenocoumarol,1 mg,tablet,,N/A,N/A
+17,azithral 500 ki generic dawai,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,6,Azithral XL 200 Liquid,Azithromycin,200 mg/5ml,suspension,,N/A,N/A
+17,azithral 500 ki generic dawai,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,7,Aztor 40 Tablet,Atorvastatin,40 mg,tablet,,N/A,N/A
+17,azithral 500 ki generic dawai,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,8,Actrapid HM 100IU/ml Penfill,Human insulin,100 iu,injection,,N/A,N/A
+17,azithral 500 ki generic dawai,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,9,Azithral 100 Liquid,Azithromycin,20 mg/ml,suspension,,N/A,N/A
+17,azithral 500 ki generic dawai,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,10,Aztor 20 Tablet,Atorvastatin,20 mg,tablet,,N/A,N/A
+17,azithral 500 ki generic dawai,NEEDS_HUMAN_REVIEW,false,ours_ngram_parametric,char_2gram_3gram_cosine,,,,,,,N/A,N/A
+18,aciloc 150 sasta substitute batao,NEEDS_HUMAN_REVIEW,false,exact,unranked_corpus_order,,,,,,,N/A,N/A
+18,aciloc 150 sasta substitute batao,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,1,Aciloc 150 Tablet,Ranitidine,150 mg,tablet,,N/A,N/A
+18,aciloc 150 sasta substitute batao,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,2,Aciloc RD 20 Tablet,Domperidone + Omeprazole,,tablet,,N/A,N/A
+18,aciloc 150 sasta substitute batao,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,3,Aciloc 300 Tablet,Ranitidine,300 mg,tablet,,N/A,N/A
+18,aciloc 150 sasta substitute batao,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,4,Azulix 2 MF Tablet PR,Glimepiride + Metformin,,tablet,,N/A,N/A
+18,aciloc 150 sasta substitute batao,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,5,Azulix 1 MF Tablet PR,Glimepiride + Metformin,,tablet,,N/A,N/A
+18,aciloc 150 sasta substitute batao,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,6,Aciloc Injection,Ranitidine,25 mg,injection,,N/A,N/A
+18,aciloc 150 sasta substitute batao,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,7,Akilos-P Tablet,Aceclofenac + Paracetamol,,tablet,,N/A,N/A
+18,aciloc 150 sasta substitute batao,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,8,Azulix 2 MF Forte Tablet PR,Glimepiride + Metformin,,tablet,,N/A,N/A
+18,aciloc 150 sasta substitute batao,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,9,Akilos-SP Tablet,Aceclofenac + Paracetamol,,tablet,,N/A,N/A
+18,aciloc 150 sasta substitute batao,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,10,Azulix 1 Tablet,Glimepiride,1 mg,tablet,,N/A,N/A
+18,aciloc 150 sasta substitute batao,NEEDS_HUMAN_REVIEW,false,ours_ngram_parametric,char_2gram_3gram_cosine,,,,,,,N/A,N/A
+19,allegra 120 tablet ka generic alternative,NEEDS_HUMAN_REVIEW,false,exact,unranked_corpus_order,,,,,,,N/A,N/A
+19,allegra 120 tablet ka generic alternative,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,1,Allegra 120mg Tablet,Fexofenadine,120 mg,tablet,,N/A,N/A
+19,allegra 120 tablet ka generic alternative,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,2,Allegra-M Tablet,Fexofenadine + Montelukast,,tablet,,N/A,N/A
+19,allegra 120 tablet ka generic alternative,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,3,Allegra 180mg Tablet,Fexofenadine,180 mg,tablet,,N/A,N/A
+19,allegra 120 tablet ka generic alternative,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,4,Allegra Suspension Raspberry & Vanilla,Fexofenadine,30 mg/5ml,suspension,,N/A,N/A
+19,allegra 120 tablet ka generic alternative,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,5,Allegra Nasal Spray,Fluticasone Furoate,27.5 mcg,spray,,N/A,N/A
+19,allegra 120 tablet ka generic alternative,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,6,Alcros 100 Capsule,Itraconazole,100 mg,capsule,,N/A,N/A
+19,allegra 120 tablet ka generic alternative,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,7,Alzero M Tablet,Levocetirizine + Montelukast,,tablet,,N/A,N/A
+19,allegra 120 tablet ka generic alternative,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,8,Alcros 200 Capsule,Itraconazole,200 mg,capsule,,N/A,N/A
+19,allegra 120 tablet ka generic alternative,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,9,Alkarate Liquid,Disodium Hydrogen Citrate,1.37 gm/5ml,other,,N/A,N/A
+19,allegra 120 tablet ka generic alternative,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,10,Alcros SB 50 Capsule,Itraconazole,50 mg,capsule,,N/A,N/A
+19,allegra 120 tablet ka generic alternative,NEEDS_HUMAN_REVIEW,false,ours_ngram_parametric,char_2gram_3gram_cosine,,,,,,,N/A,N/A
+20,Pantosid 20,NEEDS_HUMAN_REVIEW,false,exact,unranked_corpus_order,,,,,,,N/A,N/A
+20,Pantosid 20,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,1,Pantocid DSR Capsule,Domperidone + Pantoprazole,,capsule,,N/A,N/A
+20,Pantosid 20,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,2,Pantocid Tablet,Pantoprazole,40 mg,tablet,,N/A,N/A
+20,Pantosid 20,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,3,Pantosec D SR Capsule,Domperidone + Pantoprazole,,capsule,,N/A,N/A
+20,Pantosid 20,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,4,Pantosec Tablet,Pantoprazole,40 mg,tablet,,N/A,N/A
+20,Pantosid 20,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,5,Pantakind-DSR Capsule,Domperidone + Pantoprazole,,capsule,,N/A,N/A
+20,Pantosid 20,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,6,Pantocid L Capsule SR,Levosulpiride + Pantoprazole,,capsule,,N/A,N/A
+20,Pantosid 20,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,7,Pantosec-D Tablet,Domperidone + Pantoprazole,,tablet,,N/A,N/A
+20,Pantosid 20,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,8,Pantakind Tablet,Pantoprazole,40 mg,tablet,,N/A,N/A
+20,Pantosid 20,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,9,Pantocid IT Capsule SR,Itopride + Pantoprazole,,capsule,,N/A,N/A
+20,Pantosid 20,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,10,Pantocid HP Combipack,Amoxycillin + Pantoprazole,,tablet,,N/A,N/A
+20,Pantosid 20,NEEDS_HUMAN_REVIEW,false,ours_ngram_parametric,char_2gram_3gram_cosine,,,,,,,N/A,N/A
+21,Aze 500,NEEDS_HUMAN_REVIEW,false,exact,unranked_corpus_order,,,,,,,N/A,N/A
+21,Aze 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,1,Azee 500 Tablet,Azithromycin,500 mg,tablet,,N/A,N/A
+21,Aze 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,2,Azee 200mg Dry Syrup,Azithromycin,200 mg/5ml,suspension,,N/A,N/A
+21,Aze 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,3,Ace Proxyvon Tablet,Aceclofenac + Paracetamol,,tablet,,N/A,N/A
+21,Aze 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,4,Azee 100mg Dry Syrup Peppermint,Azithromycin,100 mg/5ml,suspension,,N/A,N/A
+21,Aze 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,5,Ace-Proxyvon CR Tablet,Aceclofenac + Rabeprazole,,tablet,,N/A,N/A
+21,Aze 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,6,Azee 250 Tablet,Azithromycin,250 mg,tablet,,N/A,N/A
+21,Aze 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,7,Azee 500 Tablet,Azithromycin,500 mg,tablet,,N/A,N/A
+21,Aze 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,8,Azee XL 200mg Dry Syrup Peppermint,Azithromycin,200 mg/5ml,syrup,,N/A,N/A
+21,Aze 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,9,Aqua Ear Drop,Beclometasone + Lidocaine,,drops,,N/A,N/A
+21,Aze 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,10,Azi 500mg Tablet,Azithromycin,500 mg,tablet,,N/A,N/A
+21,Aze 500,NEEDS_HUMAN_REVIEW,false,ours_ngram_parametric,char_2gram_3gram_cosine,,,,,,,N/A,N/A
+22,PAN 40,VERIFIED_FROM_DATASET,true,exact,unranked_corpus_order,,,,,,,N/A,N/A
+22,PAN 40,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,1,PAN 40 Tablet,Pantoprazole,40 mg,tablet,,1,1
+22,PAN 40,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,2,Pan-D Capsule PR,Domperidone + Pantoprazole,,capsule,,0,0
+22,PAN 40,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,3,Pan Mps Oral Suspension Mint Sugar Free,Aluminium Hydroxide + Dimethicone,,suspension,,0,0
+22,PAN 40,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,4,PAN IV Injection,Pantoprazole,40 mg,injection,,0,0
+22,PAN 40,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,5,Pan-L Capsule SR,Levosulpiride + Pantoprazole,,capsule,,0,0
+22,PAN 40,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,6,PAN 20 Tablet,Pantoprazole,20 mg,tablet,,0,0
+22,PAN 40,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,7,Pam 500mg Injection,Pralidoxime,500 mg,injection,,0,0
+22,PAN 40,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,8,PAN 80mg Tablet,Pantoprazole,80 mg,tablet,,0,0
+22,PAN 40,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,9,Pan Mps O Oral Suspension Sugar Free,Aluminium Hydroxide + Oxetacaine,,suspension,,0,0
+22,PAN 40,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,10,Pan-IT Capsule SR,Itopride + Pantoprazole,,capsule,,0,0
+22,PAN 40,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,,,,,,,N/A,N/A
+23,Monosef 1gm,NEEDS_HUMAN_REVIEW,false,exact,unranked_corpus_order,,,,,,,N/A,N/A
+23,Monosef 1gm,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,1,Monocef-O 200 Tablet,Cefpodoxime Proxetil,200 mg,tablet,,N/A,N/A
+23,Monosef 1gm,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,2,Monocef 1gm Injection,Ceftriaxone,1 gm,injection,,N/A,N/A
+23,Monosef 1gm,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,3,Monocef-O CV 200/125 Tablet,Cefpodoxime Proxetil + Clavulanic Acid,,tablet,,N/A,N/A
+23,Monosef 1gm,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,4,Monocef-SB 1g Injection,Ceftriaxone + Sulbactam,,injection,,N/A,N/A
+23,Monosef 1gm,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,5,Monocef-O 50 Oral Suspension,Cefpodoxime Proxetil,50 mg/5ml,suspension,,N/A,N/A
+23,Monosef 1gm,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,6,Monocef-O 100 Powder for Oral Suspension,Cefpodoxime Proxetil,100 mg/5ml,suspension,,N/A,N/A
+23,Monosef 1gm,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,7,Monocef-O CV 50/31.25 Dry Syrup,Cefpodoxime Proxetil + Clavulanic Acid,,suspension,,N/A,N/A
+23,Monosef 1gm,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,8,Monocef-O 100 Tablet,Cefpodoxime Proxetil,100 mg,tablet,,N/A,N/A
+23,Monosef 1gm,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,9,Monocef 500mg Injection,Ceftriaxone,500 mg,injection,,N/A,N/A
+23,Monosef 1gm,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,10,Mensovit Forte Tablet,Mifepristone,200 mg,tablet,,N/A,N/A
+23,Monosef 1gm,NEEDS_HUMAN_REVIEW,false,ours_ngram_parametric,char_2gram_3gram_cosine,1,trosef 1gm injection,ceftriaxone,1000 mg,injection,0.506640,N/A,N/A
+23,Monosef 1gm,NEEDS_HUMAN_REVIEW,false,ours_ngram_parametric,char_2gram_3gram_cosine,2,vyosef 1gm injection,ceftriaxone,1 gm,injection,0.506640,N/A,N/A
+24,Sifran 500,NEEDS_HUMAN_REVIEW,false,exact,unranked_corpus_order,,,,,,,N/A,N/A
+24,Sifran 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,1,Sporanox Capsule,Itraconazole,100 mg,capsule,,N/A,N/A
+24,Sifran 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,2,Supermet XL 50 Tablet,Metoprolol Succinate,47.5 mg,tablet,,N/A,N/A
+24,Sifran 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,3,Sporanox Capsule,Itraconazole,100 mg,capsule,,N/A,N/A
+24,Sifran 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,4,Spiromont-F Tablet,Fexofenadine + Montelukast,,tablet,,N/A,N/A
+24,Sifran 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,5,Supermet XL 25 Tablet,Metoprolol Succinate,23.75 mg,tablet,,N/A,N/A
+24,Sifran 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,6,Spiromide Tablet,Furosemide + Spironolactone,,tablet,,N/A,N/A
+24,Sifran 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,7,Spiromont B 20mg/10mg Tablet,Bilastine + Montelukast,,tablet,,N/A,N/A
+24,Sifran 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,8,Sprintas 100mg Capsule,Ciclosporin,100 mg,capsule,,N/A,N/A
+24,Sifran 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,9,Spiromont-F Tablet,Fexofenadine + Montelukast,,tablet,,N/A,N/A
+24,Sifran 500,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,10,Spiromont-FA Tablet SR,Fexofenadine + Montelukast,,tablet,,N/A,N/A
+24,Sifran 500,NEEDS_HUMAN_REVIEW,false,ours_ngram_parametric,char_2gram_3gram_cosine,,,,,,,N/A,N/A
+25,Augmentin 625 Duo Tablet,VERIFIED_FROM_DATASET,true,exact,unranked_corpus_order,1,Augmentin 625 Duo Tablet,Amoxycillin + Clavulanic Acid,,tablet,,1,1
+25,Augmentin 625 Duo Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,1,Augmentin 625 Duo Tablet,Amoxycillin + Clavulanic Acid,,tablet,,1,1
+25,Augmentin 625 Duo Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,2,Augmentin Duo Oral Suspension,Amoxycillin + Clavulanic Acid,,suspension,,0,0
+25,Augmentin 625 Duo Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,3,Augmentin DDS Suspension,Amoxycillin + Clavulanic Acid,,suspension,,0,0
+25,Augmentin 625 Duo Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,4,Augmentin 1000 Duo Tablet,Amoxycillin + Clavulanic Acid,,tablet,,0,1
+25,Augmentin 625 Duo Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,5,Augmentin 375 Tablet,Amoxycillin + Clavulanic Acid,,tablet,,0,1
+25,Augmentin 625 Duo Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,6,Augmentin 1.2gm Injection,Amoxycillin + Clavulanic Acid,,injection,,0,0
+25,Augmentin 625 Duo Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,7,Augmentin ES Oral Suspension,Amoxycillin + Clavulanic Acid,,suspension,,0,0
+25,Augmentin 625 Duo Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,8,Azenam 1gm Injection,Aztreonam,1 gm,injection,,0,0
+25,Augmentin 625 Duo Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,9,Augmentin 250mg/50mg Injection,Amoxycillin + Clavulanic Acid,,injection,,0,0
+25,Augmentin 625 Duo Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,10,Agmamol 500mg Tablet,Paracetamol,500 mg,tablet,,0,0
+25,Augmentin 625 Duo Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,,,,,,,N/A,N/A
+26,Combiflam Tablet,VERIFIED_FROM_DATASET,true,exact,unranked_corpus_order,1,Combiflam Tablet,Ibuprofen + Paracetamol,,tablet,,1,1
+26,Combiflam Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,1,Combiflam Tablet,Ibuprofen + Paracetamol,,tablet,,1,1
+26,Combiflam Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,2,Combiflam Suspension,Ibuprofen + Paracetamol,,suspension,,0,0
+26,Combiflam Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,3,Combipat Ophthalmic Solution,Ketorolac + Olopatadine,,solution,,0,0
+26,Combiflam Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,4,Combipara-T Tablet,Aceclofenac + Thiocolchicoside,,tablet,,0,0
+26,Combiflam Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,5,Combipara-SP Tablet,Aceclofenac + Paracetamol,,tablet,,0,0
+26,Combiflam Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,6,Combipara Tablet,Aceclofenac + Paracetamol,,tablet,,0,0
+26,Combiflam Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,7,Combipara TR Tablet,Aceclofenac + Paracetamol,,tablet,,0,0
+26,Combiflam Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,8,Combipain 400mg/325mg Tablet,Ibuprofen + Paracetamol,,tablet,,0,1
+26,Combiflam Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,9,Combipara-T8 Tablet,Aceclofenac + Thiocolchicoside,,tablet,,0,0
+26,Combiflam Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,10,Combiflox 500 mg/600 mg Tablet,Ciprofloxacin + Tinidazole,,tablet,,0,0
+26,Combiflam Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,,,,,,,N/A,N/A
+27,Ascoril LS Syrup,VERIFIED_FROM_DATASET,true,exact,unranked_corpus_order,1,Ascoril LS Syrup,Ambroxol + Levosalbutamol,,syrup,,1,1
+27,Ascoril LS Syrup,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,1,Ascoril LS Syrup,Ambroxol + Levosalbutamol,,syrup,,1,1
+27,Ascoril LS Syrup,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,2,Ascoril D Plus Syrup Sugar Free,Chlorpheniramine Maleate + Phenylephrine,,syrup,,0,0
+27,Ascoril LS Syrup,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,3,Ascoril LS Junior Syrup,Ambroxol + Levosalbutamol,,syrup,,0,1
+27,Ascoril LS Syrup,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,4,Ascoril LS Drops,Ambroxol + Levosalbutamol,,drops,,0,0
+27,Ascoril LS Syrup,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,5,Ascoril D Junior Cough Syrup,Chlorpheniramine Maleate + Phenylephrine,,syrup,,0,0
+27,Ascoril LS Syrup,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,6,Ascoril SF Expectorant,Guaifenesin + Terbutaline,,other,,0,0
+27,Ascoril LS Syrup,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,7,Ascoril C Syrup,Chlorpheniramine Maleate + Codeine,,syrup,,0,0
+27,Ascoril LS Syrup,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,8,Ascoril Plus Expectorant,Bromhexine + Guaifenesin,,other,,0,0
+27,Ascoril LS Syrup,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,9,Ascoril Flu Drops,Chlorpheniramine Maleate + Phenylephrine,,drops,,0,0
+27,Ascoril LS Syrup,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,10,Ascoril Plus Expectorant Ginger Lemon,Bromhexine + Guaifenesin,,other,,0,0
+27,Ascoril LS Syrup,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,,,,,,,N/A,N/A
+28,Allegra-M Tablet,VERIFIED_FROM_DATASET,true,exact,unranked_corpus_order,1,Allegra-M Tablet,Fexofenadine + Montelukast,,tablet,,1,1
+28,Allegra-M Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,1,Allegra 120mg Tablet,Fexofenadine,120 mg,tablet,,0,0
+28,Allegra-M Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,2,Allegra-M Tablet,Fexofenadine + Montelukast,,tablet,,1,1
+28,Allegra-M Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,3,Allegra 180mg Tablet,Fexofenadine,180 mg,tablet,,0,0
+28,Allegra-M Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,4,Allegra Suspension Raspberry & Vanilla,Fexofenadine,30 mg/5ml,suspension,,0,0
+28,Allegra-M Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,5,Allegra Nasal Spray,Fluticasone Furoate,27.5 mcg,spray,,0,0
+28,Allegra-M Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,6,Alcros 100 Capsule,Itraconazole,100 mg,capsule,,0,0
+28,Allegra-M Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,7,Alzero M Tablet,Levocetirizine + Montelukast,,tablet,,0,0
+28,Allegra-M Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,8,Alcros 200 Capsule,Itraconazole,200 mg,capsule,,0,0
+28,Allegra-M Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,9,Alkarate Liquid,Disodium Hydrogen Citrate,1.37 gm/5ml,other,,0,0
+28,Allegra-M Tablet,VERIFIED_FROM_DATASET,true,soundex,unranked_corpus_order,10,Alcros SB 50 Capsule,Itraconazole,50 mg,capsule,,0,0
+28,Allegra-M Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,1,allegra 120mg tablet,fexofenadine,120 mg,tablet,0.548177,0,0
+28,Allegra-M Tablet,VERIFIED_FROM_DATASET,true,ours_ngram_parametric,char_2gram_3gram_cosine,2,allegra 180mg tablet,fexofenadine,180 mg,tablet,0.548177,0,0
+29,augmentin 625 sasta option,NEEDS_HUMAN_REVIEW,false,exact,unranked_corpus_order,,,,,,,N/A,N/A
+29,augmentin 625 sasta option,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,1,Augmentin 625 Duo Tablet,Amoxycillin + Clavulanic Acid,,tablet,,N/A,N/A
+29,augmentin 625 sasta option,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,2,Augmentin Duo Oral Suspension,Amoxycillin + Clavulanic Acid,,suspension,,N/A,N/A
+29,augmentin 625 sasta option,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,3,Augmentin DDS Suspension,Amoxycillin + Clavulanic Acid,,suspension,,N/A,N/A
+29,augmentin 625 sasta option,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,4,Augmentin 1000 Duo Tablet,Amoxycillin + Clavulanic Acid,,tablet,,N/A,N/A
+29,augmentin 625 sasta option,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,5,Augmentin 375 Tablet,Amoxycillin + Clavulanic Acid,,tablet,,N/A,N/A
+29,augmentin 625 sasta option,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,6,Augmentin 1.2gm Injection,Amoxycillin + Clavulanic Acid,,injection,,N/A,N/A
+29,augmentin 625 sasta option,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,7,Augmentin ES Oral Suspension,Amoxycillin + Clavulanic Acid,,suspension,,N/A,N/A
+29,augmentin 625 sasta option,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,8,Azenam 1gm Injection,Aztreonam,1 gm,injection,,N/A,N/A
+29,augmentin 625 sasta option,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,9,Augmentin 250mg/50mg Injection,Amoxycillin + Clavulanic Acid,,injection,,N/A,N/A
+29,augmentin 625 sasta option,NEEDS_HUMAN_REVIEW,false,soundex,unranked_corpus_order,10,Agmamol 500mg Tablet,Paracetamol,500 mg,tablet,,N/A,N/A
+29,augmentin 625 sasta option,NEEDS_HUMAN_REVIEW,false,ours_ngram_parametric,char_2gram_3gram_cosine,,,,,,,N/A,N/A
