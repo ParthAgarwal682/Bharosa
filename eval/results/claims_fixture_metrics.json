@@ -1,0 +1,18 @@
+{
+  "final": false,
+  "mode": "MOCK_FIXTURE",
+  "status": "NOT FINAL \u2014 fixture data",
+  "config": {
+    "refusal_score_threshold": 0.15,
+    "citation_threshold": 0.25,
+    "min_retrieval_score": 0.05,
+    "model": null,
+    "query_count": 5,
+    "run_date": "2026-10-07T00:59:24.520396+00:00"
+  },
+  "warning": "Draft rows (human_reviewed!=yes) are not gold labels. AI-generated or unreviewed labels must not be reported as ground truth.",
+  "reviewed_metrics": null,
+  "reviewed_note": "INSUFFICIENT INFORMATION \u2014 no human-reviewed labels",
+  "unreviewed_count": 5,
+  "total_rows_processed": 5
+}

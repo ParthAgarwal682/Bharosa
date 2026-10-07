@@ -1,0 +1,6 @@
+message,label,source_note,origin,human_reviewed
+"pay Rs 500 to activate free health card",CONTRADICTED,"AI-drafted against fixture text, not a real scheme page: Fixture benefits zone says no registration fee",AI_DRAFTED,NEEDS_HUMAN_REVIEW
+"Ayushman card is free with no registration fee",SUPPORTED,"AI-drafted against fixture text, not a real scheme page: Fixture benefits zone says no registration fee",AI_DRAFTED,NEEDS_HUMAN_REVIEW
+"pay ₹1000 charge before hospital admission under the scheme",CONTRADICTED,"AI-drafted against fixture text, not a real scheme page: Fixture benefits zone contradicts a required fee",AI_DRAFTED,NEEDS_HUMAN_REVIEW
+"hello how are you today",NO_CLAIM_FOUND,"AI-drafted against fixture text, not a real scheme page: CONTROL — expect no_claim_found at runtime; label placeholder not gold",AI_DRAFTED,NEEDS_HUMAN_REVIEW
+"Last date to register is 01-01-2099 or lose cover",INSUFFICIENT_EVIDENCE,"AI-drafted against fixture text, not a real scheme page: No deadline in fixtures — expect insufficient until real pages exist",AI_DRAFTED,NEEDS_HUMAN_REVIEW

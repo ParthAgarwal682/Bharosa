@@ -214,12 +214,14 @@ class Fetcher:
         self._last_fetch_times.clear()
 
     def _enforce_politeness_delay(
-        self, origin: str, extra_delay: float | None
+        self, origin: str, extra_delay: float | None = None, min_override: float | None = None
     ) -> float:
-        """Sleep if necessary to respect min_delay_seconds and robots.txt Crawl-delay."""
+        """Sleep if necessary to respect min_delay_seconds, robots.txt Crawl-delay, and retry backoffs."""
         required_delay = self.min_delay_seconds
         if extra_delay is not None:
             required_delay = max(required_delay, extra_delay)
+        if min_override is not None:
+            required_delay = max(required_delay, min_override)
 
         now = time.time()
         last_time = self._last_fetch_times.get(origin, 0.0)
@@ -291,18 +293,14 @@ class Fetcher:
                 retries_used=0,
             )
 
-        # 2. Enforce politeness rate limiting
-        if enforce_delay:
-            self._enforce_politeness_delay(origin, crawl_delay)
-
-        # 3. Build HTTP request headers
+        # 2. Build HTTP request headers
         req_headers = {"User-Agent": self.user_agent}
         if etag:
             req_headers["If-None-Match"] = etag
         if last_modified:
             req_headers["If-Modified-Since"] = last_modified
 
-        # 4. Perform HTTP GET with bounded retry policy
+        # 3. Perform HTTP GET with bounded retry policy and host politeness delay
         start_time = time.time()
         retries_used = 0
         last_error_msg: str | None = None
@@ -310,8 +308,16 @@ class Fetcher:
         for attempt in range(self.max_retries + 1):
             if attempt > 0:
                 retries_used += 1
-                sleep_time = self.backoff_factor * (2 ** (attempt - 1))
-                time.sleep(sleep_time)
+                backoff_delay = self.backoff_factor * (2 ** (attempt - 1))
+                if enforce_delay:
+                    self._enforce_politeness_delay(
+                        origin, crawl_delay, min_override=backoff_delay
+                    )
+                elif backoff_delay > 0.0:
+                    time.sleep(backoff_delay)
+            else:
+                if enforce_delay:
+                    self._enforce_politeness_delay(origin, crawl_delay)
 
             try:
                 response = self.session.get(

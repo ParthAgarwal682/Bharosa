@@ -1,0 +1,7 @@
+metric,value,reason
+precision_contradicted,N/A,Precision and recall are undefined. 0 of 5 rows have human_reviewed=yes. 5 rows have origin AI_DRAFTED. Even a fully reviewed set of 5 messages would be too small for a stable estimate.
+recall_contradicted,N/A,Precision and recall are undefined. 0 of 5 rows have human_reviewed=yes. 5 rows have origin AI_DRAFTED. Even a fully reviewed set of 5 messages would be too small for a stable estimate.
+keyword_baseline_precision,N/A,No separate keyword-baseline claim checker is implemented.
+n_rows,5,
+n_human_reviewed_yes,0,
+n_ai_drafted,5,AI-generated rows are marked for human review and are not gold.
