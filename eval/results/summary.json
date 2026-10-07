@@ -166,7 +166,7 @@
       "gold_identity": "A hit is relevant when normalised salt, strength value, strength unit, and dosage form equal the verified gold fields. An empty gold strength matches rows with no scalar strength. The denominator is the number of accepted rows with that identity."
     },
     "ours_k": 10,
-    "elapsed_seconds": 816.6314142000047,
+    "elapsed_seconds": 926.8041968999896,
     "metric_rows": [
       {
         "method": "exact",
