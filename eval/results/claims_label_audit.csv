@@ -1,0 +1,6 @@
+message,draft_label,origin,human_reviewed,used_for_precision_recall,reason
+pay Rs 500 to activate free health card,CONTRADICTED,AI_DRAFTED,NEEDS_HUMAN_REVIEW,false,"Marked for human review. AI-drafted and unreviewed labels are not gold, so precision and recall skip this row."
+Ayushman card is free with no registration fee,SUPPORTED,AI_DRAFTED,NEEDS_HUMAN_REVIEW,false,"Marked for human review. AI-drafted and unreviewed labels are not gold, so precision and recall skip this row."
+pay ₹1000 charge before hospital admission under the scheme,CONTRADICTED,AI_DRAFTED,NEEDS_HUMAN_REVIEW,false,"Marked for human review. AI-drafted and unreviewed labels are not gold, so precision and recall skip this row."
+hello how are you today,NO_CLAIM_FOUND,AI_DRAFTED,NEEDS_HUMAN_REVIEW,false,"Marked for human review. AI-drafted and unreviewed labels are not gold, so precision and recall skip this row."
+Last date to register is 01-01-2099 or lose cover,INSUFFICIENT_EVIDENCE,AI_DRAFTED,NEEDS_HUMAN_REVIEW,false,"Marked for human review. AI-drafted and unreviewed labels are not gold, so precision and recall skip this row."

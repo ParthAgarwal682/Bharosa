@@ -1,0 +1,12 @@
+row_id,query,gold_brand_relevant_at_rank_1,top1_brand,top1_strength,top1_form,top1_score,notes
+1,Dolo 650 Tablet,0,,,,,Exact brand query
+3,Azithral 500 Tablet,0,azithral 5d tablet,500 mg,tablet,0.669534,Exact brand query
+9,Dolo 650,0,,,,,Brand + strength query
+10,Azithral 500,0,azithral 5d tablet,500 mg,tablet,0.669534,Brand + strength query
+12,Avil 25,0,,,,,Brand + strength query
+14,Zifi 200,0,,,,,Brand + strength query
+22,PAN 40,0,,,,,Phonetic/Soundex matching (Exact short token P500)
+25,Augmentin 625 Duo Tablet,0,,,,,Combination medicine exact query
+26,Combiflam Tablet,0,,,,,Combination medicine exact query
+27,Ascoril LS Syrup,0,,,,,Combination medicine exact query
+28,Allegra-M Tablet,0,allegra 120mg tablet,120 mg,tablet,0.548177,Combination medicine exact query

@@ -1,0 +1,25 @@
+{
+  "final": false,
+  "mode": "MOCK_FIXTURE",
+  "status": "NOT FINAL \u2014 fixture data",
+  "built_in_by_fake_llm": true,
+  "config": {
+    "refusal_score_threshold": 0.15,
+    "citation_threshold": 0.25,
+    "min_retrieval_score": 0.05,
+    "model": "_EvalFakeLLM",
+    "query_count": 4,
+    "run_date": "2026-10-07T00:59:24.518916+00:00"
+  },
+  "warning": "Results use hand-written mock_fixture zones and FakeLLM. Do not cite these as live crawl / production evaluation.",
+  "sentences_total": 3,
+  "sentences_supported": 2,
+  "pct_sentences_supported": 66.66666666666667,
+  "refusal_count": 3,
+  "refusal_denom": 3,
+  "refusal_rate_pct": 100.0,
+  "citation_flags": {
+    "ok": 2,
+    "unsupported": 1
+  }
+}

@@ -1,0 +1,613 @@
+{
+  "command": "python eval/run_eval.py",
+  "tuned_on_this_run": false,
+  "medicine_min_brand_cosine": 0.5,
+  "medicine_threshold_source": "bharosa.medicine.search.MIN_BRAND_COSINE",
+  "inputs": {
+    "medicine_csv": "C:\\Users\\parid\\Downloads\\BHAROSA\\data\\medicines\\indian_pharmaceutical_products_clean.csv",
+    "medicine_queries": "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\medicine_queries.csv",
+    "claims_csv": "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\claims.csv",
+    "eval_dir": "C:\\Users\\parid\\Downloads\\BHAROSA\\eval",
+    "data_dir": "C:\\Users\\parid\\Downloads\\BHAROSA\\data"
+  },
+  "dataset": [
+    {
+      "name": "medicine_source_rows",
+      "value": 253973
+    },
+    {
+      "name": "medicine_accepted_records",
+      "value": 235155
+    },
+    {
+      "name": "medicine_dropped_rows",
+      "value": 18818
+    },
+    {
+      "name": "medicine_duplicate_rows",
+      "value": 153
+    },
+    {
+      "name": "medicine_drop_discontinued",
+      "value": 7905
+    },
+    {
+      "name": "medicine_drop_duplicate_record",
+      "value": 153
+    },
+    {
+      "name": "medicine_drop_invalid_price",
+      "value": 4
+    },
+    {
+      "name": "medicine_drop_unparseable_strength",
+      "value": 10756
+    },
+    {
+      "name": "medicine_queries",
+      "value": 29
+    },
+    {
+      "name": "medicine_verified",
+      "value": 15
+    },
+    {
+      "name": "medicine_needs_human_review",
+      "value": 14
+    },
+    {
+      "name": "medicine_other_status",
+      "value": 0
+    },
+    {
+      "name": "medicine_scored_brand",
+      "value": 15
+    },
+    {
+      "name": "medicine_excluded_brand_not_in_corpus",
+      "value": 0
+    },
+    {
+      "name": "medicine_misspelling_or_hinglish_scored",
+      "value": 0
+    },
+    {
+      "name": "scheme_queries",
+      "value": 0
+    },
+    {
+      "name": "scheme_qrel_pairs",
+      "value": 0
+    },
+    {
+      "name": "scheme_zones",
+      "value": 0
+    },
+    {
+      "name": "crawled_pages",
+      "value": 9
+    },
+    {
+      "name": "crawled_html_files",
+      "value": 9
+    },
+    {
+      "name": "crawled_changes",
+      "value": 0
+    },
+    {
+      "name": "snapshot_files",
+      "value": 0
+    },
+    {
+      "name": "hinglish_lexicon_present",
+      "value": false
+    },
+    {
+      "name": "net_weights_present",
+      "value": false
+    },
+    {
+      "name": "claims_rows",
+      "value": 5
+    },
+    {
+      "name": "claims_human_reviewed_yes",
+      "value": 0
+    },
+    {
+      "name": "claims_ai_drafted",
+      "value": 5
+    },
+    {
+      "name": "rag_human_judgements",
+      "value": 0
+    }
+  ],
+  "limitations": [
+    "Scored medicine queries: 15. A stable estimate needs on the order of 30 judged queries. This set is too small.",
+    "Scored queries whose notes mention a misspelling or Hinglish: 0. 14 rows marked NEEDS_HUMAN_REVIEW are stored for human review and are left out of the averages.",
+    "Scheme P@k, recall, and ablation delta P@5 are undefined. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_queries.csv is absent. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_qrels.csv is absent. No zone-document file at C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl, C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl. The crawl database has 9 pages. Those pages are not a zone corpus and have no relevance labels. The reviewed Hinglish lexicon is absent at C:\\Users\\parid\\Downloads\\BHAROSA\\config\\hinglish_lexicon.csv. C:\\Users\\parid\\Downloads\\BHAROSA\\config\\net_weights.json is absent. Net-score coefficients are not chosen in this run.",
+    "Precision and recall are undefined. 0 of 5 rows have human_reviewed=yes. 5 rows have origin AI_DRAFTED. Even a fully reviewed set of 5 messages would be too small for a stable estimate.",
+    "Human judgements of citation support, refusal, and answer correctness are absent. Looked for C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\rag_judgements.csv, C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\rag_labels.csv, C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\oos_queries.csv, C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\answer_judgements.csv.",
+    "C:\\Users\\parid\\Downloads\\BHAROSA\\data\\snapshots has no archived page snapshots. Changes caught and mean staleness are undefined. This run does not simulate page changes."
+  ],
+  "medicine": {
+    "n_queries": 29,
+    "n_verified": 15,
+    "n_needs_human_review": 14,
+    "n_scored_brand": 15,
+    "n_scored_identity_by_method": {
+      "exact": 15,
+      "soundex": 15,
+      "ours_ngram_parametric": 15
+    },
+    "n_excluded_brand_not_in_corpus": 0,
+    "n_misspelling_or_hinglish_scored": 0,
+    "label_status_counts": {
+      "VERIFIED_FROM_DATASET": 15,
+      "NEEDS_HUMAN_REVIEW": 14
+    },
+    "accepted_records": 235155,
+    "load_stats": {
+      "total_rows": 253973,
+      "accepted_rows": 235155,
+      "dropped_rows": 18818,
+      "duplicate_counts": 153,
+      "reason_counts": {
+        "discontinued": 7905,
+        "unparseable_strength": 10756,
+        "duplicate_record": 153,
+        "invalid_price": 4
+      }
+    },
+    "relevance": {
+      "gold_brand": "A hit is relevant when its normalised brand equals the verified gold_brand. The denominator of recall is the number of accepted corpus rows with that brand.",
+      "gold_identity": "A hit is relevant when normalised salt, strength value, strength unit, and dosage form equal the verified gold fields. An empty gold strength matches rows with no scalar strength. The denominator is the number of accepted rows with that identity."
+    },
+    "ours_k": 10,
+    "elapsed_seconds": 816.6314142000047,
+    "metric_rows": [
+      {
+        "method": "exact",
+        "available": true,
+        "relevance": "gold_brand",
+        "rank_basis": "unranked_corpus_order",
+        "list_policy": "full_unranked_list",
+        "n_queries_scored": 15,
+        "top1_accuracy": 0.5333333333333333,
+        "P@5": 0.10666666666666667,
+        "P@10": 0.05333333333333334,
+        "recall@5": 0.5333333333333333,
+        "recall@10": 0.5333333333333333,
+        "set_precision": 0.5333333333333333,
+        "set_recall": 0.5333333333333333,
+        "reason": "Macro average over scored queries. Rank basis: unranked_corpus_order. List: full_unranked_list."
+      },
+      {
+        "method": "exact",
+        "available": true,
+        "relevance": "gold_identity",
+        "rank_basis": "unranked_corpus_order",
+        "list_policy": "full_unranked_list",
+        "n_queries_scored": 15,
+        "top1_accuracy": 0.5333333333333333,
+        "P@5": 0.10666666666666667,
+        "P@10": 0.05333333333333334,
+        "recall@5": 0.0013535154497966598,
+        "recall@10": 0.0013535154497966598,
+        "set_precision": 0.5333333333333333,
+        "set_recall": 0.0013535154497966598,
+        "reason": "Macro average over scored queries. Rank basis: unranked_corpus_order. List: full_unranked_list."
+      },
+      {
+        "method": "soundex",
+        "available": true,
+        "relevance": "gold_brand",
+        "rank_basis": "unranked_corpus_order",
+        "list_policy": "full_unranked_list",
+        "n_queries_scored": 15,
+        "top1_accuracy": 0.8666666666666667,
+        "P@5": 0.2,
+        "P@10": 0.1,
+        "recall@5": 1.0,
+        "recall@10": 1.0,
+        "set_precision": 0.010812612175340245,
+        "set_recall": 1.0,
+        "reason": "Macro average over scored queries. Rank basis: unranked_corpus_order. List: full_unranked_list."
+      },
+      {
+        "method": "soundex",
+        "available": true,
+        "relevance": "gold_identity",
+        "rank_basis": "unranked_corpus_order",
+        "list_policy": "full_unranked_list",
+        "n_queries_scored": 15,
+        "top1_accuracy": 0.8666666666666667,
+        "P@5": 0.24000000000000002,
+        "P@10": 0.12666666666666668,
+        "recall@5": 0.03677489499253331,
+        "recall@10": 0.03700963677657087,
+        "set_precision": 0.056373194412985835,
+        "set_recall": 0.04468028205235863,
+        "reason": "Macro average over scored queries. Rank basis: unranked_corpus_order. List: full_unranked_list."
+      },
+      {
+        "method": "ours_ngram_parametric",
+        "available": true,
+        "relevance": "gold_brand",
+        "rank_basis": "char_2gram_3gram_cosine",
+        "list_policy": "top_10_by_cosine",
+        "n_queries_scored": 15,
+        "top1_accuracy": 0.26666666666666666,
+        "P@5": 0.08000000000000002,
+        "P@10": 0.04000000000000001,
+        "recall@5": 0.4,
+        "recall@10": 0.4,
+        "set_precision": 0.04000000000000001,
+        "set_recall": 0.4,
+        "reason": "Macro average over scored queries. Rank basis: char_2gram_3gram_cosine. List: top_10_by_cosine."
+      },
+      {
+        "method": "ours_ngram_parametric",
+        "available": true,
+        "relevance": "gold_identity",
+        "rank_basis": "char_2gram_3gram_cosine",
+        "list_policy": "top_10_by_cosine",
+        "n_queries_scored": 15,
+        "top1_accuracy": 0.4,
+        "P@5": 0.4,
+        "P@10": 0.4,
+        "recall@5": 0.012889936697580368,
+        "recall@10": 0.025779873395160736,
+        "set_precision": 0.4,
+        "set_recall": 0.025779873395160736,
+        "reason": "Macro average over scored queries. Rank basis: char_2gram_3gram_cosine. List: top_10_by_cosine."
+      },
+      {
+        "method": "brand_token_tfidf",
+        "available": false,
+        "relevance": "N/A",
+        "rank_basis": "",
+        "list_policy": "",
+        "n_queries_scored": 0,
+        "top1_accuracy": "N/A",
+        "P@5": "N/A",
+        "P@10": "N/A",
+        "recall@5": "N/A",
+        "recall@10": "N/A",
+        "set_precision": "N/A",
+        "set_recall": "N/A",
+        "reason": "bharosa.medicine.baselines has no brand-token tf-idf matcher. P@k and recall are undefined for that system."
+      },
+      {
+        "method": "brand_bm25",
+        "available": false,
+        "relevance": "N/A",
+        "rank_basis": "",
+        "list_policy": "",
+        "n_queries_scored": 0,
+        "top1_accuracy": "N/A",
+        "P@5": "N/A",
+        "P@10": "N/A",
+        "recall@5": "N/A",
+        "recall@10": "N/A",
+        "set_precision": "N/A",
+        "set_recall": "N/A",
+        "reason": "bharosa.medicine.baselines has no brand BM25 matcher. P@k and recall are undefined for that system."
+      }
+    ],
+    "n_failures_ours_brand_top1": 11
+  },
+  "scheme": {
+    "ran": false,
+    "n_scheme_queries": 0,
+    "n_qrel_pairs": 0,
+    "n_zones": 0,
+    "bm25_parameters": {
+      "k1": 1.5,
+      "b": 0.75,
+      "epsilon": 0.25,
+      "source": "rank_bm25.BM25Okapi constructor defaults",
+      "fit_on_labels": false,
+      "used_in_this_run": false
+    },
+    "metric_rows": [
+      {
+        "system": "plain_tfidf",
+        "metric": "top1",
+        "value": "N/A",
+        "n_queries": 0,
+        "reason": "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_queries.csv is absent. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_qrels.csv is absent. No zone-document file at C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl, C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl. The crawl database has 9 pages. Those pages are not a zone corpus and have no relevance labels."
+      },
+      {
+        "system": "plain_tfidf",
+        "metric": "P@5",
+        "value": "N/A",
+        "n_queries": 0,
+        "reason": "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_queries.csv is absent. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_qrels.csv is absent. No zone-document file at C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl, C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl. The crawl database has 9 pages. Those pages are not a zone corpus and have no relevance labels."
+      },
+      {
+        "system": "plain_tfidf",
+        "metric": "P@10",
+        "value": "N/A",
+        "n_queries": 0,
+        "reason": "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_queries.csv is absent. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_qrels.csv is absent. No zone-document file at C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl, C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl. The crawl database has 9 pages. Those pages are not a zone corpus and have no relevance labels."
+      },
+      {
+        "system": "plain_tfidf",
+        "metric": "recall@5",
+        "value": "N/A",
+        "n_queries": 0,
+        "reason": "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_queries.csv is absent. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_qrels.csv is absent. No zone-document file at C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl, C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl. The crawl database has 9 pages. Those pages are not a zone corpus and have no relevance labels."
+      },
+      {
+        "system": "plain_tfidf",
+        "metric": "recall@10",
+        "value": "N/A",
+        "n_queries": 0,
+        "reason": "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_queries.csv is absent. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_qrels.csv is absent. No zone-document file at C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl, C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl. The crawl database has 9 pages. Those pages are not a zone corpus and have no relevance labels."
+      },
+      {
+        "system": "plain_tfidf",
+        "metric": "set_precision",
+        "value": "N/A",
+        "n_queries": 0,
+        "reason": "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_queries.csv is absent. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_qrels.csv is absent. No zone-document file at C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl, C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl. The crawl database has 9 pages. Those pages are not a zone corpus and have no relevance labels."
+      },
+      {
+        "system": "plain_tfidf",
+        "metric": "set_recall",
+        "value": "N/A",
+        "n_queries": 0,
+        "reason": "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_queries.csv is absent. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_qrels.csv is absent. No zone-document file at C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl, C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl. The crawl database has 9 pages. Those pages are not a zone corpus and have no relevance labels."
+      },
+      {
+        "system": "bm25",
+        "metric": "top1",
+        "value": "N/A",
+        "n_queries": 0,
+        "reason": "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_queries.csv is absent. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_qrels.csv is absent. No zone-document file at C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl, C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl. The crawl database has 9 pages. Those pages are not a zone corpus and have no relevance labels."
+      },
+      {
+        "system": "bm25",
+        "metric": "P@5",
+        "value": "N/A",
+        "n_queries": 0,
+        "reason": "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_queries.csv is absent. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_qrels.csv is absent. No zone-document file at C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl, C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl. The crawl database has 9 pages. Those pages are not a zone corpus and have no relevance labels."
+      },
+      {
+        "system": "bm25",
+        "metric": "P@10",
+        "value": "N/A",
+        "n_queries": 0,
+        "reason": "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_queries.csv is absent. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_qrels.csv is absent. No zone-document file at C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl, C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl. The crawl database has 9 pages. Those pages are not a zone corpus and have no relevance labels."
+      },
+      {
+        "system": "bm25",
+        "metric": "recall@5",
+        "value": "N/A",
+        "n_queries": 0,
+        "reason": "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_queries.csv is absent. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_qrels.csv is absent. No zone-document file at C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl, C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl. The crawl database has 9 pages. Those pages are not a zone corpus and have no relevance labels."
+      },
+      {
+        "system": "bm25",
+        "metric": "recall@10",
+        "value": "N/A",
+        "n_queries": 0,
+        "reason": "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_queries.csv is absent. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_qrels.csv is absent. No zone-document file at C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl, C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl. The crawl database has 9 pages. Those pages are not a zone corpus and have no relevance labels."
+      },
+      {
+        "system": "bm25",
+        "metric": "set_precision",
+        "value": "N/A",
+        "n_queries": 0,
+        "reason": "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_queries.csv is absent. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_qrels.csv is absent. No zone-document file at C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl, C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl. The crawl database has 9 pages. Those pages are not a zone corpus and have no relevance labels."
+      },
+      {
+        "system": "bm25",
+        "metric": "set_recall",
+        "value": "N/A",
+        "n_queries": 0,
+        "reason": "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_queries.csv is absent. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_qrels.csv is absent. No zone-document file at C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl, C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl. The crawl database has 9 pages. Those pages are not a zone corpus and have no relevance labels."
+      },
+      {
+        "system": "enhanced",
+        "metric": "top1",
+        "value": "N/A",
+        "n_queries": 0,
+        "reason": "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_queries.csv is absent. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_qrels.csv is absent. No zone-document file at C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl, C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl. The crawl database has 9 pages. Those pages are not a zone corpus and have no relevance labels. The reviewed Hinglish lexicon is absent at C:\\Users\\parid\\Downloads\\BHAROSA\\config\\hinglish_lexicon.csv. C:\\Users\\parid\\Downloads\\BHAROSA\\config\\net_weights.json is absent. Net-score coefficients are not chosen in this run."
+      },
+      {
+        "system": "enhanced",
+        "metric": "P@5",
+        "value": "N/A",
+        "n_queries": 0,
+        "reason": "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_queries.csv is absent. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_qrels.csv is absent. No zone-document file at C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl, C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl. The crawl database has 9 pages. Those pages are not a zone corpus and have no relevance labels. The reviewed Hinglish lexicon is absent at C:\\Users\\parid\\Downloads\\BHAROSA\\config\\hinglish_lexicon.csv. C:\\Users\\parid\\Downloads\\BHAROSA\\config\\net_weights.json is absent. Net-score coefficients are not chosen in this run."
+      },
+      {
+        "system": "enhanced",
+        "metric": "P@10",
+        "value": "N/A",
+        "n_queries": 0,
+        "reason": "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_queries.csv is absent. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_qrels.csv is absent. No zone-document file at C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl, C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl. The crawl database has 9 pages. Those pages are not a zone corpus and have no relevance labels. The reviewed Hinglish lexicon is absent at C:\\Users\\parid\\Downloads\\BHAROSA\\config\\hinglish_lexicon.csv. C:\\Users\\parid\\Downloads\\BHAROSA\\config\\net_weights.json is absent. Net-score coefficients are not chosen in this run."
+      },
+      {
+        "system": "enhanced",
+        "metric": "recall@5",
+        "value": "N/A",
+        "n_queries": 0,
+        "reason": "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_queries.csv is absent. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_qrels.csv is absent. No zone-document file at C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl, C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl. The crawl database has 9 pages. Those pages are not a zone corpus and have no relevance labels. The reviewed Hinglish lexicon is absent at C:\\Users\\parid\\Downloads\\BHAROSA\\config\\hinglish_lexicon.csv. C:\\Users\\parid\\Downloads\\BHAROSA\\config\\net_weights.json is absent. Net-score coefficients are not chosen in this run."
+      },
+      {
+        "system": "enhanced",
+        "metric": "recall@10",
+        "value": "N/A",
+        "n_queries": 0,
+        "reason": "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_queries.csv is absent. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_qrels.csv is absent. No zone-document file at C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl, C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl. The crawl database has 9 pages. Those pages are not a zone corpus and have no relevance labels. The reviewed Hinglish lexicon is absent at C:\\Users\\parid\\Downloads\\BHAROSA\\config\\hinglish_lexicon.csv. C:\\Users\\parid\\Downloads\\BHAROSA\\config\\net_weights.json is absent. Net-score coefficients are not chosen in this run."
+      },
+      {
+        "system": "enhanced",
+        "metric": "set_precision",
+        "value": "N/A",
+        "n_queries": 0,
+        "reason": "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_queries.csv is absent. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_qrels.csv is absent. No zone-document file at C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl, C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl. The crawl database has 9 pages. Those pages are not a zone corpus and have no relevance labels. The reviewed Hinglish lexicon is absent at C:\\Users\\parid\\Downloads\\BHAROSA\\config\\hinglish_lexicon.csv. C:\\Users\\parid\\Downloads\\BHAROSA\\config\\net_weights.json is absent. Net-score coefficients are not chosen in this run."
+      },
+      {
+        "system": "enhanced",
+        "metric": "set_recall",
+        "value": "N/A",
+        "n_queries": 0,
+        "reason": "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_queries.csv is absent. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_qrels.csv is absent. No zone-document file at C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl, C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl. The crawl database has 9 pages. Those pages are not a zone corpus and have no relevance labels. The reviewed Hinglish lexicon is absent at C:\\Users\\parid\\Downloads\\BHAROSA\\config\\hinglish_lexicon.csv. C:\\Users\\parid\\Downloads\\BHAROSA\\config\\net_weights.json is absent. Net-score coefficients are not chosen in this run."
+      }
+    ]
+  },
+  "ablations": [
+    {
+      "component": "zone_weights",
+      "implemented": true,
+      "backed_by_labelled_data": false,
+      "metric": "delta_P@5",
+      "value": "N/A",
+      "reason": "Removing zone_weights is implemented as a search flag. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_queries.csv is absent. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_qrels.csv is absent. No zone-document file at C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl, C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl. The crawl database has 9 pages. Those pages are not a zone corpus and have no relevance labels. The reviewed Hinglish lexicon is absent at C:\\Users\\parid\\Downloads\\BHAROSA\\config\\hinglish_lexicon.csv. C:\\Users\\parid\\Downloads\\BHAROSA\\config\\net_weights.json is absent. Net-score coefficients are not chosen in this run. delta P@5 is undefined. BM25 stays a separate system because net-score flags are not applied to it."
+    },
+    {
+      "component": "g_score",
+      "implemented": true,
+      "backed_by_labelled_data": false,
+      "metric": "delta_P@5",
+      "value": "N/A",
+      "reason": "Removing g_score is implemented as a search flag. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_queries.csv is absent. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_qrels.csv is absent. No zone-document file at C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl, C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl. The crawl database has 9 pages. Those pages are not a zone corpus and have no relevance labels. The reviewed Hinglish lexicon is absent at C:\\Users\\parid\\Downloads\\BHAROSA\\config\\hinglish_lexicon.csv. C:\\Users\\parid\\Downloads\\BHAROSA\\config\\net_weights.json is absent. Net-score coefficients are not chosen in this run. delta P@5 is undefined. BM25 stays a separate system because net-score flags are not applied to it."
+    },
+    {
+      "component": "freshness",
+      "implemented": true,
+      "backed_by_labelled_data": false,
+      "metric": "delta_P@5",
+      "value": "N/A",
+      "reason": "Removing freshness is implemented as a search flag. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_queries.csv is absent. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_qrels.csv is absent. No zone-document file at C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl, C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl. The crawl database has 9 pages. Those pages are not a zone corpus and have no relevance labels. The reviewed Hinglish lexicon is absent at C:\\Users\\parid\\Downloads\\BHAROSA\\config\\hinglish_lexicon.csv. C:\\Users\\parid\\Downloads\\BHAROSA\\config\\net_weights.json is absent. Net-score coefficients are not chosen in this run. delta P@5 is undefined. BM25 stays a separate system because net-score flags are not applied to it."
+    },
+    {
+      "component": "hinglish",
+      "implemented": true,
+      "backed_by_labelled_data": false,
+      "metric": "delta_P@5",
+      "value": "N/A",
+      "reason": "Removing hinglish is implemented as a search flag. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_queries.csv is absent. C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_qrels.csv is absent. No zone-document file at C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl, C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl. The crawl database has 9 pages. Those pages are not a zone corpus and have no relevance labels. The reviewed Hinglish lexicon is absent at C:\\Users\\parid\\Downloads\\BHAROSA\\config\\hinglish_lexicon.csv. C:\\Users\\parid\\Downloads\\BHAROSA\\config\\net_weights.json is absent. Net-score coefficients are not chosen in this run. delta P@5 is undefined. BM25 stays a separate system because net-score flags are not applied to it."
+    }
+  ],
+  "rag": {
+    "metric_rows": [
+      {
+        "metric": "pct_sentences_supported_with_checker",
+        "value": "N/A",
+        "n_human_judgements": 0,
+        "reason": "Human judgements of citation support, refusal, and answer correctness are absent. Looked for C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\rag_judgements.csv, C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\rag_labels.csv, C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\oos_queries.csv, C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\answer_judgements.csv."
+      },
+      {
+        "metric": "pct_sentences_supported_without_checker",
+        "value": "N/A",
+        "n_human_judgements": 0,
+        "reason": "Human judgements of citation support, refusal, and answer correctness are absent. Looked for C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\rag_judgements.csv, C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\rag_labels.csv, C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\oos_queries.csv, C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\answer_judgements.csv."
+      },
+      {
+        "metric": "refusal_rate",
+        "value": "N/A",
+        "n_human_judgements": 0,
+        "reason": "Human judgements of citation support, refusal, and answer correctness are absent. Looked for C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\rag_judgements.csv, C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\rag_labels.csv, C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\oos_queries.csv, C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\answer_judgements.csv."
+      },
+      {
+        "metric": "answer_correctness",
+        "value": "N/A",
+        "n_human_judgements": 0,
+        "reason": "Human judgements of citation support, refusal, and answer correctness are absent. Looked for C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\rag_judgements.csv, C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\rag_labels.csv, C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\oos_queries.csv, C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\answer_judgements.csv."
+      }
+    ],
+    "thresholds": {
+      "refusal_score_threshold": 0.15,
+      "citation_threshold": 0.25,
+      "min_retrieval_score": 0.05,
+      "used_to_compute_metrics": false,
+      "tuned_on_this_run": false,
+      "reason": "These are the current configuration values. This run does not change them and does not apply them, because there is no human-labelled set."
+    }
+  },
+  "claims": {
+    "n_rows": 5,
+    "n_human_reviewed_yes": 0,
+    "n_ai_drafted": 5,
+    "n_scored": 0,
+    "positive_class": "CONTRADICTED",
+    "precision": {
+      "value": "N/A",
+      "reason": "Precision and recall are undefined. 0 of 5 rows have human_reviewed=yes. 5 rows have origin AI_DRAFTED. Even a fully reviewed set of 5 messages would be too small for a stable estimate."
+    },
+    "recall": {
+      "value": "N/A",
+      "reason": "Precision and recall are undefined. 0 of 5 rows have human_reviewed=yes. 5 rows have origin AI_DRAFTED. Even a fully reviewed set of 5 messages would be too small for a stable estimate."
+    },
+    "keyword_baseline": {
+      "value": "N/A",
+      "reason": "No separate keyword-baseline claim checker is implemented."
+    },
+    "tp": "N/A",
+    "fp": "N/A",
+    "fn": "N/A",
+    "tn": "N/A"
+  },
+  "freshness": {
+    "metric_rows": [
+      {
+        "metric": "changes_caught",
+        "value": "N/A",
+        "reason": "C:\\Users\\parid\\Downloads\\BHAROSA\\data\\snapshots has no archived page snapshots. Changes caught and mean staleness are undefined. This run does not simulate page changes."
+      },
+      {
+        "metric": "mean_staleness",
+        "value": "N/A",
+        "reason": "C:\\Users\\parid\\Downloads\\BHAROSA\\data\\snapshots has no archived page snapshots. Changes caught and mean staleness are undefined. This run does not simulate page changes."
+      }
+    ]
+  },
+  "inventory": {
+    "eval_csv_files": [
+      "claims.csv",
+      "medicine_queries.csv"
+    ],
+    "medicine_queries_present": true,
+    "claims_present": true,
+    "scheme_queries_present": false,
+    "scheme_qrels_present": false,
+    "zone_corpus_present": false,
+    "zone_corpus_candidates": [
+      "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\scheme_zones.jsonl",
+      "C:\\Users\\parid\\Downloads\\BHAROSA\\data\\zones.jsonl"
+    ],
+    "net_weights_present": false,
+    "lexicon_present": false,
+    "lexicon_path": "C:\\Users\\parid\\Downloads\\BHAROSA\\config\\hinglish_lexicon.csv",
+    "rag_judgement_files": [],
+    "crawled_html_files": 9,
+    "crawled_pages": 9,
+    "crawled_versions": 9,
+    "crawled_changes": 0,
+    "snapshot_files": 0,
+    "snapshots_dir_present": false
+  },
+  "files": [
+    "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\results\\dataset_counts.csv",
+    "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\results\\medicine_metrics.csv",
+    "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\results\\medicine_per_query.csv",
+    "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\results\\medicine_hits.csv",
+    "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\results\\medicine_unreviewed_predictions.csv",
+    "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\results\\medicine_exclusions.csv",
+    "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\results\\medicine_failures.csv",
+    "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\results\\scheme_metrics.csv",
+    "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\results\\ablation_metrics.csv",
+    "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\results\\rag_metrics.csv",
+    "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\results\\freshness_metrics.csv",
+    "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\results\\claims_metrics.csv",
+    "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\results\\claims_label_audit.csv",
+    "C:\\Users\\parid\\Downloads\\BHAROSA\\eval\\results\\summary.json"
+  ]
+}
