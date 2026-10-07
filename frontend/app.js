@@ -9,7 +9,7 @@
  * - Claim Checker: POST /api/claims/check
  */
 
-const REQUEST_TIMEOUT_MS = 10000;
+const REQUEST_TIMEOUT_MS = 120000;
 const MSG_UNAVAILABLE = 'Search is unavailable right now. Please try again later.';
 const MSG_READ_ERROR = 'Something went wrong reading the results.';
 
@@ -72,7 +72,8 @@ function initSampleChips() {
 }
 
 /**
- * Executes a fetch request with a strict 10-second timeout via AbortController.
+ * Executes a fetch request with a 120-second timeout via AbortController.
+ * The first medicine search loads the full dataset and can take well over 10 seconds.
  * Catches network errors, connection aborts, and timeouts.
  */
 async function fetchWithTimeout(url, options = {}) {
