@@ -1,0 +1,30 @@
+query,gold_brand,gold_salt,gold_strength,gold_form,label_status,notes
+Dolo 650 Tablet,Dolo 650 Tablet,Paracetamol,650.0 mg,tablet,VERIFIED_FROM_DATASET,Exact brand query
+Calpol 500mg Tablet,Calpol 500mg Tablet,Paracetamol,500.0 mg,tablet,VERIFIED_FROM_DATASET,Exact brand query
+Azithral 500 Tablet,Azithral 500 Tablet,Azithromycin,500.0 mg,tablet,VERIFIED_FROM_DATASET,Exact brand query
+Aciloc 150 Tablet,Aciloc 150 Tablet,Ranitidine,150.0 mg,tablet,VERIFIED_FROM_DATASET,Exact brand query
+Doloo 650,Dolo 650 Tablet,Paracetamol,650.0 mg,tablet,NEEDS_HUMAN_REVIEW,Brand misspelling candidate (elongated vowel)
+Kalpol 650,Calpol 650mg Tablet,Paracetamol,650.0 mg,tablet,NEEDS_HUMAN_REVIEW,Brand misspelling candidate (phonetic C -> K)
+Azithrol 500,Azithral 500 Tablet,Azithromycin,500.0 mg,tablet,NEEDS_HUMAN_REVIEW,Brand misspelling candidate (vowel shift a -> o)
+Pantoside 20,Pantocid 20 Tablet,Pantoprazole,20.0 mg,tablet,NEEDS_HUMAN_REVIEW,Brand misspelling candidate (suffix c -> s)
+Dolo 650,Dolo 650 Tablet,Paracetamol,650.0 mg,tablet,VERIFIED_FROM_DATASET,Brand + strength query
+Azithral 500,Azithral 500 Tablet,Azithromycin,500.0 mg,tablet,VERIFIED_FROM_DATASET,Brand + strength query
+Allegra 120,Allegra 120mg Tablet,Fexofenadine,120.0 mg,tablet,VERIFIED_FROM_DATASET,Brand + strength query
+Avil 25,Avil 25 Tablet,Pheniramine,25.0 mg,tablet,VERIFIED_FROM_DATASET,Brand + strength query
+Aciloc 300,Aciloc 300 Tablet,Ranitidine,300.0 mg,tablet,VERIFIED_FROM_DATASET,Brand + strength query
+Zifi 200,Zifi 200 Tablet,Cefixime,200.0 mg,tablet,VERIFIED_FROM_DATASET,Brand + strength query
+dolo 650 sasta alternative,Dolo 650 Tablet,Paracetamol,650.0 mg,tablet,NEEDS_HUMAN_REVIEW,Hinglish query with brand + strength
+calpol 500 sasta option kya milega,Calpol 500mg Tablet,Paracetamol,500.0 mg,tablet,NEEDS_HUMAN_REVIEW,Hinglish query with colloquial wrapper
+azithral 500 ki generic dawai,Azithral 500 Tablet,Azithromycin,500.0 mg,tablet,NEEDS_HUMAN_REVIEW,Hinglish query for generic equivalent
+aciloc 150 sasta substitute batao,Aciloc 150 Tablet,Ranitidine,150.0 mg,tablet,NEEDS_HUMAN_REVIEW,Hinglish query with brand + strength
+allegra 120 tablet ka generic alternative,Allegra 120mg Tablet,Fexofenadine,120.0 mg,tablet,NEEDS_HUMAN_REVIEW,Hinglish query with form and strength
+Pantosid 20,Pantocid 20 Tablet,Pantoprazole,20.0 mg,tablet,NEEDS_HUMAN_REVIEW,Phonetic/Soundex matching (P532)
+Aze 500,Azee 500 Tablet,Azithromycin,500.0 mg,tablet,NEEDS_HUMAN_REVIEW,Phonetic/Soundex matching (A200)
+PAN 40,PAN 40 Tablet,Pantoprazole,40.0 mg,tablet,VERIFIED_FROM_DATASET,Phonetic/Soundex matching (Exact short token P500)
+Monosef 1gm,Monocef 1gm Injection,Ceftriaxone,1.0 gm,injection,NEEDS_HUMAN_REVIEW,Phonetic/Soundex matching (M521)
+Sifran 500,Cifran 500 Tablet,Ciprofloxacin,500.0 mg,tablet,NEEDS_HUMAN_REVIEW,Phonetic/Soundex matching (S165 vs C165 tests Soundex limitation)
+Augmentin 625 Duo Tablet,Augmentin 625 Duo Tablet,Amoxycillin + Clavulanic Acid,,tablet,VERIFIED_FROM_DATASET,Combination medicine exact query
+Combiflam Tablet,Combiflam Tablet,Ibuprofen + Paracetamol,,tablet,VERIFIED_FROM_DATASET,Combination medicine exact query
+Ascoril LS Syrup,Ascoril LS Syrup,Ambroxol + Levosalbutamol,,syrup,VERIFIED_FROM_DATASET,Combination medicine exact query
+Allegra-M Tablet,Allegra-M Tablet,Fexofenadine + Montelukast,,tablet,VERIFIED_FROM_DATASET,Combination medicine exact query
+augmentin 625 sasta option,Augmentin 625 Duo Tablet,Amoxycillin + Clavulanic Acid,,tablet,NEEDS_HUMAN_REVIEW,Combination medicine Hinglish query
