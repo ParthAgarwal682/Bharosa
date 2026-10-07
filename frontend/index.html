@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bharosa</title>
+  <meta name="description" content="Search medicines, government health schemes, and verify healthcare claims.">
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <h1 class="wordmark">Bharosa</h1>
+      <nav class="nav-tabs" role="tablist" aria-label="Search modes">
+        <button type="button" class="tab-link active" id="tab-medicine" role="tab" aria-selected="true" aria-controls="panel-medicine" data-target="panel-medicine">Medicine</button>
+        <button type="button" class="tab-link" id="tab-schemes" role="tab" aria-selected="false" aria-controls="panel-schemes" data-target="panel-schemes">Schemes</button>
+        <button type="button" class="tab-link" id="tab-claim" role="tab" aria-selected="false" aria-controls="panel-claim" data-target="panel-claim">Claim Checker</button>
+      </nav>
+    </header>
+
+    <main class="tab-content">
+      <!-- 1. Medicine Mode -->
+      <section class="mode-panel active" id="panel-medicine" role="tabpanel" aria-labelledby="tab-medicine">
+        <div class="notice-box">
+          These are search candidates, not a prescription or recommendation. Confirm with a doctor or pharmacist before taking or substituting a medicine.
+        </div>
+
+        <h2 class="mode-heading">Search medicines</h2>
+        <p class="mode-description">Search for a medicine by name.</p>
+
+        <form id="form-medicine" onsubmit="return false;">
+          <div class="form-group">
+            <div class="input-row">
+              <input type="text" id="input-medicine" class="text-input" placeholder="Enter medicine name" autocomplete="off" aria-label="Medicine name">
+              <button type="button" id="btn-medicine-search" class="primary-button">Search</button>
+            </div>
+            <div class="sample-area">
+              <span>Sample:</span>
+              <button type="button" class="sample-chip" id="chip-medicine" data-query="Azithral 500 Tablet">Azithral 500 Tablet</button>
+            </div>
+          </div>
+        </form>
+
+        <div class="results-area" id="results-medicine">
+          <p class="state-text">Enter a medicine name to view matching search candidates.</p>
+        </div>
+      </section>
+
+      <!-- 2. Schemes Mode -->
+      <section class="mode-panel" id="panel-schemes" role="tabpanel" aria-labelledby="tab-schemes">
+        <h2 class="mode-heading">Search schemes</h2>
+        <p class="mode-description">Search for health schemes.</p>
+
+        <form id="form-schemes" onsubmit="return false;">
+          <div class="form-group">
+            <div class="input-row">
+              <input type="text" id="input-schemes" class="text-input" placeholder="Enter search terms" autocomplete="off" aria-label="Scheme search terms">
+              <button type="button" id="btn-schemes-search" class="primary-button">Search</button>
+            </div>
+            <div class="sample-area">
+              <span>Sample:</span>
+              <button type="button" class="sample-chip" id="chip-schemes" data-query="healthcare support for senior citizens">healthcare support for senior citizens</button>
+            </div>
+          </div>
+        </form>
+
+        <div class="results-area" id="results-schemes">
+          <p class="state-text">Enter search terms to find schemes.</p>
+        </div>
+      </section>
+
+      <!-- 3. Claim Checker Mode -->
+      <section class="mode-panel" id="panel-claim" role="tabpanel" aria-labelledby="tab-claim">
+        <h2 class="mode-heading">Check a claim</h2>
+        <p class="mode-description">Check a message or claim against records.</p>
+
+        <form id="form-claim" onsubmit="return false;">
+          <div class="form-group">
+            <textarea id="input-claim" class="textarea-input" placeholder="Paste claim text here" aria-label="Claim text"></textarea>
+            <div>
+              <button type="button" id="btn-claim-search" class="primary-button">Check</button>
+            </div>
+          </div>
+        </form>
+
+        <div class="results-area" id="results-claim">
+          <p class="state-text">Paste a claim to check.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Bharosa</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
