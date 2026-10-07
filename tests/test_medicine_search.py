@@ -301,3 +301,42 @@ def test_rejects_bad_k_and_a_non_record() -> None:
         search_medicine("testbranda", k=True, records=[])  # type: ignore[arg-type]
     with pytest.raises(TypeError):
         search_medicine("testbranda", records=["not-a-row"])  # type: ignore[list-item]
+
+
+def test_normalize_corpus_brand_removes_explicit_constraints() -> None:
+    from bharosa.medicine.parametric import RecordedConstraints
+    from bharosa.medicine.search import normalize_corpus_brand
+
+    c_strength = RecordedConstraints(strength_value=650.0)
+    assert normalize_corpus_brand("Dolo 650 Tablet", c_strength) == "dolo tablet"
+
+    c_both = RecordedConstraints(strength_value=650.0, form="tablet")
+    assert normalize_corpus_brand("Dolo 650 Tablet", c_both) == "dolo"
+    assert normalize_corpus_brand("Dolo 650mg Tablet", c_both) == "dolo"
+
+
+def test_search_medicine_dolo_650_sasta_alternative_matches() -> None:
+    rows = [
+        _row("Dolo 650 Tablet", strength_value=650, form="tablet", salt="paracetamol"),
+        _row("Dolopar 650 Tablet", strength_value=650, form="tablet", salt="paracetamol"),
+        _row("Crocin 500 Tablet", strength_value=500, form="tablet", salt="paracetamol"),
+    ]
+    result = _search("dolo 650 sasta alternative", rows)
+    assert len(result.candidates) >= 1
+    brands = [c.brand for c in result.candidates]
+    assert "dolo 650 tablet" in brands
+    assert result.candidates[0].brand == "dolo 650 tablet"
+    assert result.candidates[0].salt == "paracetamol"
+    assert result.candidates[0].strength_value == 650
+
+
+def test_search_medicine_azithral_500_tablet_matches() -> None:
+    rows = [
+        _row("Azithral 500 Tablet", strength_value=500, form="tablet", salt="azithromycin"),
+        _row("Azithral 250 Tablet", strength_value=250, form="tablet", salt="azithromycin"),
+    ]
+    result = _search("Azithral 500 Tablet", rows)
+    assert len(result.candidates) == 1
+    assert result.candidates[0].brand == "azithral 500 tablet"
+    assert result.candidates[0].strength_value == 500
+

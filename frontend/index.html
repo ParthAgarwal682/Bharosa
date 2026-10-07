@@ -22,7 +22,8 @@
       <!-- 1. Medicine Mode -->
       <section class="mode-panel active" id="panel-medicine" role="tabpanel" aria-labelledby="tab-medicine">
         <div class="notice-box">
-          These are search candidates, not a prescription or recommendation. Confirm with a doctor or pharmacist before taking or substituting a medicine.
+          <p>These are search candidates, not a prescription or recommendation. Confirm with a doctor or pharmacist before taking or substituting a medicine.</p>
+          <p class="notice-sub">Opens an external pharmacy. Price and availability may vary.</p>
         </div>
 
         <h2 class="mode-heading">Search medicines</h2>
@@ -35,8 +36,11 @@
               <button type="button" id="btn-medicine-search" class="primary-button">Search</button>
             </div>
             <div class="sample-area">
-              <span>Sample:</span>
+              <span>Samples:</span>
               <button type="button" class="sample-chip" id="chip-medicine" data-query="Azithral 500 Tablet">Azithral 500 Tablet</button>
+              <button type="button" class="sample-chip" id="chip-medicine-dolo" data-query="dolo 650 sasta alternative">dolo 650 sasta alternative</button>
+              <button type="button" class="sample-chip" id="chip-medicine-calpol" data-query="Calpol 500mg Tablet">Calpol 500mg Tablet</button>
+              <button type="button" class="sample-chip" id="chip-medicine-aciloc" data-query="Aciloc 150 Tablet">Aciloc 150 Tablet</button>
             </div>
           </div>
         </form>
@@ -49,7 +53,7 @@
       <!-- 2. Schemes Mode -->
       <section class="mode-panel" id="panel-schemes" role="tabpanel" aria-labelledby="tab-schemes">
         <h2 class="mode-heading">Search schemes</h2>
-        <p class="mode-description">Search for health schemes.</p>
+        <p class="mode-description">Search official government health schemes.</p>
 
         <form id="form-schemes" onsubmit="return false;">
           <div class="form-group">
@@ -58,8 +62,9 @@
               <button type="button" id="btn-schemes-search" class="primary-button">Search</button>
             </div>
             <div class="sample-area">
-              <span>Sample:</span>
+              <span>Samples:</span>
               <button type="button" class="sample-chip" id="chip-schemes" data-query="healthcare support for senior citizens">healthcare support for senior citizens</button>
+              <button type="button" class="sample-chip" id="chip-schemes-hinglish" data-query="senior citizen ke liye government health scheme">senior citizen ke liye government health scheme</button>
             </div>
           </div>
         </form>
@@ -71,20 +76,38 @@
 
       <!-- 3. Claim Checker Mode -->
       <section class="mode-panel" id="panel-claim" role="tabpanel" aria-labelledby="tab-claim">
-        <h2 class="mode-heading">Check a claim</h2>
-        <p class="mode-description">Check a message or claim against records.</p>
+        <h2 class="mode-heading">Not sure whether a healthcare message is genuine?</h2>
+        <p class="mode-description">Paste the message or upload it to check it against retrieved official evidence.</p>
 
         <form id="form-claim" onsubmit="return false;">
           <div class="form-group">
-            <textarea id="input-claim" class="textarea-input" placeholder="Paste claim text here" aria-label="Claim text"></textarea>
-            <div>
-              <button type="button" id="btn-claim-search" class="primary-button">Check</button>
+            <div class="file-upload-section">
+              <input type="file" id="claim-file-input" accept=".txt,.pdf" style="display: none;" aria-label="Upload message or PDF">
+              <div class="file-action-bar">
+                <button type="button" id="btn-upload-file" class="secondary-button">
+                  <span class="upload-icon">&#128196;</span> Upload message / PDF (.txt, .pdf)
+                </button>
+                <span id="claim-file-status" class="file-status-badge" style="display: none;"></span>
+                <button type="button" id="btn-clear-file" class="text-button" style="display: none;">Clear</button>
+              </div>
+              <div id="claim-file-error" class="error-text" style="display: none; margin-top: 6px;"></div>
+            </div>
+
+            <textarea id="input-claim" class="textarea-input" placeholder="Paste a message, forwarded WhatsApp notice, or claim text here..." aria-label="Claim text"></textarea>
+
+            <div class="claim-submit-row">
+              <button type="button" id="btn-claim-search" class="primary-button">Check Message</button>
+              <div class="sample-area">
+                <span>Samples:</span>
+                <button type="button" class="sample-chip" id="chip-claim-free" data-query="Ayushman card is free with no registration fee">Free card claim</button>
+                <button type="button" class="sample-chip" id="chip-claim-fee" data-query="Urgent notice: Pay Rs 500 registration fee to activate your Ayushman Bharat golden card before deadline 31 March.">Fake fee claim</button>
+              </div>
             </div>
           </div>
         </form>
 
         <div class="results-area" id="results-claim">
-          <p class="state-text">Paste a claim to check.</p>
+          <p class="state-text">Paste a message or upload a file to check against official evidence.</p>
         </div>
       </section>
     </main>

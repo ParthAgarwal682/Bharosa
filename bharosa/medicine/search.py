@@ -46,6 +46,8 @@ _QUERY_WRAPPERS: frozenset[str] = frozenset(
     {
         "a",
         "an",
+        "alternative",
+        "alternatives",
         "aur",
         "bata",
         "batao",
@@ -56,6 +58,7 @@ _QUERY_WRAPPERS: frozenset[str] = frozenset(
         "dawa",
         "dawai",
         "for",
+        "generic",
         "hai",
         "hain",
         "in",
@@ -78,11 +81,15 @@ _QUERY_WRAPPERS: frozenset[str] = frozenset(
         "mujhe",
         "of",
         "on",
+        "option",
+        "options",
         "please",
         "sasta",
         "saste",
         "sasti",
         "se",
+        "substitute",
+        "substitutes",
         "the",
         "to",
         "wala",
@@ -327,6 +334,49 @@ def search_medicine(
     return _search_indexed(parsed, indexed, k)
 
 
+def normalize_corpus_brand(
+    brand_text: str | None,
+    constraints: RecordedConstraints,
+) -> str:
+    """Normalize recorded brand for character n-gram similarity ONLY.
+
+    IR concept: token-level constraint alignment. When a query explicitly
+    segments out strength tokens (e.g., 650, 650mg) and/or dosage form
+    tokens (e.g., tablet), removing those corresponding explicit constraint
+    tokens from the recorded brand prevents length-inflation from diluting
+    the character n-gram cosine of the core brand name.
+    """
+    if not brand_text:
+        return ""
+    tokens = tokenize(brand_text)
+    kept: list[str] = []
+    i = 0
+    while i < len(tokens):
+        t = tokens[i]
+        st = _strength_token(t)
+        if st is not None and constraints.strength_value is not None:
+            val, unit = st
+            if abs(val - constraints.strength_value) < 1e-6:
+                if unit is None and i + 1 < len(tokens) and tokens[i + 1] in _UNITS:
+                    i += 2
+                    continue
+                i += 1
+                continue
+
+        if (
+            constraints.form is not None
+            and t in FORM_TOKENS
+            and canonical_form(t) == constraints.form
+        ):
+            i += 1
+            continue
+
+        kept.append(t)
+        i += 1
+
+    return " ".join(kept) if kept else brand_text
+
+
 def _search_indexed(
     parsed: ParsedMedicineQuery,
     indexed: list[tuple[int, MedicineRecord]],
@@ -339,7 +389,8 @@ def _search_indexed(
     for index, record in indexed:
         if record.brand is None:
             continue
-        scored.append((index, record, ngram_similarity(parsed.brand, record.brand)))
+        sim_brand = normalize_corpus_brand(record.brand, parsed.constraints)
+        scored.append((index, record, ngram_similarity(parsed.brand, sim_brand)))
 
     best = max((sim.cosine for _, _, sim in scored), default=None)
     skipped = tuple(
@@ -369,7 +420,13 @@ def _search_indexed(
     if len(leader_keys) == 1:
         identity = next(iter(leader_keys))
         pool = [
-            (index, record, _similarity_for(scored, index, record, parsed.brand))
+            (
+                index,
+                record,
+                _similarity_for(
+                    scored, index, record, parsed.brand, parsed.constraints
+                ),
+            )
             for index, record in indexed
             if record.recorded_key() == identity
             and passes_query_constraints(record, parsed.constraints)
@@ -391,6 +448,7 @@ def _similarity_for(
     index: int,
     record: MedicineRecord,
     brand: str,
+    constraints: RecordedConstraints | None = None,
 ) -> NgramSimilarity:
     """Reuse a cosine already computed for this row index."""
     for scored_index, _, sim in scored:
@@ -398,7 +456,12 @@ def _similarity_for(
             return sim
     if record.brand is None:
         return ngram_similarity(brand, "")
-    return ngram_similarity(brand, record.brand)
+    sim_brand = (
+        normalize_corpus_brand(record.brand, constraints)
+        if constraints is not None
+        else record.brand
+    )
+    return ngram_similarity(brand, sim_brand)
 
 
 def _to_candidate(record: MedicineRecord, sim: NgramSimilarity, rank: int) -> SearchCandidate:

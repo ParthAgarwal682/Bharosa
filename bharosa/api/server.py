@@ -1,11 +1,14 @@
+import base64
 import dataclasses
+import io
 import json
 import mimetypes
 import os
 from functools import lru_cache
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import parse_qs, urlparse
+import re
+from urllib.parse import parse_qs, quote, urlparse
 
 ROOT = Path(__file__).resolve().parents[2]
 FRONTEND = ROOT / "frontend"
@@ -79,6 +82,54 @@ def scheme_documents(path_str):
     return tuple(load_zone_documents(Path(path_str)))
 
 
+VERIFIED_MEDICINE_PRODUCT_URLS: dict[str, str] = {
+    "azithral 500 tablet": "https://www.1mg.com/drugs/azithral-500-tablet-47672",
+    "azithral 500": "https://www.1mg.com/drugs/azithral-500-tablet-47672",
+    "dolo 650 tablet": "https://www.1mg.com/drugs/dolo-650-tablet-74467",
+    "dolo 650": "https://www.1mg.com/drugs/dolo-650-tablet-74467",
+    "calpol 500mg tablet": "https://www.1mg.com/drugs/calpol-500mg-tablet-25039",
+    "calpol 500 tablet": "https://www.1mg.com/drugs/calpol-500mg-tablet-25039",
+    "calpol 500": "https://www.1mg.com/drugs/calpol-500mg-tablet-25039",
+    "aciloc 150 tablet": "https://www.1mg.com/drugs/aciloc-150-tablet-132338",
+    "aciloc 150": "https://www.1mg.com/drugs/aciloc-150-tablet-132338",
+}
+
+
+def get_medicine_purchase_url(candidate: dict) -> tuple[str, bool]:
+    """Return (purchase_url, is_direct) for a validated medicine candidate.
+
+    Uses verified exact product URLs for explicitly mapped medications.
+    For unmatched medicines, generates a pharmacy search URL strictly constructed
+    from the candidate's validated brand, strength, and form (never raw user query).
+    """
+    brand = str(candidate.get("brand") or candidate.get("title") or "").strip()
+    norm_brand = re.sub(r"\s+", " ", brand.lower()).strip()
+
+    if norm_brand in VERIFIED_MEDICINE_PRODUCT_URLS:
+        return VERIFIED_MEDICINE_PRODUCT_URLS[norm_brand], True
+
+    strength_val = candidate.get("strength_value")
+    strength_unit = str(candidate.get("strength_unit") or "").strip()
+    form = str(candidate.get("form") or "").strip()
+
+    strength_str = ""
+    if strength_val is not None:
+        try:
+            val = float(strength_val)
+            strength_str = f"{int(val) if val.is_integer() else val}{strength_unit}"
+        except (ValueError, TypeError):
+            strength_str = f"{strength_val}{strength_unit}"
+
+    parts = [brand]
+    if strength_str and strength_str.lower() not in brand.lower():
+        parts.append(strength_str)
+    if form and form.lower() not in brand.lower():
+        parts.append(form)
+
+    search_query = " ".join(parts).strip()
+    return f"https://www.1mg.com/search/all?name={quote(search_query)}", False
+
+
 def medicine_endpoint(query, k):
     path = Path(os.environ.get("MEDICINE_FILE", str(DEFAULT_MEDICINE_FILE)))
     if not path.is_file():
@@ -97,8 +148,12 @@ def medicine_endpoint(query, k):
         candidates = []
 
     for item in candidates:
-        if isinstance(item, dict) and not item.get("title"):
-            item["title"] = item.get("brand", item.get("name", ""))
+        if isinstance(item, dict):
+            if not item.get("title"):
+                item["title"] = item.get("brand", item.get("name", ""))
+            purchase_url, is_direct = get_medicine_purchase_url(item)
+            item["purchase_url"] = purchase_url
+            item["is_direct_url"] = is_direct
 
     return {
         "query": query,
@@ -256,11 +311,60 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         parsed = urlparse(self.path)
 
+        if parsed.path == "/api/claims/extract-text":
+            try:
+                length = int(self.headers.get("Content-Length", "0"))
+                if length > 10 * 1024 * 1024:
+                    return self.send_json(413, {"error": "File size exceeds 10MB limit."})
+                raw = self.rfile.read(length)
+                data = json.loads(raw.decode("utf-8"))
+                filename = str(data.get("filename", "")).strip()
+                b64_content = str(data.get("file_base64") or data.get("content") or "").strip()
+
+                if not b64_content:
+                    if "text" in data and str(data["text"]).strip():
+                        return self.send_json(200, {"filename": filename, "text": str(data["text"]).strip()})
+                    return self.send_json(400, {"error": "No file content provided."})
+
+                file_bytes = base64.b64decode(b64_content)
+                lower_name = filename.lower()
+
+                if lower_name.endswith(".pdf"):
+                    import pdfplumber
+                    with pdfplumber.open(io.BytesIO(file_bytes)) as pdf:
+                        extracted = "\n\n".join(
+                            (page.extract_text() or "").strip() for page in pdf.pages
+                        ).strip()
+                    if not extracted:
+                        return self.send_json(
+                            422,
+                            {
+                                "error": "No readable text found in PDF. Note: scanned/image-only PDFs require OCR which is not supported.",
+                            },
+                        )
+                    return self.send_json(200, {"filename": filename, "text": extracted})
+
+                elif lower_name.endswith(".txt"):
+                    text = file_bytes.decode("utf-8", errors="replace").strip()
+                    if not text:
+                        return self.send_json(422, {"error": "The uploaded text file is empty."})
+                    return self.send_json(200, {"filename": filename, "text": text})
+
+                else:
+                    return self.send_json(
+                        400,
+                        {"error": "Unsupported file format. Please upload a .txt or .pdf file."},
+                    )
+            except Exception as exc:
+                return self.send_json(500, {"error": f"Failed to extract file text: {exc}"})
+
         if parsed.path != "/api/claims/check":
             return self.send_json(404, {"error": "Not found"})
 
         try:
             length = int(self.headers.get("Content-Length", "0"))
+            if length > 10 * 1024 * 1024:
+                return self.send_json(413, {"error": "Message size exceeds 10MB limit."})
             raw = self.rfile.read(length)
             data = json.loads(raw.decode("utf-8"))
 

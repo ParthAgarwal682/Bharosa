@@ -417,11 +417,11 @@ def test_end_to_end_toy_run(tmp_path: Path) -> None:
     assert _metric(metrics, "exact", "gold_brand", "n_queries_scored") == "3"
     assert float(_metric(metrics, "exact", "gold_brand", "top1_accuracy")) == pytest.approx(2 / 3)
     assert float(_metric(metrics, "soundex", "gold_brand", "top1_accuracy")) == pytest.approx(1.0)
-    # "dolo" against "Dolo 650 Tablet" is under MIN_BRAND_COSINE, so those
-    # two queries miss. "Crocin" matches the recorded brand and hits.
-    assert float(_metric(metrics, "ours_ngram_parametric", "gold_brand", "top1_accuracy")) == pytest.approx(1 / 3)
+    # With constraint-normalized brand similarity, "Dolo 650" and "Dolo 650 Tablet"
+    # match "Dolo 650 Tablet", and "Crocin" matches "Crocin".
+    assert float(_metric(metrics, "ours_ngram_parametric", "gold_brand", "top1_accuracy")) == pytest.approx(1.0)
     assert float(_metric(metrics, "ours_ngram_parametric", "gold_brand", "P@5")) == pytest.approx(
-        0.2 / 3, abs=1e-5
+        1 / 3, abs=1e-5
     )
     assert _metric(metrics, "brand_token_tfidf", "N/A", "P@5") == "N/A"
     assert _metric(metrics, "brand_bm25", "N/A", "P@5") == "N/A"
@@ -439,7 +439,7 @@ def test_end_to_end_toy_run(tmp_path: Path) -> None:
         for row in per_query
         if row["query"] == "Dolo 650" and row["method"] == "ours_ngram_parametric"
     ]
-    assert float(ours_short[0]["brand_top1"]) == pytest.approx(0.0)
+    assert float(ours_short[0]["brand_top1"]) == pytest.approx(1.0)
     ours_crocin = [
         row
         for row in per_query
@@ -447,7 +447,7 @@ def test_end_to_end_toy_run(tmp_path: Path) -> None:
     ]
     assert float(ours_crocin[0]["brand_top1"]) == pytest.approx(1.0)
     failures = _read_csv(output / "medicine_failures.csv")
-    assert {row["query"] for row in failures} == {"Dolo 650 Tablet", "Dolo 650"}
+    assert {row["query"] for row in failures} == set()
     review = [row for row in per_query if row["query"] == "Doloo 650"]
     assert review
     assert all(row["used_in_scored_metrics"] == "false" for row in review)
