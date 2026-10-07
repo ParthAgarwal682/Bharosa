@@ -338,3 +338,48 @@ def test_robots_cache_clearing(mock_session: MagicMock) -> None:
     fetcher.reset_state()
     fetcher.is_url_allowed("http://example.com/page3")
     assert mock_session.get.call_count == 2
+
+
+def test_retry_enforces_minimum_host_delay(mock_session: MagicMock) -> None:
+    """Regression test: Retries to the same host must respect min_delay_seconds (at least 3.0s)."""
+    robots_resp = create_mock_response(200, text="User-agent: *\nAllow: /\n")
+    err_resp = create_mock_response(500, text="Server Error", reason="Internal Error")
+    ok_resp = create_mock_response(200, text="OK Page", reason="OK")
+
+    mock_session.get.side_effect = [robots_resp, err_resp, ok_resp]
+
+    # Track sleep calls to verify effective wait time between attempts
+    sleep_calls: list[float] = []
+
+    # Mock time.time to simulate clock progression
+    fake_clock = [100.0]
+
+    def mock_time() -> float:
+        return fake_clock[0]
+
+    def mock_sleep(seconds: float) -> None:
+        sleep_calls.append(seconds)
+        fake_clock[0] += seconds
+
+    fetcher = Fetcher(
+        session=mock_session,
+        min_delay_seconds=3.0,
+        max_retries=1,
+        backoff_factor=0.5,  # backoff factor 0.5s is smaller than min_delay 3.0s
+    )
+
+    url = "http://example.com/retry_polite"
+
+    with patch("time.time", side_effect=mock_time), patch("time.sleep", side_effect=mock_sleep):
+        # Fetch with politeness delay enabled
+        res = fetcher.fetch(url, enforce_delay=True)
+
+    assert res.status == FetchStatus.SUCCESS
+    assert res.retries_used == 1
+
+    # Verify that sleep was called prior to attempt 1 to enforce minimum host delay of 3.0 seconds
+    assert len(sleep_calls) >= 1
+    # Total slept time before retry must satisfy min_delay_seconds (3.0s)
+    total_retry_sleep = sum(sleep_calls)
+    assert total_retry_sleep >= 3.0
+
