@@ -1,0 +1,46 @@
+# Bharosa Official Health & Welfare Scheme Crawl Seeds
+# All seeds are verified Government of India (.gov.in) official sources.
+# Ethics & Compliance:
+# - All domains verified against robots.txt policies (fully permitted).
+# - Crawler enforces minimum 3.0-second delay per host.
+# - High-priority official sources assigned g_score: 1.0.
+
+seeds:
+  # Ministry of Social Justice and Empowerment (Government of India) - Healthcare & Welfare Schemes
+  - url: "https://socialjustice.gov.in/schemes/43"
+    g_score: 1.0
+    description: "Atal Vayo Abhyuday Yojana (AVYAY) - Healthcare, assisted living devices, and medical welfare for indigent senior citizens"
+
+  - url: "https://socialjustice.gov.in/schemes/111"
+    g_score: 1.0
+    description: "PM Special Scheme - Training of Geriatric Care Givers and elderly healthcare assistance"
+
+  - url: "https://socialjustice.gov.in/schemes/42"
+    g_score: 1.0
+    description: "National Action Plan for Drug Demand Reduction - De-addiction healthcare and medical rehabilitation"
+
+  - url: "https://socialjustice.gov.in/schemes/37"
+    g_score: 1.0
+    description: "NAMASTE Scheme - Sanitation workers occupational healthcare, safety gear, and PM-JAY health insurance convergence"
+
+  - url: "https://socialjustice.gov.in/schemes/99"
+    g_score: 1.0
+    description: "SMILE Scheme - Medical care, rehabilitation, and welfare support for destitute and marginalized individuals"
+
+  # Ministry of Women and Child Development (Government of India) - Maternal & Child Health Schemes
+  - url: "https://wcd.gov.in/offerings/schemes-services-mission-poshan-2-0"
+    g_score: 1.0
+    description: "Mission Saksham Anganwadi & POSHAN 2.0 - Maternal nutrition, child healthcare, and lactating mothers health support"
+
+  - url: "https://wcd.gov.in/offerings/mission-vatsalya"
+    g_score: 1.0
+    description: "Mission Vatsalya - Child protection, survival, and pediatric healthcare access"
+
+  - url: "https://wcd.gov.in/offerings/mission-shakti-guidelines-for-implementation"
+    g_score: 1.0
+    description: "Mission Shakti - Women healthcare, crisis intervention, and social welfare support"
+
+  # Directorate General of Health Services (Ministry of Health and Family Welfare, Government of India)
+  - url: "https://dghs.mohfw.gov.in/technical-divisions-of-dghs.php"
+    g_score: 1.0
+    description: "Technical Divisions of DGHS - National Health Programmes, disease control, leprosy eradication, and public nutrition"
