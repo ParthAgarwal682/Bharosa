@@ -1,16 +1,18 @@
 """Explicit search commands over the existing Bharosa modules.
 
-IR concept: a query front end. ``medicine`` calls ``search_medicine``.
-``scheme`` loads zone documents from the crawler database and calls
-``search_schemes``. ``claim`` calls ``check_claim``. Nothing here
-scores, expands, or cites on its own. A missing module stops the
-command. Results are not replaced with a stand-in.
+IR concept: a query front end. ``medicine`` loads a caller-supplied
+file with ``load_medicines`` and passes those records to
+``search_medicine``. ``scheme`` loads zone documents from the crawler
+database and calls ``search_schemes``. ``claim`` calls ``check_claim``.
+Nothing here scores, expands, or cites on its own. A missing module
+stops the command. Results are not replaced with a stand-in.
 """
 
 from __future__ import annotations
 
 import argparse
 import sys
+from collections.abc import Mapping
 from pathlib import Path
 from typing import NoReturn
 
@@ -24,7 +26,12 @@ def main(argv: list[str] | None = None) -> None:
     parser = _parser()
     args = parser.parse_args(argv)
     if args.command == "medicine":
-        _cmd_medicine(args.query, k=args.k, verbose=args.verbose)
+        _cmd_medicine(
+            args.query,
+            k=args.k,
+            medicine_file=args.medicine_file,
+            verbose=args.verbose,
+        )
     elif args.command == "scheme":
         _cmd_scheme(args)
     elif args.command == "claim":
@@ -33,14 +40,17 @@ def main(argv: list[str] | None = None) -> None:
         parser.error(f"unknown command {args.command!r}")
 
 
-def _cmd_medicine(query: str, *, k: int, verbose: bool) -> None:
-    """Run medicine search and, when asked, print the analyser trace.
+def _cmd_medicine(query: str, *, k: int, medicine_file: str, verbose: bool) -> None:
+    """Load one medicine file, then rank candidates from those records.
 
-    IR concept: brand retrieval. Tokens come from the shared tokeniser.
-    Constraints come from ``parse_medicine_query``. Ranking stays inside
-    ``search_medicine``. This command does not expand the query and does
-    not invent rows when the loader is missing.
+    IR concept: brand retrieval over an explicit corpus. The file path
+    is the caller's. ``load_medicines`` returns ``(records, stats)``.
+    Only ``records`` are passed to ``search_medicine``. Tokens come from
+    the shared tokeniser. Constraints come from ``parse_medicine_query``.
+    Ranking stays inside ``search_medicine``. This command does not
+    expand the query and does not invent rows when the load fails.
     """
+    path = _require_medicine_file(medicine_file)
     parse_medicine_query, search_medicine, tokenize = _load_medicine()
     try:
         parsed = parse_medicine_query(query)
@@ -48,8 +58,12 @@ def _cmd_medicine(query: str, *, k: int, verbose: bool) -> None:
     except (TypeError, ValueError) as exc:
         _fail(f"medicine query was rejected: {exc}")
 
+    records, stats = _load_medicine_records(path)
+
     print(f"query: {query}")
     print(f"k: {k}")
+    print(f"medicine file: {path}")
+    print(f"records: {len(records)}")
     if verbose:
         _section("tokens")
         _print_tokens(tokens)
@@ -62,6 +76,8 @@ def _cmd_medicine(query: str, *, k: int, verbose: bool) -> None:
         print(f"form: {_shown(parsed.form)}")
         print(f"release: {_shown(parsed.release)}")
         print(f"ambiguous: {parsed.ambiguous}")
+        _section("load")
+        _print_load_stats(stats)
         _section("postings")
         print(
             "search_medicine ranks with character n-gram cosine "
@@ -69,7 +85,7 @@ def _cmd_medicine(query: str, *, k: int, verbose: bool) -> None:
         )
 
     try:
-        result = search_medicine(query, k=k)
+        result = search_medicine(query, records=records, k=k)
     except (ImportError, RuntimeError, TypeError, ValueError) as exc:
         _fail(f"medicine search failed: {exc}")
 
@@ -326,6 +342,101 @@ def _print_citations(query: str, hits: list[object]) -> None:
     _print_value(checks)
 
 
+def _require_medicine_file(medicine_file: str) -> Path:
+    """Stop when the caller did not point at a medicine file.
+
+    The dataset path is never filled in here. A missing path is reported
+    before search, and no stand-in corpus is built.
+    """
+    path = Path(medicine_file)
+    if not path.exists():
+        _fail(f"medicine file not found: {path}")
+    if not path.is_file():
+        _fail(f"medicine file is not a file: {path}")
+    return path
+
+
+def _load_medicine_records(path: Path) -> tuple[object, object]:
+    """Call ``load_medicines(path)`` and keep the record list and the stats.
+
+    IR concept: ingestion before retrieval. The loader's pair is
+    unpacked here. An empty record list is a failed load, not a search
+    over nothing. The stats object is not passed into search.
+    """
+    try:
+        from bharosa.medicine.loader import load_medicines
+    except ImportError as exc:
+        _fail(
+            "medicine loader is unavailable: "
+            f"bharosa.medicine.loader.load_medicines could not be imported ({exc}). "
+            "No records were substituted."
+        )
+    if not callable(load_medicines):
+        _fail(
+            "medicine loader is unavailable: "
+            "bharosa.medicine.loader.load_medicines is not callable. "
+            "No records were substituted."
+        )
+    try:
+        loaded = load_medicines(path)
+    except Exception as exc:
+        _fail(f"medicine load failed: {type(exc).__name__}: {exc}")
+    if not isinstance(loaded, tuple) or len(loaded) != 2:
+        _fail(
+            "medicine load failed: load_medicines() must return (records, stats), "
+            f"got {type(loaded).__name__}"
+        )
+    records, stats = loaded
+    if records is None or isinstance(records, (str, bytes, bytearray, Mapping)):
+        _fail(
+            "medicine load failed: records must be a sequence of medicine rows, "
+            f"got {type(records).__name__}"
+        )
+    try:
+        count = len(records)
+    except TypeError as exc:
+        _fail(f"medicine load failed: {type(exc).__name__}: {exc}")
+    if count == 0:
+        _fail(
+            "medicine file produced no records "
+            f"({_stat_summary(stats)}). Search was not run."
+        )
+    return records, stats
+
+
+def _print_load_stats(stats: object) -> None:
+    """Print loader accounting fields the stats object actually has."""
+    fields = getattr(type(stats), "__dataclass_fields__", None)
+    names: tuple[str, ...]
+    if isinstance(fields, dict) and fields:
+        names = tuple(fields)
+    else:
+        names = (
+            "total_rows",
+            "accepted_rows",
+            "dropped_rows",
+            "duplicate_counts",
+            "reason_counts",
+        )
+    printed = False
+    for name in names:
+        if not hasattr(stats, name):
+            continue
+        print(f"{name}: {getattr(stats, name)}")
+        printed = True
+    if not printed:
+        print(stats)
+
+
+def _stat_summary(stats: object) -> str:
+    """One line of loader counts for a failed empty load."""
+    parts: list[str] = []
+    for name in ("total_rows", "accepted_rows", "dropped_rows", "duplicate_counts"):
+        if hasattr(stats, name):
+            parts.append(f"{name}={getattr(stats, name)}")
+    return " ".join(parts) if parts else "no load statistics"
+
+
 def _load_medicine() -> tuple[object, object, object]:
     """Import medicine search. Refuse to continue when the import fails."""
     try:
@@ -520,9 +631,15 @@ def _parser() -> argparse.ArgumentParser:
     medicine.add_argument("query", help="brand query, for example: pantocid 40")
     medicine.add_argument("-k", "--k", type=int, default=5)
     medicine.add_argument(
+        "--medicine-file",
+        required=True,
+        metavar="PATH",
+        help="CSV path passed to load_medicines",
+    )
+    medicine.add_argument(
         "--verbose",
         action="store_true",
-        help="print tokens, filters, n-gram weights, and scores",
+        help="print tokens, filters, load statistics, n-gram weights, and scores",
     )
 
     scheme = sub.add_parser("scheme", help="rank official scheme zones")
