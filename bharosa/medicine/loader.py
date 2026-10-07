@@ -388,21 +388,7 @@ def load_medicines(file_path: Path | str) -> tuple[list[MedicineRecord], LoadSta
                     ),
                 )
 
-            # 7. Deduplicate records
-            dup_key = (
-                brand_clean.casefold(),
-                salt_clean.casefold(),
-                strength_val,
-                strength_unit,
-                form_clean.casefold(),
-                mfg_clean.casefold(),
-            )
-
-            if dup_key in seen_keys:
-                stats.record_duplicate()
-                continue
-            seen_keys.add(dup_key)
-
+            # 7. Parse pack_size and pack_unit
             pack_size_val: float | None = None
             pack_size_raw = str(row.get("pack_size", "")).strip()
             if pack_size_raw:
@@ -412,6 +398,24 @@ def load_medicines(file_path: Path | str) -> tuple[list[MedicineRecord], LoadSta
                     pack_size_val = None
 
             pack_unit_val: str | None = str(row.get("pack_unit", "")).strip() or None
+            pack_unit_key: str | None = pack_unit_val.casefold() if pack_unit_val else None
+
+            # 8. Deduplicate records
+            dup_key = (
+                brand_clean.casefold(),
+                salt_clean.casefold(),
+                strength_val,
+                strength_unit,
+                form_clean.casefold(),
+                mfg_clean.casefold(),
+                pack_size_val,
+                pack_unit_key,
+            )
+
+            if dup_key in seen_keys:
+                stats.record_duplicate()
+                continue
+            seen_keys.add(dup_key)
 
             record = MedicineRecord(
                 brand=brand_clean,
