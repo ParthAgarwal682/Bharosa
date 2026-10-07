@@ -235,7 +235,7 @@ Scheme retrieval P@k, the net-score ablations, RAG answer correctness and claim-
 | Parth Agarwal | Crawler: fetcher, frontier, deduplication, shingles, scheduler, freshness evaluation; RAG answer, citation checker and claim checker |
 | Paridhi | Inverted and positional index, tf-idf, net score, Hinglish expansion, scheme and medicine search, CLI, API, evaluation pipeline |
 | Ishanvi Singh | Medicine dataset, loader and audit, Soundex baselines, evaluation queries, frontend |
-| Mimi | *[fill in]* |
+| Kushagra Bansal | RAG, claim checking, and evaluation: Implemented the LLM-based cited-answer pipeline, confidence-based refusal, citation/claim verification, and the evaluation framework. |
 
 ## AI-use declaration
 
